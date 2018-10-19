@@ -20,7 +20,7 @@ const Headers = ({collapsed,toggle,history}) => {
             </div>
             <div className="rightWarpper">
                 <div className="button">
-                    <Icon type="mail" />
+                    <Icon type="alert" theme="outlined" />
                 </div>
                 <Menu mode="horizontal">
                     <SubMenu

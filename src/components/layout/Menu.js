@@ -9,6 +9,16 @@ const Menus = ({collapsed,history}) => {
 
     const defaultSelectedKeys = [pathname]
     const defaultOpenKeys = [`/${pathname.split('/')[1]}`]
+
+
+    const RenderIcon = ({icon}) =>{
+        
+        const setIcon = () => {
+            return <img src={icon} style={{width:18}} alt=""/>
+        }
+
+        return <Icon component={setIcon} icon={icon} />
+    }
     
     return (
         <Menu defaultSelectedKeys={defaultSelectedKeys} defaultOpenKeys={defaultOpenKeys} mode={"inline"}>
@@ -17,7 +27,7 @@ const Menus = ({collapsed,history}) => {
                     item.subRoutes.length ?
                     <SubMenu
                         key={item.path}
-                        title={<span><Icon type={item.icon} /><span>{item.title}</span></span>}
+                        title={<span><RenderIcon icon={item.icon} /><span>{item.title}</span></span>}
                     >
                     {
                         item.subRoutes.map(({path,title}) => (

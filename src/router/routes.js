@@ -6,7 +6,7 @@ import TagsEdit from '../pages/tags/edit';
 export default [
     {
         title: '文章管理',
-        icon: 'profile',
+        icon: require('../assets/layout/icon_hxgl.png'),
         path: '/article',
         subRoutes:[
             {
@@ -27,7 +27,7 @@ export default [
     },
     {
         title: '标签管理',
-        icon: 'profile',
+        icon: require('../assets/layout/icon_bqgl.png'),
         path: '/tags',
         subRoutes:[
             {

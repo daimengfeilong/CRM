@@ -12,8 +12,7 @@ const Siders = ({collapsed,history}) => {
             collapsed={collapsed}
         >
             <div className="logo">
-                <img alt="logo" src={require('../../assets/logo.svg')} />
-                {collapsed ? '' : <span>ANTD ADMIN</span>}
+                {collapsed ? '' : <span>博雅成信CRM</span>}
             </div>
             <Menus history={history} />
         </Sider>
