@@ -6,6 +6,10 @@
 # production
 /dist
 
+
+*.rar
+*.zip
+
 # misc
 .DS_Store
 npm-debug.log*

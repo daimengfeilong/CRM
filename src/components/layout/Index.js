@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Layout } from 'antd';
+import { Layout,Spin } from 'antd';
 import './layout.less'
 import Headers from './Header'
 import Siders from './Sider'
@@ -8,7 +8,7 @@ import Breadcrumbs from './breadcrumb'
 
 const { Content } = Layout;
 
-const Index = ({dispatch,collapsed,children,history}) => {
+const Index = ({dispatch,collapsed,children,history,loading}) => {
     const menusProps = {
         collapsed,
         history,
@@ -27,7 +27,9 @@ const Index = ({dispatch,collapsed,children,history}) => {
                 <Content style={{ margin: '15px' }}>
                     <Breadcrumbs history={history} />
                     <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
-                        {children}
+                        <Spin tip="Loading..." spinning={loading}>
+                            {children}
+                        </Spin>
                     </div>
                 </Content>
             </Layout>
@@ -36,7 +38,10 @@ const Index = ({dispatch,collapsed,children,history}) => {
     
 }
 function mapStateToProps(state) {
-    return state.layout
+    return {
+        ...state.layout,
+        loading:state.loading.global
+    }
 }
 
 export default connect(mapStateToProps)(Index);

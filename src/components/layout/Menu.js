@@ -12,12 +12,7 @@ const Menus = ({collapsed,history}) => {
 
 
     const RenderIcon = ({icon}) =>{
-        
-        const setIcon = () => {
-            return <img src={icon} style={{width:18}} alt=""/>
-        }
-
-        return <Icon component={setIcon} icon={icon} style={{verticalAlign:'middle'}} />
+        return <Icon component={() => <img src={icon} style={{width:18}} />} icon={icon} style={{verticalAlign:'middle'}} />
     }
     
     return (
