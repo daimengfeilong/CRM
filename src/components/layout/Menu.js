@@ -42,7 +42,4 @@ const Menus = ({collapsed,history}) => {
     )
 }
 
-function mapStateToProps(state) {
-
-}
 export default Menus
