@@ -1,0 +1,86 @@
+#crm-layout{
+    .header {
+        -webkit-box-shadow: 4px 4px 40px 0 rgba(0, 0, 0, .05);
+        box-shadow: 4px 4px 40px 0 rgba(0, 0, 0, .05);
+        position: relative;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        height: 56px;
+        z-index: 9;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-align: center;
+        align-items: center;
+        background-color: #fff;
+    }
+    
+    .button {
+        width: 56px;
+        height: 56px;
+        line-height: 56px;
+        text-align: center;
+        font-size: 18px;
+        cursor: pointer;
+        -webkit-transition: all .3s ease-out;
+        transition: all .3s ease-out;
+        &:hover {
+            color: #1890ff;
+            background-color: rgba(24, 144, 255, .15);
+        }
+    }
+    
+    .logo {
+        height: 96px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        img {
+            width: 40px;
+            margin-right: 8px;
+        }
+        span {
+            vertical-align: text-bottom;
+            font-size: 16px;
+            text-transform: uppercase;
+            display: inline-block;
+            font-weight: 700;
+            color: #1890ff;
+            white-space: nowrap;
+            :local {
+                animation: fadeLeftIn 500ms linear;
+                animation-fill-mode: both;
+            }
+        }
+    }
+
+    @keyframes fadeLeftIn {
+        0% {
+            transform: translateX(5px);
+            opacity: 0;
+        }
+        100% {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    .ant-layout-sider {
+        background: #fff;
+    }
+    
+    .ant-menu-submenu-title {
+        height: 56px;
+        line-height: 56px;
+    }
+    
+    .rightWarpper {
+        display: flex;
+        padding-right: 16px;
+    }
+
+    #breadcrumbs{
+        a{
+            color: #999
+        }
+    }
+}

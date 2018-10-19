@@ -1,0 +1,15 @@
+{
+    "disableCSSModules":true,
+    "proxy": {
+        "/api": {
+            "target": "http://10.10.27.93:3000/",
+            "changeOrigin": true,
+            "pathRewrite": {
+                "^/api": "/api"
+            }
+        }
+    },
+    "extraBabelPlugins": [
+        ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": "css" }]
+    ]
+}
