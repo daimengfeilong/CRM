@@ -90,7 +90,10 @@ const Edit = ({form,dispatch,history,tags,data}) => {
 }
 
 function mapStateToProps(state) {
-    return state.article
+    return {
+        ...state.article,
+        tags:state.tags.tags,
+    }
 }
 
 const editFrom = Form.create()(Edit);

@@ -13,14 +13,12 @@ export default [
                 path: '/article',
                 title: '文章列表',
                 icon: 'profile',
-                models: () => [import('../models/article')],
                 component: () => import('../pages/article/list'),
             },
             {
                 path: '/article/edit',
                 title: '添加文章',
                 icon: 'read',
-                models: () => [import('../models/article')],
                 component: () => import('../pages/article/edit'),
             }
         ]
@@ -34,14 +32,12 @@ export default [
                 path: '/tags',
                 title: '标签列表',
                 icon: 'profile',
-                models: () => [import('../models/tags')],
                 component: () => import('../pages/tags/list'),
             },
             {
                 path: '/tags/edit',
                 title: '添加标签',
                 icon: 'read',
-                models: () => [import('../models/tags')],
                 component: () => import('../pages/tags/edit'),
             }
         ]

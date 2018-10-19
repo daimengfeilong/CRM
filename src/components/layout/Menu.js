@@ -17,7 +17,7 @@ const Menus = ({collapsed,history}) => {
             return <img src={icon} style={{width:18}} alt=""/>
         }
 
-        return <Icon component={setIcon} icon={icon} />
+        return <Icon component={setIcon} icon={icon} style={{verticalAlign:'middle'}} />
     }
     
     return (
@@ -27,13 +27,13 @@ const Menus = ({collapsed,history}) => {
                     item.subRoutes.length ?
                     <SubMenu
                         key={item.path}
-                        title={<span><RenderIcon icon={item.icon} /><span>{item.title}</span></span>}
+                        title={<span><RenderIcon icon={item.icon} /><span style={{verticalAlign:'middle'}}>{item.title}</span></span>}
                     >
                     {
                         item.subRoutes.map(({path,title}) => (
                             <Menu.Item key={path}>
                                 <Link to={path}>
-                                    <span>{title}</span>
+                                    <span style={{paddingLeft:10}}>{title}</span>
                                 </Link>
                             </Menu.Item>
                         ))

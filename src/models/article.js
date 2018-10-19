@@ -6,7 +6,6 @@ export default{
     state:{
         collapsed:false,
         list:[],
-        tags:[],
         data:{}
     },
     reducers:{
@@ -47,14 +46,6 @@ export default{
             })            
             yield put({type:'save',payload:{data:res.data.data[0]}})
         },
-        *tags({ payload }, { call, put, select }){
-            const res = yield request({
-                url:'/api/tags/list',
-                method:'GET'
-            })
-
-            yield put({type:'save',payload:{tags:res.data.data}})
-        },
         *del({ payload }, { call, put, select }){
             const state = yield select(state => state.index.list)
 
@@ -74,9 +65,9 @@ export default{
             return history.listen(({ pathname,search }) => {
                 if (pathname === '/' || pathname === '/article') {
                     dispatch({ type: 'query'})
-                    dispatch({ type: 'tags'})
+                    dispatch({ type: 'tags/query'})
                 }else if(pathname === '/article/edit'){
-                    dispatch({ type: 'tags'})
+                    dispatch({ type: 'tags/query'})
                     dispatch({ type: 'save',payload:{data:{}}})
                     if(search.includes('id')){
                         dispatch({ type: 'queryId',payload:{'_id':getQueryString('id')}})

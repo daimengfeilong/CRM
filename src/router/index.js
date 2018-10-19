@@ -8,7 +8,7 @@ const RouterConfig = ({ history,app }) => {
 
     const Login = dynamic({
         app,
-        models: () => [import('../models/login')],
+        //models: () => [import('../models/login')],
         component: () => import('../pages/login/index')
     });
 

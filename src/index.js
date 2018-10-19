@@ -10,10 +10,10 @@ const app = dva();
 app.use(createLoading());
 
 // 3. Model
-app.model(require('./models/layout').default);
-// require('./admin/models').default.forEach(key => {
-//     app.model(key.default);
-// });
+//app.model(require('./models/layout').default);
+require('./models').default.forEach(key => {
+    app.model(key.default);
+});
 
 // 4. Router
 app.router(require('./router/index').default);

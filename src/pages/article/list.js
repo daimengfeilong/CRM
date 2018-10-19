@@ -70,8 +70,11 @@ const List = ({ list,tags,dispatch }) => {
     );
 }
 
-function mapStateToProps(state) {
-    return state.article
+function mapStateToProps(state) {    
+    return {
+        ...state.article,
+        tags:state.tags.tags,
+    }
 }
 
 export default connect(mapStateToProps)(List);
