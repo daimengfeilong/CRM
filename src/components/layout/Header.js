@@ -4,12 +4,17 @@ import { Layout, Menu, Icon } from 'antd';
 const { Header } = Layout;
 const SubMenu = Menu.SubMenu;
 
-const Headers = ({collapsed,toggle,history}) => {
+const Headers = ({collapsed,dispatch,history}) => {
     const loginOut = () => {
         localStorage.removeItem('token')
         history.push('/login')
     }
 
+    const toggle = () => {
+        dispatch({
+            type:'layout/toggle'
+        })
+    }
     return (
         <Header className="header" style={{ background: '#fff', padding: 0 }}>
             <div className="button" onClick={toggle}>
@@ -42,4 +47,9 @@ const Headers = ({collapsed,toggle,history}) => {
     )
 }
 
-export default Headers
+function mapStateToProps(state) {
+    return {
+        ...state.layout
+    }
+}
+export default connect(mapStateToProps)(Headers);

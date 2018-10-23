@@ -4,7 +4,7 @@ import routes from '../../router/routes'
 
 const SubMenu = Menu.SubMenu;
 
-const Menus = ({collapsed,history}) => {
+const Menus = ({history}) => {
     const {pathname} = history.location
 
     const defaultSelectedKeys = [pathname]

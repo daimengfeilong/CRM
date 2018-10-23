@@ -1,3 +1,4 @@
+import { connect } from 'dva';
 import { Layout } from 'antd';
 import Menus from './Menu'
 
@@ -19,4 +20,9 @@ const Siders = ({collapsed,history}) => {
     )
 }
 
-export default Siders
+function mapStateToProps(state) {
+    return {
+        ...state.layout
+    }
+}
+export default connect(mapStateToProps)(Siders);

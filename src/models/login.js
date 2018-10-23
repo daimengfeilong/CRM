@@ -1,4 +1,4 @@
-import request  from '../utils/request'
+import {login}  from '../services/login'
 
 export default{
     namespace:'login',
@@ -10,11 +10,7 @@ export default{
     },
     effects:{
         *login({payload}, { call, put, select }){
-            const res = yield request({
-                url:'/api/login',
-                method:'POST',
-                data:payload
-            })
+            const res = yield call(login,payload)
 
             return res
         }

@@ -17,7 +17,7 @@ const RouterConfig = ({ history,app }) => {
             <Switch>
                 <Route path="/" exact component={Login} />
                 <Route path="/login" exact component={Login} />
-                <Layout history={history}>
+                <Layout>
                     <ContentRoute app={app} />
                 </Layout>
             </Switch>

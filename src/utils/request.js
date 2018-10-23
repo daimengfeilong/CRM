@@ -25,7 +25,7 @@ function checkData(data) {
             window.location.href = `${origin}${pathname}#/login`
         },2000)
     }else{
-        return { data }
+        return data
     }
 }
 
@@ -41,7 +41,7 @@ function queryParams(params) {
  * @param  {object} [options] The options we want to pass to "fetch"
  * @return {object}           An object containing either "data" or "err"
  */
-export default function request(options) {
+export default async function request(options) {
     const method = options.method.toLocaleLowerCase()
 
     options.headers = options.headers ? options.headers : {}
@@ -61,9 +61,13 @@ export default function request(options) {
         options.headers['Content-Type'] = 'application/json'
     }
 
-    return fetch(options.url, options)
-        .then(checkStatus)
-        .then(parseJSON)
-        .then(checkData)
-        .catch(err => ({ err }));
+    const request = await fetch(options.url, options)
+    const checked = await checkStatus(request)
+    const json = await parseJSON(checked)
+    const data = await checkData(json)
+
+    return {
+        data
+    }
+
 }
