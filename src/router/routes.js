@@ -1,28 +1,4 @@
-import Article from '../pages/article/list';
-import ArticleEdit from '../pages/article/edit';
-import Tags from '../pages/tags/list';
-import TagsEdit from '../pages/tags/edit';
-
 export default [
-    {
-        title: '文章管理',
-        icon: require('../assets/layout/icon_hxgl.png'),
-        path: '/article',
-        subRoutes:[
-            {
-                path: '/article',
-                title: '文章列表',
-                icon: 'profile',
-                component: () => import('../pages/article/list'),
-            },
-            {
-                path: '/article/edit',
-                title: '添加文章',
-                icon: 'read',
-                component: () => import('../pages/article/edit'),
-            }
-        ]
-    },
     {
         title: '标签管理',
         icon: require('../assets/layout/icon_bqgl.png'),
@@ -33,12 +9,19 @@ export default [
                 title: '标签列表',
                 icon: 'profile',
                 component: () => import('../pages/tags/list'),
-            },
+            }
+        ]
+    },
+    {
+        title: '分类管理',
+        icon: require('../assets/layout/icon_fngl.png'),
+        path: '/classify',
+        subRoutes:[
             {
-                path: '/tags/edit',
-                title: '添加标签',
-                icon: 'read',
-                component: () => import('../pages/tags/edit'),
+                path: '/classify',
+                title: '分类列表',
+                icon: 'profile',
+                component: () => import('../pages/classify/list'),
             }
         ]
     }

@@ -13,7 +13,7 @@ const Siders = ({collapsed,history}) => {
             collapsed={collapsed}
         >
             <div className="logo">
-                {collapsed ? '' : <span>博雅成信CRM</span>}
+                {collapsed ? <span>CRM</span> : <span>博雅成信CRM</span>}
             </div>
             <Menus history={history} />
         </Sider>

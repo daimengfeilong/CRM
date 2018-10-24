@@ -12,11 +12,11 @@ class List extends React.Component {
     componentDidMount(){
         const { dispatch } = this.props
 
-        dispatch({ type: 'tags/query'});
+        dispatch({ type: 'classify/query'});
     }
 
     render() {
-        const { tags, dispatch,showModel } = this.props
+        const { list, dispatch,showModel,subClass } = this.props
 
         const del = (id) => {
             confirm({
@@ -31,36 +31,29 @@ class List extends React.Component {
             });
         }
 
+        const modalProps = {
+            showModel,
+            dispatch,
+            subClass
+        }
+
+
         const columns = [{
-            title: '标签ID',
-            dataIndex: 'tagId',
-            key: 'tagId'
+            title: '序号',
+            dataIndex: 'index',
+            key: 'index',
+            render (text, record, index) {
+                return index + 1
+            } 
+        },
+        {
+            title: '分类ID',
+            dataIndex: 'classId',
+            key: 'classId'
         }, {
-            title: '标签名称',
-            dataIndex: 'tagName',
-            key: 'tagName'
-        }, {
-            title: '标签类别',
-            dataIndex: 'classification',
-            key: 'classification',
-            render: row => row.className,
-        }, {
-            title: '包含属性',
-            dataIndex: 'attrList',
-            key: 'attrList',
-            render:(list) => (
-                <span>
-                    {list.map(tag => <Tag color="blue" key={tag.attrId}>{tag.attrName}</Tag>)}
-                </span>
-            )
-        }, {
-            title: '覆盖人数',
-            dataIndex: 'personNum',
-            key: 'personNum'
-        }, {
-            title: '创建时间',
-            dataIndex: 'instDate',
-            key: 'instDate'
+            title: '分类名称',
+            dataIndex: 'className',
+            key: 'className'
         }, {
             title: '操作',
             key: 'action',
@@ -75,15 +68,15 @@ class List extends React.Component {
 
         return (
             <div>
-                <Modal showModel={showModel} dispatch={dispatch} />
+                <Modal {...modalProps} />
                 <Head dispatch={dispatch} />
-                <Table columns={columns} dataSource={tags} rowKey="tagId" />
+                <Table columns={columns} dataSource={list} rowKey="classId" />
             </div>
         );
     }
 }
 function mapStateToProps(state) {
-    return state.tags
+    return state.classify
 }
 
 export default connect(mapStateToProps)(List);

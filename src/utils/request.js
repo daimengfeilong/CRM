@@ -66,8 +66,6 @@ export default async function request(options) {
     const json = await parseJSON(checked)
     const data = await checkData(json)
 
-    return {
-        data
-    }
+    return data
 
 }

@@ -2,8 +2,12 @@ import request from '../utils/request';
 
 export function query() {
     return request({
-        url: '/api/tags/list',
-        method: 'GET'
+        url: '/api/crm/tag/getTagList',
+        method: 'POST',
+        data:{
+            pageNo:1,
+            pageSize:10
+        }
     })
 }
 

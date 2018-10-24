@@ -1,11 +1,11 @@
-import {query,add,queryId,del}  from '../services/tags'
-import { getQueryString }  from '../utils/utils'
+import { query,add,queryId,del }  from '../services/tags'
 
 export default{
     namespace: 'tags',
     state:{
         tags:[],
-        data:{}
+        data:{},
+        showModel:false
     },
     reducers:{
         save(state, {payload}){
@@ -13,18 +13,19 @@ export default{
                 ...state,
                 ...payload
             }
+        },
+        showModel(state, {payload}){
+            return {
+                ...state,
+                showModel:payload
+            }
         }
     },
     effects: {
-        *add({ payload }, { call, put, select }){
-            const res = yield call(add,payload)
-
-            return res
-        },
         *query({ payload }, { call, put, select }){
             const res = yield call(query)
-
-            yield put({type:'save',payload:{tags:res.data.data}})
+            
+            yield put({type:'save',payload:{tags:res.result}})
         },
         *queryId({ payload }, { call, put, select }){
             const res = yield call(queryId,payload)
@@ -41,19 +42,5 @@ export default{
                 yield put({type:'save',payload:{tags}})
             }
         }
-    },
-    subscriptions: {
-        setup({ dispatch, history }) {
-            return history.listen(({ pathname,search }) => {
-                if (pathname === '/tags') {
-                    dispatch({ type: 'query'});
-                }else if(pathname === '/tags/edit'){
-                    dispatch({ type: 'save',payload:{data:{}}})
-                    if(search.includes('id')){
-                        dispatch({ type: 'queryId',payload:{'_id':getQueryString('id')}})
-                    }
-                }
-            });
-        },
-    },
+    }
 }
