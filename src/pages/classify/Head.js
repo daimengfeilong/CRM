@@ -6,8 +6,27 @@ const Head = ({dispatch}) => {
 
     const add = () =>{
         dispatch({
+            type:'classify/save',
+            payload:{
+                classItem:{}
+            }
+        })
+
+        dispatch({
             type:'classify/showModel',
             payload:true
+        })
+    }
+
+    const onSearch = (value) => {
+
+        dispatch({
+            type:'classify/query',
+            payload:{
+                params:{
+                    className:value
+                }
+            }
         })
     }
 
@@ -17,7 +36,7 @@ const Head = ({dispatch}) => {
                 <Search
                     placeholder="请输入分类名称"
                     enterButton="查找"
-                    onSearch={value => console.log(value)}
+                    onSearch={value => onSearch(value)}
                 />
             </Col>
             <Col span={20} style={{textAlign:'right'}}>

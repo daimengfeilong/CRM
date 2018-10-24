@@ -1,18 +1,17 @@
 import fetch from 'dva/fetch';
-import { message } from 'antd';
+import { Message } from 'antd';
 
 function parseJSON(response) {
     return response.json();
 }
 
 function checkStatus(response) {
-    if (response.status >= 200 && response.status < 300) {
+    if (response.status == 200) {
         return response;
     }
-
-    const error = new Error(response.statusText);
-    error.response = response;
-    throw error;
+    console.log(response);
+    Message.error(`${response.status} ${response.statusText}`);
+    return Promise.reject();
 }
 
 function checkData(data) {
@@ -20,7 +19,7 @@ function checkData(data) {
     if(data.code === 911){
         const { origin,pathname } = window.location
 
-        message.error(data.msg);
+        Message.error(data.msg);
         setTimeout(() => {
             window.location.href = `${origin}${pathname}#/login`
         },2000)

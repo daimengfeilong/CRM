@@ -1,20 +1,11 @@
-import { query }  from '../services/classify'
+import { query,addClass,queryClassId,delClass }  from '../services/classify'
 
 export default{
     namespace: 'classify',
     state:{
         list:[],
-        showModel:true,
-        subClass:[
-            {
-                classId:1,
-                className:'test1'
-            },
-            {
-                classId:2,
-                className:'test2'
-            }
-        ]
+        showModel:false,
+        classItem:{}
     },
     reducers:{
         save(state, {payload}){
@@ -30,23 +21,56 @@ export default{
             }
         },
         addSubClass(state, {payload}){
+            const { subClassList } = state.classItem
+
             return {
                 ...state,
-                subClass:[...state.subClass,payload]
+                classItem:{
+                    subClassList:[...subClassList,payload]
+                }
             } 
         },
         delSubClass(state, { payload }){
+            const { subClassList } = state.classItem
+
             return {
                 ...state,
-                subClass:state.subClass.filter(item => item.classId != payload.classId)
+                classItem:{
+                    subClassList:subClassList.filter(item => item.classId != payload.classId)
+                }
             }
         }
     },
     effects: {
         *query({ payload }, { call, put, select }){
-            const res = yield call(query)
+            const res = yield call(query,payload)
             
             yield put({type:'save',payload:{list:res.result}})
+        },
+        *addClass({ payload }, { call, put, select }){
+            const res = yield call(addClass,payload)
+            
+            return res
+        },
+        *queryClassId({ payload }, { call, put, select }){
+            const res = yield call(queryClassId,payload)
+
+            yield put({type:'save',payload:{classItem:res.result}})
+
+            return res
+        },
+        *delClass({ payload }, { call, put, select }){
+            const state = yield select(state => state.classify.list)
+            
+            const res = yield call(delClass,payload)
+
+            if(res.code == '0000'){
+                const list = state.filter(item => item.classId != payload.classId)
+
+                yield put({type:'save',payload:{list}})
+            }
+
+            return res
         }
     }
 }

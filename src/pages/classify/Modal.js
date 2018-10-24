@@ -1,11 +1,13 @@
-import { Row, Col, Input, Button, Modal, Form, Select,Tree } from 'antd';
+import { Row, Col, Input, Button, Modal, Form, Message,Tree } from 'antd';
 
 const FormItem = Form.Item;
 const TreeNode = Tree.TreeNode
 const Search = Input.Search
 
-const modal = ({ showModel, dispatch, form,subClass }) => {
+const modal = ({ showModel, dispatch, form,subClass,classItem }) => {
     const { getFieldDecorator } = form
+    const { subClassList } = classItem
+    let selectedKey = []
 
     const formItemLayout = {
         labelCol: {
@@ -16,40 +18,62 @@ const modal = ({ showModel, dispatch, form,subClass }) => {
         },
     }
     
-    let delKey = []
 
     const handleCancel = () => {
         dispatch({
             type: 'classify/showModel',
             payload: false
         })
+
+        form.resetFields()
     }
 
     const submit = () =>{
-        form.validateFields((err, values) => {
+        form.validateFields(['className'],(err, values) => {
             if (!err) {
-                console.log(values);
+                const subClassArr = [subClass.map(item => item.className)]
+
+                dispatch({
+                    type: 'classify/addClass',
+                    payload: {
+                        ...values,
+                        subClassName:subClassArr.join(',')
+                    }
+                }).then(data => {
+                    if(data.code == '0000'){
+                        dispatch({
+                            type: 'classify/showModel',
+                            payload: false
+                        })
+                    }else{
+                        Message.error(data.msg)
+                    }
+                })
             }
         });
     }
 
     const addSubClass = (val) =>{
-        dispatch({
-            type:'classify/addSubClass',
-            payload:{
-                classId:Date.now(),
-                className:val
+        form.validateFields(['subClassName'],(err, values) => {
+            if (!err) {
+                dispatch({
+                    type:'classify/addSubClass',
+                    payload:{
+                        classId:Date.now(),
+                        className:val
+                    }
+                })
             }
-        })
+        });
     }
 
     const delSubClass = () => {
-        if(!delKey.length) return false;
+        if(!selectedKey.length) return false;
 
         dispatch({
             type:'classify/delSubClass',
             payload:{
-                classId:delKey[0]
+                classId:selectedKey[0]
             }
         })
     }
@@ -68,14 +92,21 @@ const modal = ({ showModel, dispatch, form,subClass }) => {
             <Form>
                 <FormItem label="分类名称" {...formItemLayout} >
                     {getFieldDecorator('className', {
-                        rules: [{ required: true, message: '请输入分类名称' }],
+                        initialValue:classItem.className,
+                        rules: [
+                            { required: true, message: '请输入分类名称' },
+                            { pattern: /^([\u4e00-\u9fa5]{1,6})$/, message: '请输入1-6个中文字符' }
+                        ],
                     })(
                         <Input placeholder="请输入标签名称" />
                     )}
                 </FormItem>
                 <FormItem label="添加子分类" {...formItemLayout} >
                     {getFieldDecorator('subClassName', {
-                        rules: [{ required: true, message: '请输入子分类名称' }],
+                        rules: [
+                            { required: true, message: '请输入子分类名称' },
+                            { pattern: /^([0-9\u4e00-\u9fa5]{1,6})$/, message: '请输入1-6个中文或者数字字符' }
+                        ],
                     })(
                         <Search
                             placeholder="请输入子分类名称"
@@ -87,10 +118,10 @@ const modal = ({ showModel, dispatch, form,subClass }) => {
                 <Row>
                     <Col span={12} style={{border:'2px solid #f5f5f5'}}>                    
                         <Tree
-                            onSelect={selectedKeys => delKey = selectedKeys}
+                            onSelect={selected => selectedKey = selected}
                         >  
                             {
-                                subClass.map((item,index) => (
+                                subClassList && subClassList.map((item,index) => (
                                     <TreeNode title={item.className} key={item.classId} />
                                 ))
                             }
