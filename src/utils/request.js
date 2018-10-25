@@ -10,7 +10,7 @@ function checkStatus(response) {
         return response;
     }
     console.log(response);
-    Message.error(`${response.status} ${response.statusText}`);
+    Message.error(`${response.status} (${response.statusText})`);
     return Promise.reject();
 }
 

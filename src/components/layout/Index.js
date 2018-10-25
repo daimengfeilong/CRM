@@ -5,11 +5,18 @@ import { Layout,Spin } from 'antd';
 import './layout.less'
 import Headers from './Header'
 import Siders from './Sider'
-import Breadcrumbs from './breadcrumb'
+import Breadcrumbs from './Breadcrumb'
 
 const { Content } = Layout;
 
-const Index = ({children,history}) => {
+/**
+ * 全局布局组件
+ * zxl 
+ * @param {*} children,history
+ * @returns Index
+ * 
+ */
+const layout = ({children,history}) => {
     return (
         <Layout style={{ minHeight: '100vh' }} id='crm-layout'>
             <Siders history={history} />
@@ -26,4 +33,4 @@ const Index = ({children,history}) => {
     );
     
 }
-export default withRouter(Index)
+export default withRouter(layout)

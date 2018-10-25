@@ -1,13 +1,21 @@
-import { Row, Col, Input, Button, Modal, Form, Message,Tree } from 'antd';
+import { Input, Modal, Form, Message, Tree } from 'antd';
+import CardTree from './CardTree'
 
 const FormItem = Form.Item;
 const TreeNode = Tree.TreeNode
 const Search = Input.Search
 
-const modal = ({ showModel, dispatch, form,subClass,classItem }) => {
+/**
+ * 编辑/新增弹窗
+ * zxl 
+ * @param {*} props
+ * @param {} classItem 单条分类的item对象
+ * @returns modal
+ * 
+ */
+const modal = ({ showModel, dispatch, form, classItem }) => {
     const { getFieldDecorator } = form
     const { subClassList } = classItem
-    let selectedKey = []
 
     const formItemLayout = {
         labelCol: {
@@ -17,8 +25,26 @@ const modal = ({ showModel, dispatch, form,subClass,classItem }) => {
             span: 10,
         },
     }
-    
 
+    const cardTreeProps = {
+        subClassList,
+        dispatch,
+        formItemLayout
+    }
+    
+    //更新列表、关闭弹窗
+    const saveList = () => {
+        dispatch({
+            type: 'classify/showModel',
+            payload: false
+        })
+
+        dispatch({
+            type: 'classify/query'
+        })
+    }
+
+    //关闭弹窗
     const handleCancel = () => {
         dispatch({
             type: 'classify/showModel',
@@ -28,60 +54,67 @@ const modal = ({ showModel, dispatch, form,subClass,classItem }) => {
         form.resetFields()
     }
 
-    const submit = () =>{
-        form.validateFields(['className'],(err, values) => {
+    /**
+     * 
+     * 提交弹窗表单
+     * 通过classId区别编辑/新增
+     * @param {} form
+     * @param {} classItem
+     * 
+     */
+    const submit = () => {
+        form.validateFields(['className'], (err, values) => {
             if (!err) {
-                const subClassArr = [subClass.map(item => item.className)]
+                if(classItem.classId){
+                    dispatch({
+                        type: 'classify/updateClass',
+                        payload: classItem
+                    }).then(data => {
+                        if (data.code == '0000') {
+                            saveList()
+                        } else {
+                            Message.error(data.msg)
+                        }
+                    })
+                }else{
+                    dispatch({
+                        type: 'classify/addClass',
+                        payload: {
+                            ...values,
+                            subClassList
+                        }
+                    }).then(data => {
+                        if (data.code == '0000') {
+                            saveList()
+                        } else {
+                            Message.error(data.msg)
+                        }
+                    })
+                }
+                
+            }
+        });
+    }
 
+    //添加子分类
+    const addSubClass = (val) => {
+        form.validateFields(['subClassName'], (err, values) => {
+            if (!err) {
                 dispatch({
-                    type: 'classify/addClass',
+                    type: 'classify/addSubClass',
                     payload: {
-                        ...values,
-                        subClassName:subClassArr.join(',')
-                    }
-                }).then(data => {
-                    if(data.code == '0000'){
-                        dispatch({
-                            type: 'classify/showModel',
-                            payload: false
-                        })
-                    }else{
-                        Message.error(data.msg)
+                        classId: Date.now(),
+                        className: val
                     }
                 })
             }
         });
     }
 
-    const addSubClass = (val) =>{
-        form.validateFields(['subClassName'],(err, values) => {
-            if (!err) {
-                dispatch({
-                    type:'classify/addSubClass',
-                    payload:{
-                        classId:Date.now(),
-                        className:val
-                    }
-                })
-            }
-        });
-    }
-
-    const delSubClass = () => {
-        if(!selectedKey.length) return false;
-
-        dispatch({
-            type:'classify/delSubClass',
-            payload:{
-                classId:selectedKey[0]
-            }
-        })
-    }
-    
 
     return (
         <Modal
-            title="新增标签"
+            title={ classItem.classId ? '编辑分类' : '新增分类' }
             width="40%"
             okText="保存"
             cancelText="取消"
@@ -92,7 +125,7 @@ const modal = ({ showModel, dispatch, form,subClass,classItem }) => {
             <Form>
                 <FormItem label="分类名称" {...formItemLayout} >
                     {getFieldDecorator('className', {
-                        initialValue:classItem.className,
+                        initialValue: classItem.className,
                         rules: [
                             { required: true, message: '请输入分类名称' },
                             { pattern: /^([\u4e00-\u9fa5]{1,6})$/, message: '请输入1-6个中文字符' }
@@ -115,22 +148,7 @@ const modal = ({ showModel, dispatch, form,subClass,classItem }) => {
                         />
                     )}
                 </FormItem>
-                <Row>
-                    <Col span={12} style={{border:'2px solid #f5f5f5'}}>                    
-                        <Tree
-                            onSelect={selected => selectedKey = selected}
-                        >  
-                            {
-                                subClassList && subClassList.map((item,index) => (
-                                    <TreeNode title={item.className} key={item.classId} />
-                                ))
-                            }
-                        </Tree>
-                    </Col>
-                    <Col span="12">
-                        <Button type="primary" icon="delete" onClick={delSubClass}>移除</Button>
-                    </Col>
-                </Row>
+                <CardTree {...cardTreeProps}></CardTree>
             </Form>
         </Modal>
     )

@@ -4,10 +4,17 @@ import { Layout, Menu, Icon } from 'antd';
 const { Header } = Layout;
 const SubMenu = Menu.SubMenu;
 
+/**
+ * 头部组件
+ * zxl 
+ * @param {collapsed,dispatch,history}
+ * @returns Headers
+ * 
+ */
 const Headers = ({collapsed,dispatch,history}) => {
     const loginOut = () => {
-        localStorage.removeItem('token')
-        history.push('/login')
+        // localStorage.removeItem('token')
+        // history.push('/login')
     }
 
     const toggle = () => {

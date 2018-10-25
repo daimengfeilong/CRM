@@ -2,6 +2,14 @@ import { Row, Col, Input,Button } from 'antd';
 
 const Search = Input.Search
 
+/**
+ * 列表头部
+ * zxl 
+ * @param {*} props
+ * @returns Head
+ * 
+ */
+
 const Head = ({dispatch}) => {
 
     const add = () =>{

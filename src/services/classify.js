@@ -31,3 +31,19 @@ export function delClass(data) {
         data:data
     })
 }
+
+export function updateClass(data) {
+    return request({
+        url: '/api/crm/class/updateClass',
+        method: 'POST',
+        data:data
+    })
+}
+
+export function delSubClass(data) {
+    return request({
+        url: '/api/crm/class/delSubClassByClassId',
+        method: 'POST',
+        data:data
+    })
+}
