@@ -5,7 +5,7 @@ import { Layout,Spin } from 'antd';
 import './layout.less'
 import Headers from './Header'
 import Siders from './Sider'
-import Breadcrumbs from './Breadcrumb'
+import Breadcrumbs from './Breadcrumbs'
 
 const { Content } = Layout;
 
