@@ -27,17 +27,14 @@ const modal = ({ showModel, dispatch, form, classItem }) => {
     }
 
     const cardTreeProps = {
-        subClassList,
+        classItem,
         dispatch,
         formItemLayout
     }
     
     //更新列表、关闭弹窗
     const saveList = () => {
-        dispatch({
-            type: 'classify/showModel',
-            payload: false
-        })
+        handleCancel()
 
         dispatch({
             type: 'classify/query'
@@ -64,11 +61,17 @@ const modal = ({ showModel, dispatch, form, classItem }) => {
      */
     const submit = () => {
         form.validateFields(['className'], (err, values) => {
+            const { classId } = classItem
+
             if (!err) {
-                if(classItem.classId){
+                if(classId){
                     dispatch({
                         type: 'classify/updateClass',
-                        payload: classItem
+                        payload: {
+                            ...values,
+                            classId,
+                            subClassList
+                        }
                     }).then(data => {
                         if (data.code == '0000') {
                             saveList()
@@ -103,10 +106,12 @@ const modal = ({ showModel, dispatch, form, classItem }) => {
                 dispatch({
                     type: 'classify/addSubClass',
                     payload: {
-                        classId: Date.now(),
+                        cid: `C${Math.ceil(Math.random() * 1000)}`,
                         className: val
                     }
                 })
+                
+                form.resetFields(['subClassName'])
             }
         });
     }
@@ -128,7 +133,7 @@ const modal = ({ showModel, dispatch, form, classItem }) => {
                         initialValue: classItem.className,
                         rules: [
                             { required: true, message: '请输入分类名称' },
-                            { pattern: /^([\u4e00-\u9fa5]{1,6})$/, message: '请输入1-6个中文字符' }
+                            { pattern: /^([0-9\u4e00-\u9fa5]{1,8})$/, message: '请输入1-8个中文或者数字字符' }
                         ],
                     })(
                         <Input placeholder="请输入标签名称" />
@@ -138,7 +143,7 @@ const modal = ({ showModel, dispatch, form, classItem }) => {
                     {getFieldDecorator('subClassName', {
                         rules: [
                             { required: true, message: '请输入子分类名称' },
-                            { pattern: /^([0-9\u4e00-\u9fa5]{1,6})$/, message: '请输入1-6个中文或者数字字符' }
+                            { pattern: /^([0-9\u4e00-\u9fa5]{1,8})$/, message: '请输入1-8个中文或者数字字符' }
                         ],
                     })(
                         <Search

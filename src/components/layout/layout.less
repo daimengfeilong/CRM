@@ -81,7 +81,16 @@
 
     #breadcrumbs{
         a{
-            color: #999
+            color: #999;
+            &::after{
+                content: ">";
+                margin: 0 7px;
+            }
+            &:last-child{
+                &::after{
+                    content: "";
+                }
+            }
         }
     }
     .ant-layout-sider-children{
