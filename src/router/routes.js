@@ -24,5 +24,18 @@ export default [
                 component: () => import('../pages/classify/list'),
             }
         ]
+    },
+    {
+      title: '画像管理',
+        icon: require('../assets/layout/icon_fngl.png'),
+      path: '/portrait',
+      subRoutes:[
+      {
+        path: '/portrait',
+        title: '画像列表',
+        icon: 'profile',
+        component: () => import('../pages/portrait/list'),
+    }
+    ]
     }
 ]
