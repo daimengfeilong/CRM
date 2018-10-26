@@ -35,6 +35,7 @@ export default [
       {
         path: '/portrait',
         title: '画像列表',
+        show: true,
         icon: 'profile',
         component: () => import('../pages/portrait/list'),
     }
