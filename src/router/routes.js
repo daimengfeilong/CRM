@@ -24,7 +24,14 @@ export default [
                 show: true,
                 icon: 'profile',
                 component: () => import('../pages/classify/list'),
-            }
+            },
+          {
+            path: '/test',
+            title: 'test',
+            show: true,
+            icon: 'profile',
+            component: () => import('../pages/test/test'),
+          }
         ]
     }
 ]
