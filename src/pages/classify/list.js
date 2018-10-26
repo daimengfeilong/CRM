@@ -38,6 +38,8 @@ class List extends React.Component {
             confirm({
                 title: '确认删除？',
                 content: '',
+                okText:'确认',
+                cancelText:'取消',
                 onOk() {
                     dispatch({
                         type: 'classify/delClass',
