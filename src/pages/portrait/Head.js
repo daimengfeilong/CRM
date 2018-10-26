@@ -24,7 +24,7 @@ const Head = ({dispatch}) => {
             type:'portrait/query',
             payload:{
                 params:{
-                    className:value
+                  portraitName:value
                 }
             }
         })
