@@ -10,34 +10,22 @@ const Search = Input.Search
  * 
  */
 
-const CardTree = ({ dispatch, subClassList }) => {
-    
-    //删除子分类
-    const delSubClass = () => {
-        const selectedArr = subClassList.filter(item => item.isSelected)
-        const selectedIds = selectedArr.map(item => item.classId)
-        
-        if(!selectedArr.length) return false;
-
-        dispatch({
-            type: 'classify/delSubClass',
-            payload: selectedIds
-        })
-    }
+const CardTree = ({ dispatch, classItem }) => {
+    const { subClassList = [] } = classItem
 
     //编辑子分类
     const onEditSubClass = (id,val) => {
-        const reg = /^([0-9\u4e00-\u9fa5]{1,6})$/
+        const reg = /^([0-9\u4e00-\u9fa5]{1,8})$/
 
         if(!reg.test(val)){
-            Message.error('请输入1-6个中文或者数字字符')
+            Message.error('请输入1-8个中文或者数字字符')
             return false;
         }
 
         dispatch({
             type: 'classify/onEditSubClass',
             payload: {
-                classId: id,
+                cid: id,
                 className:val
             }
         })
@@ -50,7 +38,7 @@ const CardTree = ({ dispatch, subClassList }) => {
         dispatch({
             type: 'classify/showEditSubClass',
             payload: {
-                classId: id
+                cid: id
             }
         })
     }
@@ -60,9 +48,28 @@ const CardTree = ({ dispatch, subClassList }) => {
         dispatch({
             type: 'classify/onSelectedSubClass',
             payload: {
-                classId: id
+                cid: id
             }
         })
+    }
+
+    //删除子分类
+    const delSubClass = (id) => {
+        if (subClassList.every(item => item.isSelected == false)) return false;
+
+        if(classItem.classId){
+            dispatch({
+                type: 'classify/delSubClass'
+            }).then(data => {
+                if (data.code == '0000') {
+                    dispatch({type:'classify/handlerDel'})
+                } else {
+                    Message.error(data.msg)
+                }
+            })
+        }else{
+            dispatch({type:'classify/handlerDel'})
+        }
     }
 
     return (
@@ -71,14 +78,14 @@ const CardTree = ({ dispatch, subClassList }) => {
             <Col span={14}>
                 <Card
                     title="子分类"
-                    extra={<Button icon="delete" onClick={delSubClass}>移除</Button>}
+                    extra={<Button icon="delete" onClick={() => delSubClass()}>移除</Button>}
                     className="subtree"
                 >
                     <ul>
                         {
                             subClassList && subClassList.length ?
                             subClassList.map((item, index) => (
-                                <li key={item.classId} className={item.isSelected ? 'item selected' : 'item'}>
+                                <li key={item.cid} className={item.isSelected ? 'item selected' : 'item'}>
                                     {
                                         item.isEdit ? 
                                         <Search
@@ -86,10 +93,10 @@ const CardTree = ({ dispatch, subClassList }) => {
                                             enterButton="保存"
                                             style={{ width: 250 }}
                                             defaultValue={item.className}
-                                            onSearch={(val) => { onEditSubClass(item.classId,val) }}
+                                            onSearch={(val) => onEditSubClass(item.cid,val) }
                                         />
                                         :
-                                        <span className="subName" onClick={() => { onSelectedSubClass(item.classId) }}>{item.className}<Icon type="edit" onClick={(e) => { showEditSubClass(e,item.classId) }} /></span>
+                                        <span className="subName" onClick={() => onSelectedSubClass(item.cid)}>{item.className}<Icon type="edit" onClick={(e) => showEditSubClass(e,item.cid) } /></span>
                                     }
                                 </li>
                             ))

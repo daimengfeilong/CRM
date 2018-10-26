@@ -4,23 +4,15 @@ import { Link } from 'react-router-dom'
 import { Table, Divider, Modal,Message } from 'antd';
 import Head from './Head'
 import ClassModal from './Modal'
-import './classify.less'
-
+import {timestampToDate} from '../../utils/utils'
 const confirm = Modal.confirm;
 
-/**
- * 分类列表
- * zxl 
- * @param {*} props
- * @returns List
- * 
- */
 class List extends React.Component {
 
     componentDidMount(){
         const { dispatch } = this.props
 
-        dispatch({ type: 'classify/query'});
+        dispatch({ type: 'portrait/query'});
     }
 
     render() {
@@ -33,16 +25,13 @@ class List extends React.Component {
             classItem
         }
 
-        //删除分类
         const onDel = (id) => {
             confirm({
                 title: '确认删除？',
                 content: '',
-                okText:'确认',
-                cancelText:'取消',
                 onOk() {
                     dispatch({
-                        type: 'classify/delClass',
+                        type: 'portrait/delClass',
                         payload:{classId:id}
                     }).then(data => {
                         if(data.code == '0000'){
@@ -55,14 +44,13 @@ class List extends React.Component {
             });
         }
 
-        //分类编辑
         const onEdit = (id) => {
             dispatch({
-                type: 'classify/queryClassId',
+                type: 'portrait/queryClassId',
                 payload:{classId:id}
             }).then(data => {
                 dispatch({
-                    type: 'classify/showModel',
+                    type: 'portrait/showModel',
                     payload: true
                 })
             })
@@ -74,17 +62,47 @@ class List extends React.Component {
             key: 'index',
             render (text, record, index) {
                 return index + 1
-            } 
+            }
         },
         {
-            title: '分类ID',
+            title: '画像ID',
             dataIndex: 'classId',
             key: 'classId'
-        }, {
-            title: '分类名称',
-            dataIndex: 'className',
-            key: 'className'
-        }, {
+        },
+          {
+            title: '画像名称',
+            dataIndex: 'portraitName',
+            key: 'portraitName'
+        },
+          {
+            title: '画像分类',
+            dataIndex: 'portraitId',
+            key: 'portraitId'
+          },
+          {
+            title: '包含标签',
+            key: 'tagList',
+            render:(row, record)=>{
+              return(
+                <span>
+              {row.tagList.map((item,index) =>
+                  {return item.tagName}
+              )}
+            </span>)
+            }
+          },
+          {
+            title: '覆盖人数',
+            dataIndex: 'personNum',
+            key: 'personNum'
+          },
+          {
+            title: '创建时间',
+            dataIndex: 'instDate',
+            key: 'instDate',
+            render: text => {return timestampToDate(text)},
+          },
+          {
             title: '操作',
             key: 'action',
             render: (row, record) => (
@@ -106,7 +124,7 @@ class List extends React.Component {
     }
 }
 function mapStateToProps(state) {
-    return state.classify
+    return state.portrait
 }
 
 export default connect(mapStateToProps)(List);
