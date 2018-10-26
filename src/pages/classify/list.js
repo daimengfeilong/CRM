@@ -4,9 +4,17 @@ import { Link } from 'react-router-dom'
 import { Table, Divider, Modal,Message } from 'antd';
 import Head from './Head'
 import ClassModal from './Modal'
+import './classify.less'
 
 const confirm = Modal.confirm;
 
+/**
+ * 分类列表
+ * zxl 
+ * @param {*} props
+ * @returns List
+ * 
+ */
 class List extends React.Component {
 
     componentDidMount(){
@@ -25,10 +33,13 @@ class List extends React.Component {
             classItem
         }
 
+        //删除分类
         const onDel = (id) => {
             confirm({
                 title: '确认删除？',
                 content: '',
+                okText:'确认',
+                cancelText:'取消',
                 onOk() {
                     dispatch({
                         type: 'classify/delClass',
@@ -44,6 +55,7 @@ class List extends React.Component {
             });
         }
 
+        //分类编辑
         const onEdit = (id) => {
             dispatch({
                 type: 'classify/queryClassId',

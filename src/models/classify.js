@@ -1,11 +1,13 @@
-import { query,addClass,queryClassId,delClass }  from '../services/classify'
+import { query,addClass,queryClassId,delClass,updateClass }  from '../services/classify'
 
 export default{
     namespace: 'classify',
     state:{
         list:[],
-        showModel:false,
-        classItem:{}
+        classItem:{
+            subClassList:[]
+        },
+        showModel:false
     },
     reducers:{
         save(state, {payload}){
@@ -21,11 +23,17 @@ export default{
             }
         },
         addSubClass(state, {payload}){
-            const { subClassList } = state.classItem
+            let { subClassList } = state.classItem
 
+            if(!subClassList){
+                subClassList = []
+            }
+
+            //合并新添加的对象值
             return {
                 ...state,
                 classItem:{
+                    ...state.classItem,
                     subClassList:[...subClassList,payload]
                 }
             } 
@@ -33,10 +41,67 @@ export default{
         delSubClass(state, { payload }){
             const { subClassList } = state.classItem
 
+            //删除子分类
             return {
                 ...state,
                 classItem:{
-                    subClassList:subClassList.filter(item => item.classId != payload.classId)
+                    ...state.classItem,
+                    subClassList:subClassList.filter(item => payload.indexOf(item.classId) == -1)
+                }
+            }
+        },
+        onEditSubClass(state, { payload }){
+            const { subClassList } = state.classItem
+
+            //保存编辑
+            subClassList.map(item => {
+                if(item.classId == payload.classId){
+                    item.className = payload.className
+                    item.isEdit = false
+                }
+            })
+
+            return {
+                ...state,
+                classItem:{
+                    ...state.classItem,
+                    subClassList:subClassList
+                }
+            }
+        },
+        showEditSubClass(state, { payload }){
+            const { subClassList } = state.classItem
+
+            //显示编辑的状态
+            subClassList.map(item => {
+                if(item.classId == payload.classId){
+                    item.isEdit = true
+                }
+            })
+
+            return {
+                ...state,
+                classItem:{
+                    ...state.classItem,
+                    subClassList:subClassList
+                }
+            }
+        },
+        onSelectedSubClass(state, { payload }){
+            const { subClassList } = state.classItem
+
+            //选择子分类
+            subClassList.map(item => {
+                if(item.classId == payload.classId){
+                    item.isSelected = !item.isSelected
+                }
+            })
+
+            return {
+                ...state,
+                classItem:{
+                    ...state.classItem,
+                    subClassList:subClassList
                 }
             }
         }
@@ -52,8 +117,19 @@ export default{
             
             return res
         },
+        *updateClass({ payload }, { call, put, select }){
+            const res = yield call(updateClass,payload)
+            
+            return res
+        },
         *queryClassId({ payload }, { call, put, select }){
             const res = yield call(queryClassId,payload)
+
+            //添加子分类编辑/选择状态
+            res.result.subClassList.map(item => {
+                item.isEdit = false
+                item.isSelected = false
+            })
 
             yield put({type:'save',payload:{classItem:res.result}})
 

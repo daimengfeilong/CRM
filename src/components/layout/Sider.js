@@ -4,6 +4,13 @@ import Menus from './Menu'
 
 const { Sider } = Layout;
 
+/**
+ * 左侧组件
+ * zxl 
+ * @param {*} props
+ * @returns Siders
+ * 
+ */
 const Siders = ({collapsed,history}) => {
 
     return (

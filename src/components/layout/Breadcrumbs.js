@@ -2,6 +2,13 @@ import { Breadcrumb } from 'antd';
 import routes from '../../router/routes'
 import { Link } from 'react-router-dom'
 
+/**
+ * 面包屑
+ * zxl 
+ * @param {history}
+ * @returns Breadcrumbs
+ * 
+ */
 const Breadcrumbs = ({history}) => {
     const { pathname } = history.location
     

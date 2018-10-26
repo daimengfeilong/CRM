@@ -4,6 +4,14 @@ import routes from '../../router/routes'
 
 const SubMenu = Menu.SubMenu;
 
+/**
+ * 左侧菜单组件
+ * 通过routes show控制是否显示
+ * zxl 
+ * @param {*} history
+ * @returns Menus
+ * 
+ */
 const Menus = ({history}) => {
     const {pathname} = history.location
 
@@ -25,7 +33,8 @@ const Menus = ({history}) => {
                         title={<span><RenderIcon icon={item.icon} /><span style={{verticalAlign:'middle'}}>{item.title}</span></span>}
                     >
                     {
-                        item.subRoutes.map(({path,title}) => (
+                        item.subRoutes.map(({path,title,show}) => (
+                            show && 
                             <Menu.Item key={path}>
                                 <Link to={path}>
                                     <span style={{paddingLeft:10}}>{title}</span>

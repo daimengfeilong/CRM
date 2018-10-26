@@ -7,6 +7,7 @@ export default [
             {
                 path: '/tags',
                 title: '标签列表',
+                show: true,
                 icon: 'profile',
                 component: () => import('../pages/tags/list'),
             }
@@ -20,6 +21,7 @@ export default [
             {
                 path: '/classify',
                 title: '分类列表',
+                show: true,
                 icon: 'profile',
                 component: () => import('../pages/classify/list'),
             }
