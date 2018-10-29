@@ -5,7 +5,11 @@ const TreeNode = Tree.TreeNode
 const Search = Input.Search
 
 const modal = ({ showModel, dispatch, form,subClass,classItem }) => {
-    const { getFieldDecorator } = form
+
+
+
+
+      const { getFieldDecorator } = form
     const { subClassList } = classItem
     let selectedKey = []
 
