@@ -1,12 +1,10 @@
-import { query,addClass,queryClassId,delClass,updateClass }  from '../services/classify'
+import { query,addClass,queryClassId,delClass,updateClass,delSubClass }  from '../services/classify'
 
 export default{
     namespace: 'classify',
     state:{
         list:[],
-        classItem:{
-            subClassList:[]
-        },
+        classItem:{},
         showModel:false
     },
     reducers:{
@@ -38,24 +36,12 @@ export default{
                 }
             } 
         },
-        delSubClass(state, { payload }){
-            const { subClassList } = state.classItem
-
-            //删除子分类
-            return {
-                ...state,
-                classItem:{
-                    ...state.classItem,
-                    subClassList:subClassList.filter(item => payload.indexOf(item.classId) == -1)
-                }
-            }
-        },
         onEditSubClass(state, { payload }){
             const { subClassList } = state.classItem
 
-            //保存编辑
+            //保存子类编辑
             subClassList.map(item => {
-                if(item.classId == payload.classId){
+                if(item.cid == payload.cid){
                     item.className = payload.className
                     item.isEdit = false
                 }
@@ -74,7 +60,7 @@ export default{
 
             //显示编辑的状态
             subClassList.map(item => {
-                if(item.classId == payload.classId){
+                if(item.cid == payload.cid){
                     item.isEdit = true
                 }
             })
@@ -92,7 +78,7 @@ export default{
 
             //选择子分类
             subClassList.map(item => {
-                if(item.classId == payload.classId){
+                if(item.cid == payload.cid){
                     item.isSelected = !item.isSelected
                 }
             })
@@ -125,8 +111,9 @@ export default{
         *queryClassId({ payload }, { call, put, select }){
             const res = yield call(queryClassId,payload)
 
-            //添加子分类编辑/选择状态
+            //添加子分类id/编辑/选择状态
             res.result.subClassList.map(item => {
+                item.cid = `C${Math.ceil(Math.random() * 1000)}`
                 item.isEdit = false
                 item.isSelected = false
             })
@@ -147,6 +134,27 @@ export default{
             }
 
             return res
+        },
+        *handlerDel({ payload },{ call,put,select }){
+            const classItem = yield select(state => state.classify.classItem)
+            const {subClassList = []} = classItem
+            
+            yield put({type:'save',payload:{
+                classItem:{
+                    ...classItem,
+                    subClassList:subClassList.filter(item => item.isSelected !== true)
+                }
+            }})
+        },
+        *delSubClass({ payload }, { call, put, select }){
+            const classItem = yield select(state => state.classify.classItem)
+            const {subClassList = []} = classItem
+
+            const params = subClassList.filter(item => item.isSelected)
+            const res = yield call(delSubClass,{subClassList:params})
+            
+            return res
+
         }
     }
 }
