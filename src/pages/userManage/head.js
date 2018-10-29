@@ -1,4 +1,4 @@
-import { Input, Row, Col, Modal, Form, Message,  Tree,  Icon, List, Popconfirm, Button, } from 'antd'
+import { Input, Row, Col, Form, Message,  Button, } from 'antd'
 
 const FormItem = Form.Item;
 
@@ -9,34 +9,34 @@ const head =({dispatch,form})=>{
   const formItemLayout = {
     labelCol: {
       xs: { span: 24 },
-      sm: { span: 8 },
+      sm: { span: 5 },
     },
     wrapperCol: {
       xs: { span: 24 },
-      sm: { span: 16 },
+      sm: { span: 19 },
     },
   };
   return(
     <Form>
-      <Row>
+      <Row gutter={24}>
         <Col span={8}>
-          <FormItem {...formItemLayout} label="Nickname">
+          <FormItem {...formItemLayout} label="用户编号：">
             {getFieldDecorator('email')(
-            <Input placeholder="Please input your nickname" />
+            <Input placeholder="请输入" />
             )}
           </FormItem>
         </Col>
-        <Col span={8}>
-          <FormItem  label="Nickname">
-            <Input placeholder="Please input your nickname" />
+        <Col span={8} >
+          <FormItem {...formItemLayout}  label="证件号码：">
+            <Input placeholder="请输入" />
           </FormItem>
         </Col>
-        <Col span={8}>
-          <FormItem  label="Nickname">
-            <Input placeholder="Please input your nickname" />
-          </FormItem>
+        <Col span={6} offset={2}>
+          <div style={{textAlign:'right'}}>
+          <Button type="primary">查询</Button>
+          <Button style={{marginLeft:'10px'}}>重置</Button>
+          </div>
         </Col>
-
       </Row>
     </Form>
   )
