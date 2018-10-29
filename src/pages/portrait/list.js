@@ -86,7 +86,8 @@ class List extends React.Component {
               return(
                 <span>
               {row.tagList.map((item,index) =>
-                  {return item.tagName}
+                  {
+                    return item.tagName}
               )}
             </span>)
             }
