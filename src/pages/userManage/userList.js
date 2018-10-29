@@ -1,35 +1,13 @@
 import { connect } from 'dva'
 import React from 'react'
-import './test.css'
-import {
-  Input,
-  Modal,
-  Form,
-  Message,
-  Tree,
-  Icon,
-  List,
-  Popconfirm,
-  Button,
-} from 'antd'
+import './userList.css'
+import { Input,  Modal, Form, Message,  Tree,  Icon, List, Popconfirm, Button, } from 'antd'
+import HeadUserList from './head'
 
 const FormItem = Form.Item
 const Search = Input.Search
 
-class TestError extends React.Component {
-  componentDidCatch (e) {
-    alert(e.message)
-  }
 
-  componentDidMount () {
-    // throw new Error('a');
-  }
-
-  render () {
-
-    return <div>TestError</div>
-  }
-}
 
 class content extends React.Component {
 
@@ -41,27 +19,29 @@ class content extends React.Component {
 
     function handleDelete (id) {
       dispatch({
-        type: 'test/delete',
+        type: 'userList/delete',
         payload: id,
       })
     }
+
     function edit (id) {
       dispatch({
-        type: 'test/edit',
+        type: 'userList/edit',
         payload: id,
       })
     }
+
     //添加子分类
     const testName = (val) => {
       form.validateFields(['testName'], (err, values) => {
         console.log(val)
         if (!err) {
           dispatch({
-            type: 'test/addThings',
+            type: 'userList/addThings',
             payLoad: {
               id: Date.now(),
               name: val,
-              description:'Ant Design, a design language for background applications, is refined by Ant UED Team.'
+              description: 'Ant Design, a design language for background applications, is refined by Ant UED Team.',
             },
           })
           form.resetFields(['testName'])
@@ -70,14 +50,19 @@ class content extends React.Component {
     }
     return (
       <Form>
+        <HeadUserList/>
+
         <div>
-          <TestError/>
           <h2>{this.props.count}</h2>
           <button key="add"
-                  onClick={() => { this.props.dispatch({type: 'test/add'})}}>+
+                  onClick={() => {
+                    this.props.dispatch({type: 'userList/add'})
+                  }}>+
           </button>
           <button key="minus"
-                  onClick={() => { this.props.dispatch({type: 'test/minus'})}}>-
+                  onClick={() => {
+                    this.props.dispatch({type: 'userList/minus'})
+                  }}>-
           </button>
         </div>
 
@@ -105,15 +90,15 @@ class content extends React.Component {
               extra={
                 <div class="just-content">
                   <Popconfirm title="Delete?"
-                                 onConfirm={() => handleDelete(item.id)}>
-                <Button>Delete</Button>
-              </Popconfirm>
+                              onConfirm={() => handleDelete(item.id)}>
+                    <Button>Delete</Button>
+                  </Popconfirm>
                 </div>}>
               <List.Item.Meta
                 title={item.name}
                 description={item.description}
               />
-          </List.Item>)}
+            </List.Item>)}
         />
       </Form>
 
@@ -122,7 +107,7 @@ class content extends React.Component {
 }
 
 function mapStateToProps (state) {
-  return state.test
+  return state.userList
 }
 
 const modalWrap = Form.create()(content)

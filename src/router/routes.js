@@ -1,5 +1,19 @@
 export default [
     {
+      title: '客户管理',
+      icon: require('../assets/layout/icon_kfgl.png'),
+      path: '/userManage',
+      subRoutes: [
+        {
+          path: '/userManage',
+          title: '用户列表',
+          show: true,
+          icon: 'profile',
+          component: () => import('../pages/userManage/userList'),
+        }
+      ]
+    },
+    {
         title: '标签管理',
         icon: require('../assets/layout/icon_bqgl.png'),
         path: '/tags',
@@ -22,14 +36,7 @@ export default [
                 title: '分类列表',
                 show: true,
                 component: () => import('../pages/classify/list'),
-            },
-          {
-            path: '/test',
-            title: 'test',
-            show: true,
-            icon: 'profile',
-            component: () => import('../pages/test/test'),
-          }
+            }
         ]
     },
     {
