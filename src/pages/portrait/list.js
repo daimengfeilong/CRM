@@ -20,12 +20,13 @@ class List extends React.Component {
     }
 
     render() {
-        const { list,classList,tagsList, dispatch,showModel,subClass,classItem,showTagModel,tagName,expandedKeys,autoExpandParent,checkedKeys,selectedKeys,tagModalList } = this.props
+        const { list,classList,tagsList, dispatch,showModel,subClass,portraitItem,showTagModel,tagName,expandedKeys,autoExpandParent,checkedKeys,selectedKeys } = this.props
+
         const modalProps = {
             showModel,
             dispatch,
             subClass,
-            classItem,
+            portraitItem,
             showTagModel,
             tagName,
             classList,
@@ -33,8 +34,7 @@ class List extends React.Component {
             expandedKeys,
             autoExpandParent,
             checkedKeys,
-            selectedKeys,
-            tagModalList
+            selectedKeys
         }
 
         const onDel = (id) => {

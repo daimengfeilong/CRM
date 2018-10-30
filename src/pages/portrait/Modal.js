@@ -7,37 +7,39 @@ const Search = Input.Search
 const Option= Select.Option
 const { TextArea } = Input;
 
-const modal = ({ showModel, dispatch, form,subClass,classItem,classList,tagModalList }) => {
-
-
-
+const modal = ({ showModel, dispatch, form,subClass,portraitItem,classList }) => {
 
     const { getFieldDecorator } = form
-    const { subClassList } = classItem
-    let selectedKey = []
-
 
     const formItemLayout = {
         labelCol: {
-            span: 4,
+            span: 5,
         },
         wrapperCol: {
-            span: 17,
+            span: 16,
             offset:1
         },
     }
 
-
   const children = [];
+
   for (let i = 0; i < classList.length; i++) {
     children.push(<Option key={classList[i].classId}>{classList[i].className}</Option>);
   }
-  const showTags=()=>{
-     tagModalList.map((item)=>{
-      return <Tag color="blue" closable >{item.tagName}</Tag>
+  const ShowTags=()=> {
+    return portraitItem.tagList.map((item) => {
+      return (<Tag color="blue" closable key={item.tagId} afterClose={() => tagsClose(item.tagId)}>{item.tagName}</Tag>)
+    });
+  }
+  const  tagsClose =(tagId)=>{
+    removeTag(tagId)
+  }
+  const removeTag=(tagId)=>{
+    dispatch({
+      type: 'portrait/removeTag',
+      payload: tagId
     })
   }
-
   const showSelectTags = () =>{
     dispatch({
       type:'portrait/save',
@@ -57,74 +59,39 @@ const modal = ({ showModel, dispatch, form,subClass,classItem,classList,tagModal
             type: 'portrait/showModel',
             payload: false
         })
-      // dispatch({
-      //   type: 'portrait/tagModalList',
-      //   payload: []
-      // })
+        dispatch({
+          type: 'portrait/tagModalList',
+          payload: []
+        })
 
         form.resetFields()
     }
 
     const submit = () =>{
-        form.validateFields(['className'],(err, values) => {
+        form.validateFields(['portraitName','description','classId'],(err, values) => {
             if (!err) {
-                const subClassArr = [subClass.map(item => item.className)]
+              console.log(values)
+              if (portraitItem.tagList==undefined||portraitItem.tagList.length==0){
+                return
+              }
+              dispatch({type: 'portrait/addPortraitName',payload:values.portraitName})
+              dispatch({type: 'portrait/addDescription',payload:values.description})
 
-                dispatch({
-                    type: 'portrait/addClass',
-                    payload: {
-                        ...values,
-                        subClassName:subClassArr.join(',')
-                    }
-                }).then(data => {
-                    if(data.code == '0000'){
-                        dispatch({
-                            type: 'portrait/showModel',
-                            payload: false
-                        })
-                    }else{
-                        Message.error(data.msg)
-                    }
-                })
+              dispatch({type: 'portrait/update',payload:portraitItem})
             }
         });
     }
 
-    const addSubClass = (val) =>{
-        form.validateFields(['subClassName'],(err, values) => {
-            if (!err) {
-                dispatch({
-                    type:'portrait/addSubClass',
-                    payload:{
-                        classId:Date.now(),
-                        className:val
-                    }
-                })
-            }
-        });
-    }
-
-    const delSubClass = () => {
-        if(!selectedKey.length) return false;
-
-        dispatch({
-            type:'portrait/delSubClass',
-            payload:{
-                classId:selectedKey[0]
-            }
-        })
-    }
-  const  handleChange =(value)=> {
-    console.log(`selected ${value}`);
+  const  addClassId =(value)=> {
+    console.log("classId:" +value)
+    dispatch({
+      type: 'portrait/addClassId',
+      payload: value
+    })
   }
-  const showTages = data => data.map((item) => {
-
-  })
-
-
     return (
         <Modal
-            title="新增画像"
+            title={ portraitItem.classId ? '编辑画像' : '新增画像' }
             width="60%"
             okText="保存"
             cancelText="取消"
@@ -138,40 +105,55 @@ const modal = ({ showModel, dispatch, form,subClass,classItem,classList,tagModal
               <Row gutter={24}>
                 <Col span={12}>
                   <FormItem {...formItemLayout} label="画像名称：">
-                    {getFieldDecorator('Name')(
+                    {getFieldDecorator('portraitName', {
+                      initialValue: portraitItem.portraitName,
+                      rules: [
+                        { required: true, message: '请输入画像名称' },
+                        { pattern: /^([0-9\u4e00-\u9fa5]{1,8})$/, message: '请输入1-8个中文或者数字字符' }
+                      ],
+                    })(
                       <Input placeholder="请输入" />
                     )}
                   </FormItem>
                 </Col>
                 <Col span={12} >
                   <FormItem {...formItemLayout}  label="画像分类：">
+                    {getFieldDecorator('classId', {
+                      initialValue: portraitItem.classId,
+                      rules: [
+                        { required: true, message: '请选择图片分类' },
+                      ],
+                    })(
                     <Select
                       showSearch
                       style={{ width: 200 }}
                       placeholder="请选择画像分类"
                       optionFilterProp="children"
-                      onChange={handleChange}
+                      onChange={addClassId}
                       filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
                       {children}
-                  </Select>
+                    </Select>
+                    )}
                   </FormItem>
                 </Col>
               </Row>
-                <span>包含标签：</span>
+                <span style={{color:'black'}}>包含标签：</span>
               <Button type="primary" shape="circle" icon="plus"  style={{width:'24px',height:'24px'}} onClick={showSelectTags}/>
               <div style={{minHeight:'100px',padding:'10px'}}>
                 <Row type="flex" gutter={24}>
-                  {showTags}
+                  <ShowTags/>
                 </Row>
               </div>
 
                 <FormItem label="画像描述（规则、用途等）："  >
-                    {getFieldDecorator('subClassName', {
+                    {getFieldDecorator('description', {
+                      initialValue: portraitItem.description,
                         rules: [
+                          { required: true, message: '请输入画像描述（规则、用途等）' },
                             { pattern: /^([0-9\u4e00-\u9fa5]{1,6})$/, message: '请输入1-6个中文或者数字字符' }
                         ],
                     })(
-                      <TextArea rows={4} />
+                      <TextArea rows={4}  placeholder="请输入画像描述（规则、用途等）"/>
                     )}
                 </FormItem>
             </Form>

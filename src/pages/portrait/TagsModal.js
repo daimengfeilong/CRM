@@ -2,7 +2,7 @@ import { Row, Col, Input, Button, Modal, Form, Message,Checkbox,Icon,Tag,Select,
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
 
-const TagModal=({tagsList,dispatch,showTagModel,tagName,expandedKeys,autoExpandParent,checkedKeys,selectedKeys,tagModalList})=>{
+const TagModal=({tagsList,dispatch,showTagModel,tagName,expandedKeys,autoExpandParent,checkedKeys,selectedKeys})=>{
 
 
   const handleCancel = () => {
@@ -14,6 +14,10 @@ const TagModal=({tagsList,dispatch,showTagModel,tagName,expandedKeys,autoExpandP
   const submit = () =>{
    let temp
     tagsList.map((item) => {
+      dispatch({
+        type: 'portrait/removeCheckedKeys',
+        payload:item.tagId
+      })
         if (item.attrList){
            temp= item.attrList.map((attr)=>{
            let pk={}
@@ -82,7 +86,7 @@ const TagModal=({tagsList,dispatch,showTagModel,tagName,expandedKeys,autoExpandP
     const value = e.target.value;
     console.log(e.target.value)
     const expandedKeys = tagsList.map((item) => {
-      if (item.tagName.indexOf(value)&&value!='' > -1) {
+      if (item.tagName.indexOf(value) > -1&&value!='') {
         console.log("name:"+item.tagName+"value:"+value)
         return item.tagId
       }else{
@@ -111,41 +115,37 @@ const TagModal=({tagsList,dispatch,showTagModel,tagName,expandedKeys,autoExpandP
     })
   }
   const loop = data => data.map((item) => {
-    const index = item.tagName.indexOf(tagName);
-    const beforeStr = item.tagName.substr(0, index);
-    const afterStr = item.tagName.substr(index + tagName.length);
+    let tempContent
+    let tempId
+    if (item.tagName != undefined && item.tagName != '') {
+      tempContent=item.tagName
+      tempId=item.tagId
+    }else if (item.attrName != undefined && item.attrName != ''){
+      tempContent=item.attrName
+      tempId=item.attrId
+    }
+    const index = tempContent.indexOf(tagName);
+    const beforeStr = tempContent.substr(0, index);
+    const afterStr = tempContent.substr(index + tagName.length);
     const title = index > -1 ? (
       <span>
           {beforeStr}
         <span style={{ color: '#f50' }}>{tagName}</span>
         {afterStr}
         </span>
-    ) : <span>{item.tagName}</span>;
+    ) : <span>{tempContent}</span>;
     if (item.attrList) {
       return (
-        <TreeNode key={item.tagId} title={title}>
+        <TreeNode key={tempId} title={title}>
           {
-            loopAttr(item.attrList)
+            loop(item.attrList)
           }
         </TreeNode>
       );
     }
-    return <TreeNode key={item.tagId} title={title} />;
+    return <TreeNode key={tempId} title={title} />;
   });
 
-  const loopAttr = data => data.map((item) => {
-    const index = item.attrName.indexOf(tagName);
-    const beforeStr = item.attrName.substr(0, index);
-    const afterStr = item.attrName.substr(index + tagName.length);
-    const title = index > -1 ? (
-      <span>
-          {beforeStr}
-        <span style={{ color: '#f50' }}>{tagName}</span>
-        {afterStr}
-        </span>
-    ) : <span>{item.attrName}</span>;
-    return <TreeNode key={item.attrId} title={title} />;
-  });
   return(<Modal
     width="40%"
     title="选择包含标签"

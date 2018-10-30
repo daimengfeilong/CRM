@@ -5,16 +5,15 @@ export default{
     state:{
         list:[],
         tagName:'',
-        tagsModal:{
-          showTagModel:false,
-          expandedKeys:[],
-          checkedKeys:[],
-          selectedKeys:[],
-          autoExpandParent:true,
-        },
-        tagModalList:[],
+        showTagModel:false,
+        selectedKeys:[],
+        expandedKeys:[],
+        autoExpandParent:true,
+        checkedKeys:[],
         showModel:false,
-        classItem:{}
+        portraitItem:{
+          tagList:[]
+        }
     },
     reducers:{
         save(state, {payload}){
@@ -35,63 +34,92 @@ export default{
             showTagModel:payload
           }
         },
-      'inputTas'(state, {payload}){
+      inputTas(state, {payload}){
         return {
           ...state,
           tagName:payload
         }
       },
-      'expandedKeys'(state, {payload}){
+      expandedKeys(state, {payload}){
         return {
           ...state,
           expandedKeys:payload
         }
       },
-      'autoExpandParent'(state, {payload}){
+      autoExpandParent(state, {payload}){
           console.log("c:"+payload)
         return {
           ...state,
           autoExpandParent:payload
         }
       },
-      'checkedKeys'(state, {payload}){
+      checkedKeys(state, {payload}){
         return {
           ...state,
           checkedKeys:payload
         }
       },
-      'selectedKeys'(state, {payload}){
+      selectedKeys(state, {payload}){
         return {
           ...state,
           selectedKeys:payload
         }
       },
-      'tagModalList'(state, {payload}){
+      tagModalList(state, {payload}){
         return {
           ...state,
-          tagModalList:payload
+          portraitItem:{
+             ...state.portraitItem,
+            tagList:payload
+          }
         }
       },
-        addSubClass(state, {payload}){
-            const { subClassList } = state.classItem
-
-            return {
-                ...state,
-                classItem:{
-                    subClassList:[...subClassList,payload]
-                }
-            }
-        },
-        delSubClass(state, { payload }){
-            const { subClassList } = state.classItem
-
-            return {
-                ...state,
-                classItem:{
-                    subClassList:subClassList.filter(item => item.classId != payload.classId)
-                }
-            }
+      removeCheckedKeys(state, {payload:id}){
+        console.log(state.checkedKeys)
+        return {
+          ...state,
+          checkedKeys:state.checkedKeys.filter(item => item !== id)
         }
+      },
+      removeTag(state, {payload:tagId}){
+          console.log(tagId)
+        console.log(state.checkedKeys)
+        return {
+          ...state,
+          checkedKeys:state.checkedKeys.filter(item => item !== tagId),
+          portraitItem:{
+            ...state.portraitItem,
+            tagList:state.portraitItem.tagList.filter(item => item.tagId !== tagId)
+          }
+        }
+      },
+      addPortraitName(state, {payload}){
+        return {
+          ...state,
+          portraitItem:{
+            ...state.portraitItem,
+            portraitName:payload
+          }
+        }
+      },
+      addClassId(state, {payload}){
+        return {
+          ...state,
+          portraitItem:{
+            ...state.portraitItem,
+            classId:payload
+          }
+        }
+      },
+      addDescription(state, {payload}){
+        return {
+          ...state,
+          portraitItem:{
+            ...state.portraitItem,
+            description:payload
+          }
+        }
+      },
     },
     effects: {
         *query({ payload }, { call, put, select }){
