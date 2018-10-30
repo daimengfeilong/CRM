@@ -147,7 +147,7 @@ function mapStateToProps(state) {
     return {
       ...state.portrait,
       classList:state.classify.list,
-      tagsList:state.tags.tags,
+      tagsList:state.tags.list,
     }
 }
 
