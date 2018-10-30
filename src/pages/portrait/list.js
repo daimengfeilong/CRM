@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { Table, Divider, Modal,Message } from 'antd';
 import Head from './Head'
 import ClassModal from './Modal'
+import TagModal from './TagsModal'
 import {timestampToDate} from '../../utils/utils'
 const confirm = Modal.confirm;
 
@@ -13,16 +14,23 @@ class List extends React.Component {
         const { dispatch } = this.props
 
         dispatch({ type: 'portrait/query'});
+        dispatch({ type: 'classify/query',payload:{pageNo:1,pageSize:99}});
+        dispatch({ type: 'tags/query',payload:{pageNo:1,pageSize:99}});
+
     }
 
     render() {
-        const { list, dispatch,showModel,subClass,classItem } = this.props
-
+        const { list,classList,tagsList, dispatch,showModel,subClass,classItem,showTagModel,tagName } = this.props
+      console.log(this.props)
         const modalProps = {
             showModel,
             dispatch,
             subClass,
-            classItem
+            classItem,
+            showTagModel,
+            tagName,
+          classList,
+          tagsList
         }
 
         const onDel = (id) => {
@@ -66,8 +74,8 @@ class List extends React.Component {
         },
         {
             title: '画像ID',
-            dataIndex: 'classId',
-            key: 'classId'
+            dataIndex: 'portraitId',
+            key: 'portraitId'
         },
           {
             title: '画像名称',
@@ -76,8 +84,14 @@ class List extends React.Component {
         },
           {
             title: '画像分类',
-            dataIndex: 'portraitId',
-            key: 'portraitId'
+            key: 'classification',
+            render:(row,record)=>{
+              return(
+                <span>
+                  {row.classification.className}
+                </span>
+              )
+            }
           },
           {
             title: '包含标签',
@@ -86,7 +100,8 @@ class List extends React.Component {
               return(
                 <span>
               {row.tagList.map((item,index) =>
-                  {return item.tagName}
+                  {
+                    return item.tagName}
               )}
             </span>)
             }
@@ -116,6 +131,7 @@ class List extends React.Component {
 
         return (
             <div>
+                <TagModal {...modalProps}/>
                 <ClassModal {...modalProps} />
                 <Head dispatch={dispatch} />
                 <Table columns={columns} dataSource={list} rowKey="classId" />
@@ -124,7 +140,11 @@ class List extends React.Component {
     }
 }
 function mapStateToProps(state) {
-    return state.portrait
+    return {
+      ...state.portrait,
+      classList:state.classify.list,
+      tagsList:state.tags.list,
+    }
 }
 
 export default connect(mapStateToProps)(List);
