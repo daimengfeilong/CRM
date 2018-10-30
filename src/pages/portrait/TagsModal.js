@@ -2,144 +2,149 @@ import { Row, Col, Input, Button, Modal, Form, Message,Checkbox,Icon,Tag,Select,
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
 
-const TagModal=({tagsList,dispatch,showTagModel,tagName})=>{
+const TagModal=({tagsList,dispatch,showTagModel,tagName,expandedKeys,autoExpandParent,checkedKeys,selectedKeys,tagModalList})=>{
 
 
-  console .log(this.state)
   const handleCancel = () => {
     dispatch({
       type: 'portrait/showTagModel',
       payload: false
     })
-
   }
-
   const submit = () =>{
+   let temp
+    tagsList.map((item) => {
+        if (item.attrList){
+           temp= item.attrList.map((attr)=>{
+           let pk={}
+            for (let i = 0; i < checkedKeys.length; i++) {
+              if (checkedKeys[i]==attr.attrId) {
+                pk.tagId=attr.attrId
+                pk.tagName=attr.attrName
+                return pk
+              }
+            }
+          })
+        }
+    })
+    console.log(temp)
+    dispatch({
+      type: 'portrait/showTagModel',
+      payload: false
+    })
+
+    dispatch({
+      type: 'portrait/tagModalList',
+      payload: temp
+    })
 
   }
-
-  const emitEmpty = () => {
+  const onCheck= (checkedKeys) => {
+    console.log('onCheck', checkedKeys);
     dispatch({
-      type: 'portrait/inputTas',
-      payload: ''
+      type: 'portrait/checkedKeys',
+      payload: checkedKeys
     })
   }
 
-  // const  onChange = (e) => {
-  //   dispatch({
-  //     type: 'portrait/inputTas',
-  //     payload: e.target.value
-  //   })
-  //
-  // }
 
-  this.state = {
-    expandedKeys: [],
-    searchValue: '',
-    autoExpandParent: true,
+  const onSelect = (selectedKeys, info) => {
+    console.log('onSelect', info);
+    dispatch({
+      type: 'portrait/selectedKeys',
+      payload: selectedKeys
+    })
   }
+  const getParentKey = (key, value,tree) => {
+    for (let i = 0; i < tree.length; i++) {
+      const node = tree[i];
+      if (node.attrName.indexOf(value) > -1) {
+        return key
+      }
+    }
+    return null
+  };
+
 
  const  onExpand = (expandedKeys) => {
     console.log(expandedKeys)
-   this.setState({
-      expandedKeys,
-      autoExpandParent: false,
-    });
+   dispatch({
+     type: 'portrait/autoExpandParent',
+     payload: false
+   })
+   dispatch({
+     type: 'portrait/expandedKeys',
+     payload: expandedKeys
+   })
   }
 
   const  onChange = (e) => {
     const value = e.target.value;
-    const expandedKeys = dataList.map((item) => {
-      if (item.title.indexOf(value) > -1) {
-        return getParentKey(item.key, gData);
+    console.log(e.target.value)
+    const expandedKeys = tagsList.map((item) => {
+      if (item.tagName.indexOf(value)&&value!='' > -1) {
+        console.log("name:"+item.tagName+"value:"+value)
+        return item.tagId
+      }else{
+          if (item.attrList&&value!=''){
+            return getParentKey(item.tagId,value ,item.attrList)
+          }
+          return null
       }
-      return null;
     }).filter((item, i, self) => item && self.indexOf(item) === i);
-    this.setState({
-      expandedKeys,
-      searchValue: value,
-      autoExpandParent: true,
-    });
+
+    dispatch({
+      type: 'portrait/inputTas',
+      payload: value
+    })
+
+    dispatch({
+      type: 'portrait/autoExpandParent',
+      payload: true
+    })
+    console.log("autoExpandParent:"+autoExpandParent)
+
+    console.log(expandedKeys)
+    dispatch({
+      type: 'portrait/expandedKeys',
+      payload: expandedKeys
+    })
   }
-  const x = 3;
-  const y = 2;
-  const z = 1;
-  const gData = [];
-
-  const generateData = (_level, _preKey, _tns) => {
-    const preKey = _preKey || '0';
-    const tns = _tns || gData;
-
-    const children = [];
-    for (let i = 0; i < x; i++) {
-      const key = `${preKey}-${i}`;
-      tns.push({ title: key, key });
-      if (i < y) {
-        children.push(key);
-      }
-    }
-    if (_level < 0) {
-      return tns;
-    }
-    const level = _level - 1;
-    children.forEach((key, index) => {
-      tns[index].children = [];
-      return generateData(level, key, tns[index].children);
-    });
-  };
-  generateData(z);
-
-  const dataList = [];
-  const generateList = (data) => {
-    for (let i = 0; i < data.length; i++) {
-      const node = data[i];
-      const key = node.key;
-      dataList.push({ key, title: key });
-      if (node.children) {
-        generateList(node.children, node.key);
-      }
-    }
-  };
-  generateList(gData);
-
-  const getParentKey = (key, tree) => {
-    let parentKey;
-    for (let i = 0; i < tree.length; i++) {
-      const node = tree[i];
-      if (node.children) {
-        if (node.children.some(item => item.key === key)) {
-          parentKey = node.key;
-        } else if (getParentKey(key, node.children)) {
-          parentKey = getParentKey(key, node.children);
-        }
-      }
-    }
-    return parentKey;
-  };
-
-  const suffix = tagName ? <Icon type="close-circle" onClick={emitEmpty} /> : null;
-
-
-  const { searchValue, expandedKeys, autoExpandParent } = this.state;
   const loop = data => data.map((item) => {
-    const index = item.title.indexOf(searchValue);
-    const beforeStr = item.title.substr(0, index);
-    const afterStr = item.title.substr(index + searchValue.length);
+    const index = item.tagName.indexOf(tagName);
+    const beforeStr = item.tagName.substr(0, index);
+    const afterStr = item.tagName.substr(index + tagName.length);
     const title = index > -1 ? (
       <span>
           {beforeStr}
-        <span style={{ color: '#f50' }}>{searchValue}</span>
+        <span style={{ color: '#f50' }}>{tagName}</span>
         {afterStr}
         </span>
-    ) : <span>{item.title}</span>;
-    if (item.children) {
+    ) : <span>{item.tagName}</span>;
+    if (item.attrList) {
       return (
-        <TreeNode key={item.key} title={title}>
-          {loop(item.children)}
+        <TreeNode key={item.tagId} title={title}>
+          {
+            loopAttr(item.attrList)
+          }
         </TreeNode>
       );
     }
-    return <TreeNode key={item.key} title={title} />;
+    return <TreeNode key={item.tagId} title={title} />;
+  });
+
+  const loopAttr = data => data.map((item) => {
+    const index = item.attrName.indexOf(tagName);
+    const beforeStr = item.attrName.substr(0, index);
+    const afterStr = item.attrName.substr(index + tagName.length);
+    const title = index > -1 ? (
+      <span>
+          {beforeStr}
+        <span style={{ color: '#f50' }}>{tagName}</span>
+        {afterStr}
+        </span>
+    ) : <span>{item.attrName}</span>;
+    return <TreeNode key={item.attrId} title={title} />;
   });
   return(<Modal
     width="40%"
@@ -152,46 +157,19 @@ const TagModal=({tagsList,dispatch,showTagModel,tagName})=>{
     onCancel={handleCancel}
     onOk={submit}
   >
-      {/*<Row gutter={24}>*/}
-      {/*<Col span={10}>*/}
-      {/*<Input*/}
-        {/*placeholder="请输入标签名称"*/}
-        {/*suffix={suffix}*/}
-        {/*value={tagName}*/}
-        {/*onChange={onChange}*/}
-        {/*ref={node => this.userNameInput = node}*/}
-      {/*/>*/}
-      {/*</Col>*/}
-      {/*<Col  span={14}>*/}
-        {/*<Button type="primary" shape="circle" icon="search" />*/}
-      {/*</Col>*/}
-      {/*</Row>*/}
-      {/*<div>*/}
-      {/*</div>*/}
-      {/*<List*/}
-
-        {/*size="small"*/}
-        {/*// grid={{gutter: 16, column: 2}}*/}
-        {/*itemLayout="vertical"*/}
-        {/*dataSource={tagsList}*/}
-        {/*renderItem={item => (*/}
-          {/*<List.Item*/}
-            {/*extra={*/}
-              {/*<Checkbox ></Checkbox>*/}
-             {/*}>*/}
-            {/*<List.Item.Meta*/}
-              {/*title={item.tagName}*/}
-            {/*/>*/}
-          {/*</List.Item>)}*/}
-      {/*/>*/}
       <div>
-        <Search style={{ marginBottom: 8 }} placeholder="Search" onChange={onChange} />
+        <Search style={{ marginBottom: 8,width:300 }} placeholder="请输入" onChange={onChange} />
         <Tree
+          checkable
           onExpand={onExpand}
           expandedKeys={expandedKeys}
-          autoExpandParent={true}
+          autoExpandParent={autoExpandParent}
+          onCheck={onCheck}
+          checkedKeys={checkedKeys}
+          onSelect={onSelect}
+          selectedKeys={selectedKeys}
         >
-          {loop(gData)}
+          {loop(tagsList)}
         </Tree>
       </div>
 

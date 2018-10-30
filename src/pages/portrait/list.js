@@ -20,8 +20,7 @@ class List extends React.Component {
     }
 
     render() {
-        const { list,classList,tagsList, dispatch,showModel,subClass,classItem,showTagModel,tagName } = this.props
-      console.log(this.props)
+        const { list,classList,tagsList, dispatch,showModel,subClass,classItem,showTagModel,tagName,expandedKeys,autoExpandParent,checkedKeys,selectedKeys,tagModalList } = this.props
         const modalProps = {
             showModel,
             dispatch,
@@ -29,8 +28,13 @@ class List extends React.Component {
             classItem,
             showTagModel,
             tagName,
-          classList,
-          tagsList
+            classList,
+            tagsList,
+            expandedKeys,
+            autoExpandParent,
+            checkedKeys,
+            selectedKeys,
+            tagModalList
         }
 
         const onDel = (id) => {
@@ -143,7 +147,7 @@ function mapStateToProps(state) {
     return {
       ...state.portrait,
       classList:state.classify.list,
-      tagsList:state.tags.list,
+      tagsList:state.tags.tags,
     }
 }
 

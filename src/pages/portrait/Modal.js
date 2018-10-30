@@ -7,7 +7,7 @@ const Search = Input.Search
 const Option= Select.Option
 const { TextArea } = Input;
 
-const modal = ({ showModel, dispatch, form,subClass,classItem,classList }) => {
+const modal = ({ showModel, dispatch, form,subClass,classItem,classList,tagModalList }) => {
 
 
 
@@ -32,6 +32,11 @@ const modal = ({ showModel, dispatch, form,subClass,classItem,classList }) => {
   for (let i = 0; i < classList.length; i++) {
     children.push(<Option key={classList[i].classId}>{classList[i].className}</Option>);
   }
+  const showTags=()=>{
+     tagModalList.map((item)=>{
+      return <Tag color="blue" closable >{item.tagName}</Tag>
+    })
+  }
 
   const showSelectTags = () =>{
     dispatch({
@@ -52,6 +57,10 @@ const modal = ({ showModel, dispatch, form,subClass,classItem,classList }) => {
             type: 'portrait/showModel',
             payload: false
         })
+      // dispatch({
+      //   type: 'portrait/tagModalList',
+      //   payload: []
+      // })
 
         form.resetFields()
     }
@@ -108,6 +117,9 @@ const modal = ({ showModel, dispatch, form,subClass,classItem,classList }) => {
   const  handleChange =(value)=> {
     console.log(`selected ${value}`);
   }
+  const showTages = data => data.map((item) => {
+
+  })
 
 
     return (
@@ -148,12 +160,8 @@ const modal = ({ showModel, dispatch, form,subClass,classItem,classList }) => {
                 <span>包含标签：</span>
               <Button type="primary" shape="circle" icon="plus"  style={{width:'24px',height:'24px'}} onClick={showSelectTags}/>
               <div style={{minHeight:'100px',padding:'10px'}}>
-                <Row type="flex" justify="space-between">
-                  <Col span={4}>
-                    <Tag color="blue" closable >blue</Tag></Col>
-                  <Col span={4}><Tag color="blue" closable >blue</Tag></Col>
-                  <Col span={4}><Tag color="blue" closable>blue</Tag></Col>
-                  <Col span={4}><Tag color="blue" closable >blue</Tag></Col>
+                <Row type="flex" gutter={24}>
+                  {showTags}
                 </Row>
               </div>
 

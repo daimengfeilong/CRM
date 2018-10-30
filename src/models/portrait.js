@@ -5,8 +5,15 @@ export default{
     state:{
         list:[],
         tagName:'',
+        tagsModal:{
+          showTagModel:false,
+          expandedKeys:[],
+          checkedKeys:[],
+          selectedKeys:[],
+          autoExpandParent:true,
+        },
+        tagModalList:[],
         showModel:false,
-        showTagModel:false,
         classItem:{}
     },
     reducers:{
@@ -28,10 +35,41 @@ export default{
             showTagModel:payload
           }
         },
-      inputTas(state, {payload}){
+      'inputTas'(state, {payload}){
         return {
           ...state,
           tagName:payload
+        }
+      },
+      'expandedKeys'(state, {payload}){
+        return {
+          ...state,
+          expandedKeys:payload
+        }
+      },
+      'autoExpandParent'(state, {payload}){
+          console.log("c:"+payload)
+        return {
+          ...state,
+          autoExpandParent:payload
+        }
+      },
+      'checkedKeys'(state, {payload}){
+        return {
+          ...state,
+          checkedKeys:payload
+        }
+      },
+      'selectedKeys'(state, {payload}){
+        return {
+          ...state,
+          selectedKeys:payload
+        }
+      },
+      'tagModalList'(state, {payload}){
+        return {
+          ...state,
+          tagModalList:payload
         }
       },
         addSubClass(state, {payload}){
