@@ -15,7 +15,7 @@ const Search = Input.Search
  */
 const modal = ({ showModel, dispatch, form, classItem }) => {
     const { getFieldDecorator } = form
-    const { subClassList } = classItem
+    const { subClassList = [] } = classItem
 
     const formItemLayout = {
         labelCol: {
@@ -106,7 +106,7 @@ const modal = ({ showModel, dispatch, form, classItem }) => {
                 dispatch({
                     type: 'classify/addSubClass',
                     payload: {
-                        cid: `C${Math.ceil(Math.random() * 1000)}`,
+                        cid: `C${subClassList.length + 1}`,
                         className: val
                     }
                 })
