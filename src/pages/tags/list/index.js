@@ -1,9 +1,7 @@
 import React from 'react'
 import { connect } from 'dva';
-import { Link } from 'react-router-dom'
-import { Table, Divider, Tag, Row, Col, Button,Search } from 'antd';
+import { Table, Divider, Tag, Modal } from 'antd';
 import Head from './Head'
-import Modal from './Modal'
 
 const confirm = Modal.confirm;
 
@@ -16,7 +14,7 @@ class List extends React.Component {
     }
 
     render() {
-        const { tags, dispatch,showModel } = this.props
+        const { list, dispatch, pagination } = this.props
 
         const del = (id) => {
             confirm({
@@ -29,6 +27,23 @@ class List extends React.Component {
                     })
                 },
             });
+        }
+
+        const onPageChange = (page, pageSize) => {
+            dispatch({ type: 'classify/query',payload:{pageNo:page}})
+        }
+
+        const onShowSizeChange = (page, pageSize) => {
+            dispatch({ type: 'classify/query',payload:{pageSize}})
+        }
+
+        const paginationProps = {
+            showQuickJumper:true,
+            showSizeChanger:true,
+            total:pagination.total,
+            onChange:onPageChange,
+            onShowSizeChange:onShowSizeChange,
+            showTotal:total => `共 ${total} 条`,
         }
 
         const columns = [{
@@ -82,9 +97,8 @@ class List extends React.Component {
 
         return (
             <div>
-                <Modal showModel={showModel} dispatch={dispatch} />
                 <Head dispatch={dispatch} />
-                <Table columns={columns} dataSource={tags} rowKey="tagId" />
+                <Table columns={columns} dataSource={list} rowKey="tagId" pagination={paginationProps} />
             </div>
         );
     }

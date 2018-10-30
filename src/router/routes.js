@@ -22,7 +22,13 @@ export default [
                 path: '/tags',
                 title: '标签列表',
                 show: true,
-                component: () => import('../pages/tags/list'),
+                component: () => import('../pages/tags/list/index'),
+            },
+            {
+                path: '/tags/edit',
+                title: '新增标签',
+                show: true,
+                component: () => import('../pages/tags/edit/index'),
             }
         ]
     },

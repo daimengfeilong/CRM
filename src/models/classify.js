@@ -5,6 +5,7 @@ export default{
     state:{
         list:[],
         classItem:{},
+        pagination:{},
         showModel:false
     },
     reducers:{
@@ -95,8 +96,15 @@ export default{
     effects: {
         *query({ payload }, { call, put, select }){
             const res = yield call(query,payload)
-            
-            yield put({type:'save',payload:{list:res.result}})
+            const { totalSize,pageNo,pageSize } = res
+
+            const pagination = {
+                total:totalSize,
+                current:pageNo,
+                pageSize,
+            }
+
+            yield put({type:'save',payload:{list:res.result,pagination}})
         },
         *addClass({ payload }, { call, put, select }){
             const res = yield call(addClass,payload)
@@ -112,8 +120,8 @@ export default{
             const res = yield call(queryClassId,payload)
 
             //添加子分类id/编辑/选择状态
-            res.result.subClassList.map(item => {
-                item.cid = `C${Math.ceil(Math.random() * 1000)}`
+            res.result.subClassList.map((item,index) => {
+                item.cid = `C${index}`
                 item.isEdit = false
                 item.isSelected = false
             })

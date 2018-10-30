@@ -1,14 +1,12 @@
 import { Row, Col, Input,Button } from 'antd';
+import { withRouter } from 'dva/router'
 
 const Search = Input.Search
 
-const Head = ({dispatch}) => {
+const Head = ({dispatch,history}) => {
 
     const add = () =>{
-        dispatch({
-            type:'tags/showModel',
-            payload:true
-        })
+        history.push('/tags/edit')
     }
 
     return (
@@ -28,4 +26,4 @@ const Head = ({dispatch}) => {
 }
 
 
-export default Head
+export default withRouter(Head)

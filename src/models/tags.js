@@ -3,8 +3,9 @@ import { query,add,queryId,del }  from '../services/tags'
 export default{
     namespace: 'tags',
     state:{
-        tags:[],
+        list:[],
         data:{},
+        pagination:{},
         showModel:false
     },
     reducers:{
@@ -24,8 +25,15 @@ export default{
     effects: {
         *query({ payload }, { call, put, select }){
             const res = yield call(query,payload)
+            const { totalSize,pageNo,pageSize } = res
 
-            yield put({type:'save',payload:{tags:res.result}})
+            const pagination = {
+                total:totalSize,
+                current:pageNo,
+                pageSize,
+            }
+
+            yield put({type:'save',payload:{list:res.result,pagination}})
         },
         *queryId({ payload }, { call, put, select }){
             const res = yield call(queryId,payload)

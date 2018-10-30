@@ -24,13 +24,30 @@ class List extends React.Component {
     }
 
     render() {
-        const { list, dispatch,showModel,subClass,classItem } = this.props
+        const { list, dispatch,showModel,subClass,classItem,pagination } = this.props
 
         const modalProps = {
             showModel,
             dispatch,
             subClass,
             classItem
+        }
+
+        const onPageChange = (page, pageSize) => {
+            dispatch({ type: 'classify/query',payload:{pageNo:page}})
+        }
+
+        const onShowSizeChange = (page, pageSize) => {
+            dispatch({ type: 'classify/query',payload:{pageSize}})
+        }
+
+        const paginationProps = {
+            showQuickJumper:true,
+            showSizeChanger:true,
+            total:pagination.total,
+            onChange:onPageChange,
+            onShowSizeChange:onShowSizeChange,
+            showTotal:total => `共 ${total} 条`,
         }
 
         //删除分类
@@ -83,7 +100,10 @@ class List extends React.Component {
         }, {
             title: '分类名称',
             dataIndex: 'className',
-            key: 'className'
+            key: 'className',
+            render:(row,record) => (
+                <span>{`${row}（${record.subClassNum}）`}</span>
+            )
         }, {
             title: '操作',
             key: 'action',
@@ -100,7 +120,7 @@ class List extends React.Component {
             <div>
                 <ClassModal {...modalProps} />
                 <Head dispatch={dispatch} />
-                <Table columns={columns} dataSource={list} rowKey="classId" />
+                <Table columns={columns} dataSource={list} rowKey="classId" pagination={paginationProps} />
             </div>
         );
     }
