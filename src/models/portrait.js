@@ -68,6 +68,7 @@ export default{
       tagModalList(state, {payload}){
         return {
           ...state,
+          checkedKeys:[],
           portraitItem:{
              ...state.portraitItem,
             tagList:payload
@@ -83,7 +84,6 @@ export default{
       },
       removeTag(state, {payload:tagId}){
           console.log(tagId)
-        console.log(state.checkedKeys)
         return {
           ...state,
           checkedKeys:state.checkedKeys.filter(item => item !== tagId),
@@ -94,8 +94,10 @@ export default{
         }
       },
       addPortraitName(state, {payload}){
+        console.log(payload)
         return {
           ...state,
+          checkedKeys:[],
           portraitItem:{
             ...state.portraitItem,
             portraitName:payload
@@ -103,6 +105,7 @@ export default{
         }
       },
       addClassId(state, {payload}){
+        console.log(payload)
         return {
           ...state,
           portraitItem:{
@@ -112,11 +115,20 @@ export default{
         }
       },
       addDescription(state, {payload}){
+        console.log(payload)
         return {
           ...state,
           portraitItem:{
             ...state.portraitItem,
             description:payload
+          }
+        }
+      },
+      clearItem(state, {payload}){
+        console.log(payload)
+        return {
+          ...state,
+          portraitItem:{
           }
         }
       },
@@ -130,6 +142,7 @@ export default{
         *update({payload},{call,put,select}){
           const res = yield call(update,payload)
 
+          yield put({type:'clearItem'})
           yield put({type:'query'})
         },
         *addClass({ payload }, { call, put, select }){

@@ -8,7 +8,7 @@ import TagModal from './TagsModal'
 import {timestampToDate} from '../../utils/utils'
 const confirm = Modal.confirm;
 
-class List extends React.Component {
+class List extends React.PureComponent {
 
     componentDidMount(){
         const { dispatch } = this.props
@@ -20,21 +20,23 @@ class List extends React.Component {
     }
 
     render() {
-        const { list,classList,tagsList, dispatch,showModel,subClass,portraitItem,showTagModel,tagName,expandedKeys,autoExpandParent,checkedKeys,selectedKeys } = this.props
+        const { list,classList,tagsList, dispatch,showModel,portraitItem,showTagModel,tagName,expandedKeys,autoExpandParent,checkedKeys,selectedKeys } = this.props
 
         const modalProps = {
-            showModel,
-            dispatch,
-            subClass,
-            portraitItem,
-            showTagModel,
-            tagName,
-            classList,
-            tagsList,
-            expandedKeys,
-            autoExpandParent,
-            checkedKeys,
-            selectedKeys
+              showModel,
+              dispatch,
+              portraitItem,
+              classList,
+        }
+        const modalTagsProps = {
+              dispatch,
+              showTagModel,
+              tagName,
+              tagsList,
+              expandedKeys,
+              autoExpandParent,
+              checkedKeys,
+              selectedKeys
         }
 
         const onDel = (id) => {
@@ -135,7 +137,7 @@ class List extends React.Component {
 
         return (
             <div>
-                <TagModal {...modalProps}/>
+                <TagModal {...modalTagsProps}/>
                 <ClassModal {...modalProps} />
                 <Head dispatch={dispatch} />
                 <Table columns={columns} dataSource={list} rowKey="classId" />

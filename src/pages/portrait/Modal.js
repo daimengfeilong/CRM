@@ -20,13 +20,13 @@ const modal = ({ showModel, dispatch, form,subClass,portraitItem,classList }) =>
             offset:1
         },
     }
-
   const children = [];
-
+  console.log("3333")
   for (let i = 0; i < classList.length; i++) {
     children.push(<Option key={classList[i].classId}>{classList[i].className}</Option>);
   }
   const ShowTags=()=> {
+    console.log("22")
     return portraitItem.tagList.map((item) => {
       return (<Tag color="blue" closable key={item.tagId} afterClose={() => tagsClose(item.tagId)}>{item.tagName}</Tag>)
     });
@@ -74,21 +74,14 @@ const modal = ({ showModel, dispatch, form,subClass,portraitItem,classList }) =>
               if (portraitItem.tagList==undefined||portraitItem.tagList.length==0){
                 return
               }
-              dispatch({type: 'portrait/addPortraitName',payload:values.portraitName})
-              dispatch({type: 'portrait/addDescription',payload:values.description})
-
+              portraitItem.portraitName=values.portraitName
+              portraitItem.description=values.description
+              portraitItem.classId=values.classId
               dispatch({type: 'portrait/update',payload:portraitItem})
+              dispatch({type: 'portrait/showModel',payload: false})
             }
         });
     }
-
-  const  addClassId =(value)=> {
-    console.log("classId:" +value)
-    dispatch({
-      type: 'portrait/addClassId',
-      payload: value
-    })
-  }
     return (
         <Modal
             title={ portraitItem.classId ? '编辑画像' : '新增画像' }
@@ -129,7 +122,6 @@ const modal = ({ showModel, dispatch, form,subClass,portraitItem,classList }) =>
                       style={{ width: 200 }}
                       placeholder="请选择画像分类"
                       optionFilterProp="children"
-                      onChange={addClassId}
                       filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
                       {children}
                     </Select>
@@ -153,7 +145,7 @@ const modal = ({ showModel, dispatch, form,subClass,portraitItem,classList }) =>
                             { pattern: /^([0-9\u4e00-\u9fa5]{1,6})$/, message: '请输入1-6个中文或者数字字符' }
                         ],
                     })(
-                      <TextArea rows={4}  placeholder="请输入画像描述（规则、用途等）"/>
+                      <TextArea rows={4}  placeholder="请输入画像描述（规则、用途等）" />
                     )}
                 </FormItem>
             </Form>
