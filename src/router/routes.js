@@ -51,5 +51,18 @@ export default [
                 component: () => import('../pages/portrait/list'),
             }
         ]
+    },
+    {
+        title: '属性管理',
+        icon: require('../assets/layout/icon_hxgl.png'),
+        path: '/attribute',
+        subRoutes: [
+            {
+                path: '/attribute',
+                title: '属性列表',
+                show: true,
+                component: () => import('../pages/attribute/list'),
+            }
+        ]
     }
 ]
