@@ -1,18 +1,18 @@
 export default [
-    {
-      title: '客户管理',
-      icon: require('../assets/layout/icon_kfgl.png'),
-      path: '/userManage',
-      subRoutes: [
-        {
-          path: '/userManage',
-          title: '用户列表',
-          show: true,
-          icon: 'profile',
-          component: () => import('../pages/userManage/userList'),
-        }
-      ]
-    },
+    // {
+    //     title: '客户管理',
+    //     icon: require('../assets/layout/icon_kfgl.png'),
+    //     path: '/userManage',
+    //     subRoutes: [
+    //         {
+    //             path: '/userManage',
+    //             title: '用户列表',
+    //             show: true,
+    //             icon: 'profile',
+    //             component: () => import('../pages/userManage/userList'),
+    //         }
+    //     ]
+    // },
     {
         title: '标签管理',
         icon: require('../assets/layout/icon_bqgl.png'),
@@ -58,17 +58,17 @@ export default [
             }
         ]
     },
-    {
-        title: '属性管理',
-        icon: require('../assets/layout/icon_hxgl.png'),
-        path: '/attribute',
-        subRoutes: [
-            {
-                path: '/attribute',
-                title: '属性列表',
-                show: true,
-                component: () => import('../pages/attribute/list'),
-            }
-        ]
-    }
+    // {
+    //     title: '属性管理',
+    //     icon: require('../assets/layout/icon_sxsz.png'),
+    //     path: '/attribute',
+    //     subRoutes: [
+    //         {
+    //             path: '/attribute',
+    //             title: '属性列表',
+    //             show: true,
+    //             component: () => import('../pages/attribute/list'),
+    //         }
+    //     ]
+    // }
 ]
