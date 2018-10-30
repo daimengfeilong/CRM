@@ -1,13 +1,10 @@
 import request from '../utils/request';
 
-export function query() {
+export function query(data = {}) {
     return request({
         url: '/api/crm/tag/getTagList',
         method: 'POST',
-        data:{
-            pageNo:1,
-            pageSize:10
-        }
+        data
     })
 }
 
@@ -26,7 +23,7 @@ export function queryId(payload) {
         data:{
             _id:payload._id
         }
-    })  
+    })
 }
 
 export function del(payload) {
@@ -34,5 +31,5 @@ export function del(payload) {
         url:'/api/tags/del',
         method:'POST',
         data:payload,
-    })  
+    })
 }
