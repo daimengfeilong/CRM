@@ -1,10 +1,12 @@
-import { query,addClass,queryClassId,delClass }  from '../services/portrait'
+import { query,queryClassList,queryTagsList,update,addClass,queryClassId,delClass }  from '../services/portrait'
 
 export default{
     namespace: 'portrait',
     state:{
         list:[],
+        tagName:'',
         showModel:false,
+        showTagModel:false,
         classItem:{}
     },
     reducers:{
@@ -20,6 +22,18 @@ export default{
                 showModel:payload
             }
         },
+        showTagModel(state, {payload}){
+          return {
+            ...state,
+            showTagModel:payload
+          }
+        },
+      inputTas(state, {payload}){
+        return {
+          ...state,
+          tagName:payload
+        }
+      },
         addSubClass(state, {payload}){
             const { subClassList } = state.classItem
 
@@ -46,6 +60,11 @@ export default{
             const res = yield call(query,payload)
 
             yield put({type:'save',payload:{list:res.result}})
+        },
+        *update({payload},{call,put,select}){
+          const res = yield call(update,payload)
+
+          yield put({type:'query'})
         },
         *addClass({ payload }, { call, put, select }){
             const res = yield call(addClass,payload)

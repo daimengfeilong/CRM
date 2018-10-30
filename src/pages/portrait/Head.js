@@ -34,13 +34,13 @@ const Head = ({dispatch}) => {
         <Row style={{marginBottom:24}}>
             <Col span={4}>
                 <Search
-                    placeholder="请输入分类名称"
+                    placeholder="请输入画像名称"
                     enterButton="查找"
                     onSearch={value => onSearch(value)}
                 />
             </Col>
             <Col span={20} style={{textAlign:'right'}}>
-                <Button type="primary" icon="plus" onClick={add}>新增分类</Button>
+                <Button type="primary" icon="plus" onClick={add}>新增画像</Button>
             </Col>
         </Row>
     )

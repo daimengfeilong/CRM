@@ -1,27 +1,51 @@
-import { Row, Col, Input, Button, Modal, Form, Message,Tree } from 'antd';
+import { Row, Col, Input, Button, Modal, Form, Message,Tree,Icon,Tag,Select   } from 'antd';
+
 
 const FormItem = Form.Item;
 const TreeNode = Tree.TreeNode
 const Search = Input.Search
+const Option= Select.Option
+const { TextArea } = Input;
 
-const modal = ({ showModel, dispatch, form,subClass,classItem }) => {
+const modal = ({ showModel, dispatch, form,subClass,classItem,classList }) => {
 
 
 
 
-      const { getFieldDecorator } = form
+    const { getFieldDecorator } = form
     const { subClassList } = classItem
     let selectedKey = []
+
 
     const formItemLayout = {
         labelCol: {
             span: 4,
         },
         wrapperCol: {
-            span: 10,
+            span: 17,
+            offset:1
         },
     }
 
+
+  const children = [];
+  for (let i = 0; i < classList.length; i++) {
+    children.push(<Option key={classList[i].classId}>{classList[i].className}</Option>);
+  }
+
+  const showSelectTags = () =>{
+    dispatch({
+      type:'portrait/save',
+      payload:{
+        classItem:{}
+      }
+    })
+
+    dispatch({
+      type:'portrait/showTagModel',
+      payload:true
+    })
+  }
 
     const handleCancel = () => {
         dispatch({
@@ -81,60 +105,67 @@ const modal = ({ showModel, dispatch, form,subClass,classItem }) => {
             }
         })
     }
+  const  handleChange =(value)=> {
+    console.log(`selected ${value}`);
+  }
 
 
     return (
         <Modal
-            title="新增标签"
-            width="40%"
+            title="新增画像"
+            width="60%"
             okText="保存"
             cancelText="取消"
             visible={showModel}
             onCancel={handleCancel}
             onOk={submit}
         >
+
             <Form>
-                <FormItem label="分类名称" {...formItemLayout} >
-                    {getFieldDecorator('className', {
-                        initialValue:classItem.className,
-                        rules: [
-                            { required: true, message: '请输入分类名称' },
-                            { pattern: /^([\u4e00-\u9fa5]{1,6})$/, message: '请输入1-6个中文字符' }
-                        ],
-                    })(
-                        <Input placeholder="请输入标签名称" />
+
+              <Row gutter={24}>
+                <Col span={12}>
+                  <FormItem {...formItemLayout} label="画像名称：">
+                    {getFieldDecorator('Name')(
+                      <Input placeholder="请输入" />
                     )}
-                </FormItem>
-                <FormItem label="添加子分类" {...formItemLayout} >
+                  </FormItem>
+                </Col>
+                <Col span={12} >
+                  <FormItem {...formItemLayout}  label="画像分类：">
+                    <Select
+                      showSearch
+                      style={{ width: 200 }}
+                      placeholder="请选择画像分类"
+                      optionFilterProp="children"
+                      onChange={handleChange}
+                      filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
+                      {children}
+                  </Select>
+                  </FormItem>
+                </Col>
+              </Row>
+                <span>包含标签：</span>
+              <Button type="primary" shape="circle" icon="plus"  style={{width:'24px',height:'24px'}} onClick={showSelectTags}/>
+              <div style={{minHeight:'100px',padding:'10px'}}>
+                <Row type="flex" justify="space-between">
+                  <Col span={4}>
+                    <Tag color="blue" closable >blue</Tag></Col>
+                  <Col span={4}><Tag color="blue" closable >blue</Tag></Col>
+                  <Col span={4}><Tag color="blue" closable>blue</Tag></Col>
+                  <Col span={4}><Tag color="blue" closable >blue</Tag></Col>
+                </Row>
+              </div>
+
+                <FormItem label="画像描述（规则、用途等）："  >
                     {getFieldDecorator('subClassName', {
                         rules: [
-                            { required: true, message: '请输入子分类名称' },
                             { pattern: /^([0-9\u4e00-\u9fa5]{1,6})$/, message: '请输入1-6个中文或者数字字符' }
                         ],
                     })(
-                        <Search
-                            placeholder="请输入子分类名称"
-                            enterButton="添加"
-                            onSearch={addSubClass}
-                        />
+                      <TextArea rows={4} />
                     )}
                 </FormItem>
-                <Row>
-                    <Col span={12} style={{border:'2px solid #f5f5f5'}}>
-                        <Tree
-                            onSelect={selected => selectedKey = selected}
-                        >
-                            {
-                                subClassList && subClassList.map((item,index) => (
-                                    <TreeNode title={item.className} key={item.classId} />
-                                ))
-                            }
-                        </Tree>
-                    </Col>
-                    <Col span="12">
-                        <Button type="primary" icon="delete" onClick={delSubClass}>移除</Button>
-                    </Col>
-                </Row>
             </Form>
         </Modal>
     )
