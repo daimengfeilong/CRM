@@ -26,12 +26,13 @@ class Index extends React.PureComponent {
     }
 
     render() {
-        const { form,showModel,dispatch } = this.props
+        const { form,showModel,dispatch,propertys } = this.props
         const { getFieldDecorator } = form
 
         const propertyProps = {
             showModel,
-            dispatch
+            dispatch,
+            propertys
         }
 
         return (

@@ -1,16 +1,26 @@
 import { Input, Row, Col, Select, Button, Icon } from 'antd'
-import TagsModal from './modal'
+import ModalTree from '../../../components/modalTree/modal'
 
 const InputGroup = Input.Group
 const Option = Select.Option
 
-const Property = ({showModel,dispatch}) => {
+const Property = ({showModel,dispatch,propertys}) => {
+
+    const treeProps = {
+        showModel,
+        dispatch,
+        title:'增加三级属性',
+        tree:propertys,
+        onSubmit:(keys) => console.log(keys),
+        handleCancel:() => dispatch({type:'tagsEdit/showModel',payload:false})
+        
+    }
 
     return (
         <div className="tags-property">
             <div className="head">
                 <span>标签属性</span>
-                <Button type="primary" icon="plus" onClick={() => dispatch({type:'tagsEdit/showModal',payload:true})}>添加</Button>
+                <Button type="primary" icon="plus" onClick={() => dispatch({type:'tagsEdit/showModel',payload:true})}>添加</Button>
             </div>
             <div className="body">
                 <Row>
@@ -38,7 +48,7 @@ const Property = ({showModel,dispatch}) => {
                                     <Option value="108">小于等于</Option>
                                 </Select>
                                 <Input style={{ width: 100, textAlign: 'center' }} placeholder="" />
-                                <Input style={{ width: 40, borderLeft: 0, pointerEvents: 'none', backgroundColor: '#fff' }} placeholder="到" disabled />
+                                <Input style={{ width: 40, borderLeft: 0, pointerEvents: 'none', backgroundColor: '#fff' }} placeholder="~" disabled />
                                 <Input style={{ width: 100, textAlign: 'center', borderLeft: 0 }} placeholder="" />
                             </InputGroup>
                             <p className="tips">*所有数字均不带单位</p>
@@ -46,7 +56,7 @@ const Property = ({showModel,dispatch}) => {
                     </Col>
                 </Row>
             </div>
-            <TagsModal showModel={showModel} dispatch={dispatch}></TagsModal>
+            <ModalTree {...treeProps}></ModalTree>
         </div>
     )
 }

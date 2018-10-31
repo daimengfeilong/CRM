@@ -19,10 +19,10 @@ const modal = ({ showModel, dispatch, form, classItem }) => {
 
     const formItemLayout = {
         labelCol: {
-            span: 4,
+            span: 6,
         },
         wrapperCol: {
-            span: 10,
+            span: 18,
         },
     }
 
@@ -120,7 +120,7 @@ const modal = ({ showModel, dispatch, form, classItem }) => {
     return (
         <Modal
             title={ classItem.classId ? '编辑分类' : '新增分类' }
-            width="40%"
+            width="25%"
             okText="保存"
             cancelText="取消"
             visible={showModel}
