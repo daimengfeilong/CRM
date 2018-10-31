@@ -8,7 +8,6 @@ const Property = ({showModel,dispatch,propertys}) => {
 
     const treeProps = {
         showModel,
-        dispatch,
         title:'增加三级属性',
         tree:propertys,
         onSubmit:(keys) => console.log(keys),

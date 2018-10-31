@@ -54,10 +54,10 @@ const getExpandedKeys = (value, tree) => {
     const expandedKeys = []
 
     const deepTree = (item) => {
-        if(item.name.indexOf(value) > -1){
+        if (item.name.indexOf(value) > -1) {
             expandedKeys.push(getParentKey(item.id, tree))
-        }else {
-            if(item.children){
+        } else {
+            if (item.children) {
                 item.children.map(deepTree)
             }
         }
@@ -76,6 +76,17 @@ class modal extends React.Component {
         autoExpandParent: true,
     }
 
+
+    handleCancel = () => {
+        this.props.handleCancel()
+    }
+
+
+    handleSubmit = () => {
+        this.props.onSubmit(this.state.checkedKeys)
+        this.handleCancel()
+    }
+
     onExpand = (expandedKeys) => {
         this.setState({
             expandedKeys,
@@ -83,19 +94,10 @@ class modal extends React.Component {
         });
     }
 
-    handleCancel = () => {
-        this.props.handleCancel()
-    }
-
-    onCheck = ({checked}) => {
+    onCheck = ({ checked }) => {
         this.setState({
-            checkedKeys:checked
+            checkedKeys: checked
         })
-    }
-
-    handleSubmit = () =>{
-        this.props.onSubmit(this.state.checkedKeys)
-        this.handleCancel()
     }
 
     onChange = (e) => {
@@ -103,7 +105,7 @@ class modal extends React.Component {
 
         const value = e.target.value;
 
-        const expandedKeys = getExpandedKeys(value,tree)
+        const expandedKeys = getExpandedKeys(value, tree)
 
         this.setState({
             expandedKeys,
@@ -114,28 +116,16 @@ class modal extends React.Component {
 
     render() {
         const { showModel, tree, title } = this.props
-        const { searchValue, expandedKeys, autoExpandParent } = this.state;
+        const { searchValue,expandedKeys,autoExpandParent } = this.state
 
-        const loop = data => data.map((item) => {
-            const index = item.name.indexOf(searchValue);
-            const beforeStr = item.name.substr(0, index);
-            const afterStr = item.name.substr(index + searchValue.length);
-            const title = index > -1 ? (
-                <span>
-                    {beforeStr}
-                    <span style={{ color: '#f50' }}>{searchValue}</span>
-                    {afterStr}
-                </span>
-            ) : <span>{item.name}</span>;
-            if (item.children) {
-                return (
-                    <TreeNode key={item.id} title={title}>
-                        {loop(item.children)}
-                    </TreeNode>
-                );
-            }
-            return <TreeNode key={item.id} title={title} />;
-        });
+        const treeProps = {
+            tree,
+            onExpand:this.onExpand,
+            onCheck:this.onCheck,
+            searchValue,
+            expandedKeys,
+            autoExpandParent
+        }
 
         return (
             <Modal
@@ -146,16 +136,7 @@ class modal extends React.Component {
                 className="modal-tree"
             >
                 <Search style={{ marginBottom: 8 }} placeholder="搜索" onChange={this.onChange} />
-                <Tree
-                    checkable
-                    checkStrictly
-                    onExpand={this.onExpand}
-                    onCheck={this.onCheck}
-                    expandedKeys={expandedKeys}
-                    autoExpandParent={autoExpandParent}
-                >
-                    {loop(tree)}
-                </Tree>
+                <RenderTree {...treeProps}></RenderTree>
             </Modal>
         );
     }
