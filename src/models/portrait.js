@@ -15,7 +15,8 @@ export default{
           tagList:[]
         },
         listClassTag:[],
-        classList:[]
+        classList:[],
+        pagination:{},
     },
     reducers:{
         save(state, {payload}){
@@ -74,6 +75,7 @@ export default{
             su.tagName=item.name
             return su
           })
+     console.log(temp)
         return {
           ...state,
           checkedKeys:[],
@@ -91,13 +93,13 @@ export default{
         }
       },
       removeTag(state, {payload:tagId}){
-          console.log(tagId)
+        let temp =state.portraitItem.tagList.filter(item => item.tagId !== tagId)
         return {
           ...state,
           checkedKeys:state.checkedKeys.filter(item => item !== tagId),
           portraitItem:{
             ...state.portraitItem,
-            tagList:state.portraitItem.tagList.filter(item => item.tagId !== tagId)
+            tagList:temp
           }
         }
       },
@@ -133,10 +135,10 @@ export default{
         }
       },
       clearItem(state, {payload}){
-        console.log(payload)
         return {
           ...state,
           portraitItem:{
+            tagList:[]
           }
         }
       },
@@ -144,8 +146,14 @@ export default{
     effects: {
         *query({ payload }, { call, put, select }){
             const res = yield call(query,payload)
+          const { totalSize,pageNo,pageSize } = res
 
-            yield put({type:'save',payload:{list:res.result}})
+          const pagination = {
+            total:totalSize,
+            current:pageNo,
+            pageSize,
+          }
+            yield put({type:'save',payload:{list:res.result,pagination}})
         },
         *update({payload},{call,put,select}){
           const res = yield call(update,payload)

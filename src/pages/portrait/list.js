@@ -14,7 +14,6 @@ const  getData=(data)=>{
     if (item.tagList.length!=0){
       let temp={}
       temp.id=item.classId
-
       temp.name=item.className
       temp.children=item.tagList.map((subItem)=>{
         let subtemp={}
@@ -27,6 +26,8 @@ const  getData=(data)=>{
     return null
   }).filter((item, i, self) => item && self.indexOf(item) === i);
 }
+
+
 class List extends React.PureComponent {
 
 
@@ -35,14 +36,12 @@ class List extends React.PureComponent {
         const { dispatch } = this.props
 
         dispatch({ type: 'portrait/query'});
-        // dispatch({ type: 'classify/query',payload:{pageNo:1,pageSize:99}});
-        // dispatch({ type: 'tags/query',payload:{pageNo:1,pageSize:99}});
-        dispatch({ type: 'portrait/queryClassListByTag',payload:{pageNo:1,pageSize:99}});
+        dispatch({ type: 'portrait/queryClassListByTag',payload:{}});
         dispatch({ type: 'portrait/querySubLevelClassList',payload:{pageNo:1,pageSize:99}});
     }
 
     render() {
-        const { list,classList,tagsList, dispatch,showModel,portraitItem,showTagModel,listClassTag,tagName,expandedKeys,autoExpandParent,selectedKeys } = this.props
+        const { list,classList,tagsList, dispatch,showModel,portraitItem,showTagModel,listClassTag,pagination } = this.props
 
         const modalProps = {
               showModel,
@@ -50,33 +49,36 @@ class List extends React.PureComponent {
               portraitItem,
               classList,
         }
-      const checkedKeys=portraitItem.tagList.map(item => item.id)
+
+
+      const onPageChange = (page, pageSize) => {
+        dispatch({ type: 'portrait/query',payload:{pageNo:page}})
+      }
+
+      const onShowSizeChange = (page, pageSize) => {
+        dispatch({ type: 'portrait/query',payload:{pageNo:page,pageSize}})
+      }
+      const paginationProps = {
+        showQuickJumper:true,
+        showSizeChanger:true,
+        total:pagination.total,
+        onChange:onPageChange,
+        onShowSizeChange:onShowSizeChange,
+        showTotal:total => `共 ${total} 条`,
+      }
+
       const tree =getData(listClassTag)
       const treeProps = {
         showModel:showTagModel,
         dispatch,
         title:'选择包含标签',
         tree:tree,
-        checkedKeys,
+        checkedKeys:portraitItem.tagList.map(item => item.id),
         onSubmit:(keys) => dispatch({type:'portrait/tagModalList',payload:keys.filter((item, i, self) => item && self.indexOf(item) === i)}),
         handleCancel:() => dispatch({type:'portrait/showTagModel',payload:false})
 
-        // onSubmit:(keys) =>  {
-        //   let temp=[]
-        // tree.map((item) => {
-        //     if (item.children){
-        //       temp=item.children.map((subItem)=>{
-        //         for (let i=0;i<keys.length;i++){
-        //           if (keys[i] === subItem.id)
-        //             return subItem
-        //         }
-        //       })
-        //     }
-        //   })
-        //   dispatch({type:'portrait/tagModalList',payload:temp.filter((item, i, self) => item && self.indexOf(item) === i)})
-        // },
-
       }
+
 
 
 
@@ -182,7 +184,7 @@ class List extends React.PureComponent {
                 {/*<TagModal {...modalTagsProps}/>*/}
                 <ClassModal {...modalProps} />
                 <Head dispatch={dispatch} />
-                <Table columns={columns} dataSource={list} rowKey="classId" />
+                <Table columns={columns} dataSource={list} rowKey="portraitId"  pagination={paginationProps} />
             </div>
         );
     }

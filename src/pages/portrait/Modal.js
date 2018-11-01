@@ -56,15 +56,15 @@ const modal = ({ showModel, dispatch, form,subClass,portraitItem,classList }) =>
   }
 
     const handleCancel = () => {
-        dispatch({
-            type: 'portrait/showModel',
-            payload: false
-        })
+      dispatch({
+        type: 'portrait/showModel',
+        payload: false
+      })
         dispatch({
           type: 'portrait/tagModalList',
           payload: []
         })
-
+        dispatch({type: 'portrait/clearItem'})
         form.resetFields()
     }
 
@@ -80,9 +80,11 @@ const modal = ({ showModel, dispatch, form,subClass,portraitItem,classList }) =>
               portraitItem.classId=values.classId
               dispatch({type: 'portrait/update',payload:portraitItem})
               .then(data=>{
-                dispatch({type: 'portrait/showModel',payload: false})
-                dispatch({type: 'portrait/clearItem',payload: false})
-                dispatch({type: 'portrait/clearItem'})
+                if (data.code='0000'){
+                  dispatch({type: 'portrait/showModel',payload: false})
+                  dispatch({type: 'portrait/clearItem'})
+                }
+
               })
 
             }
@@ -94,6 +96,7 @@ const modal = ({ showModel, dispatch, form,subClass,portraitItem,classList }) =>
             width="60%"
             okText="保存"
             cancelText="取消"
+            afterClose={handleCancel}
             visible={showModel}
             onCancel={handleCancel}
             onOk={submit}
