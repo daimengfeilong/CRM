@@ -4,14 +4,14 @@ import ModalTree from '../../../components/modalTree/modal'
 const InputGroup = Input.Group
 const Option = Select.Option
 
-const Property = ({showModel,dispatch,propertys}) => {
+const Property = ({showModel,dispatch,attrTree}) => {
 
     const checkedKeys = [{id:"r645e132v",name:'科比'},{id:"32cv15rt",name:'成都'},{id:"5dw5",name:'上海'}].map(item => item.id)
 
     const treeProps = {
         showModel,
         title:'增加三级属性',
-        tree:propertys,
+        tree:attrTree,
         checkedKeys,
         onSubmit:(keys) => console.log(keys),
         handleCancel:() => dispatch({type:'tagsEdit/showModel',payload:false})

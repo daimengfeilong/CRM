@@ -16,20 +16,19 @@ export function add(payload) {
     })
 }
 
-export function queryId(payload) {
+export function getAttributeListTree(payload = {}) {
     return request({
-        url:'/api/tags/query',
-        method:'GET',
-        data:{
-            _id:payload._id
-        }
+        url:'/api/crm/attr/getAttributeListTree',
+        method:'POST',
+        data: payload
     })
 }
 
-export function del(payload) {
+export function getAttributeListEnum(payload = {}) {
     return request({
-        url:'/api/tags/del',
+        url:'/api/crm/attr/getAttributeListEnum',
         method:'POST',
-        data:payload,
+        data: payload
     })
 }
+
