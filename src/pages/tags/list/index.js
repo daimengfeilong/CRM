@@ -65,10 +65,7 @@ class List extends React.Component {
             title: '标签类别',
             dataIndex: 'classification',
             key: 'classification',
-            render: row => {
-                console.log(row);return false;
-                return row.classification ? row.classification.className : ''
-            },
+            render: row => row ? row.className : '',
         }, {
             title: '包含属性',
             dataIndex: 'attrList',

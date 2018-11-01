@@ -13,7 +13,9 @@ class Index extends React.PureComponent {
     componentDidMount() {
         const { dispatch } = this.props
 
-        dispatch({type:'classify/query'})
+        dispatch({type:'portrait/querySubLevelClassList'})
+        dispatch({type:'tagsEdit/getAttributeListTree'})
+        dispatch({type:'tagsEdit/getAttributeListEnum',payload:{attrId:"24173P"}})
     }
 
     formItemLayout = {
@@ -30,13 +32,13 @@ class Index extends React.PureComponent {
 
 
     render() {
-        const { form,showModel,dispatch,propertys,classList,history } = this.props
+        const { form,showModel,dispatch,attrTree,classList,history } = this.props
         const { getFieldDecorator } = form
 
         const propertyProps = {
             showModel,
             dispatch,
-            propertys
+            attrTree
         }
 
         const submit = () => {
@@ -91,14 +93,13 @@ class Index extends React.PureComponent {
                             <FormItem label="类别" {...this.formItemLayout}>
                                 {getFieldDecorator('classId', {
                                     rules: [
-                                        { required: true, message: '请选择类别' },
-                                        { pattern: /^([0-9\u4e00-\u9fa5]{1,8})$/, message: '请输入1-8个中文或者数字字符' }
+                                        { required: true, message: '请选择类别' }
                                     ],
                                 })(
                                     <Select placeholder="请选择">
                                     {
                                         classList.map((item) => (
-                                            <Option value={item.className} key={item.classId}>{item.className}</Option>
+                                            <Option key={item.classId}>{item.className}</Option>
                                         ))
                                     }
                                     </Select>
@@ -138,7 +139,7 @@ const indexWrap = Form.create()(Index);
 function mapStateToProps(state){
     return {
         ...state.tagsEdit,
-        classList:state.classify.list
+        classList:state.portrait.classList
     }
 }
 

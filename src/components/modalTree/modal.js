@@ -175,6 +175,7 @@ class modal extends React.Component {
                 visible={showModel}
                 onCancel={this.handleCancel}
                 onOk={this.handleSubmit}
+                maskClosable={false}
                 className="modal-tree"
             >
                 <Search style={{ marginBottom: 8 }} placeholder="搜索" onChange={this.onChange} />
