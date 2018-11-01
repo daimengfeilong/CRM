@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'dva'
-import { Form, Input, Row, Col, Select, Button } from 'antd'
+import { Form, Input, Row, Col, Select, Button,Message } from 'antd'
+import { withRouter } from 'dva/router'
 import Property from './property'
 import '../tags.less'
 
@@ -10,7 +11,9 @@ const Textarea = Input.TextArea
 
 class Index extends React.PureComponent {
     componentDidMount() {
+        const { dispatch } = this.props
 
+        dispatch({type:'classify/query'})
     }
 
     formItemLayout = {
@@ -25,14 +28,45 @@ class Index extends React.PureComponent {
         },
     }
 
+
     render() {
-        const { form,showModel,dispatch,propertys } = this.props
+        const { form,showModel,dispatch,propertys,classList,history } = this.props
         const { getFieldDecorator } = form
 
         const propertyProps = {
             showModel,
             dispatch,
             propertys
+        }
+
+        const submit = () => {
+            form.validateFields((err, values) => {
+                if(!err){
+                    const attr = values.attr.split(',')
+                    const attrList = []
+                    
+                    attr.map((item,index) => {
+                        attrList.push({
+                            attrId:index,
+                            attrName:item
+                        })
+                    })
+                    
+                    dispatch({
+                        type:'tagsEdit/add',
+                        payload:{
+                            ...values,
+                            attrList
+                        }
+                    }).then(data => {
+                        if(data.code == '0000'){
+                            history.push('/tags')
+                        }else{
+                            Message.error(data.msg)
+                        }
+                    })
+                }
+            })
         }
 
         return (
@@ -43,7 +77,7 @@ class Index extends React.PureComponent {
                     <Row className="first-row">
                         <Col span={5}>
                             <FormItem label="标签名称" {...this.formItemLayout}>
-                                {getFieldDecorator('className', {
+                                {getFieldDecorator('tagName', {
                                     rules: [
                                         { required: true, message: '请输入标签名称' },
                                         { pattern: /^([0-9\u4e00-\u9fa5]{1,8})$/, message: '请输入1-8个中文或者数字字符' }
@@ -56,16 +90,17 @@ class Index extends React.PureComponent {
                         <Col span={5}>
                             <FormItem label="类别" {...this.formItemLayout}>
                                 {getFieldDecorator('classId', {
-                                    initialValue: '2',
                                     rules: [
-                                        { required: true, message: '请输入标签名称' },
+                                        { required: true, message: '请选择类别' },
                                         { pattern: /^([0-9\u4e00-\u9fa5]{1,8})$/, message: '请输入1-8个中文或者数字字符' }
                                     ],
                                 })(
-                                    <Select>
-                                        <Option value="1">1</Option>
-                                        <Option value="2">2</Option>
-                                        <Option value="3">3</Option>
+                                    <Select placeholder="请选择">
+                                    {
+                                        classList.map((item) => (
+                                            <Option value={item.className} key={item.classId}>{item.className}</Option>
+                                        ))
+                                    }
                                     </Select>
                                 )}
                             </FormItem>
@@ -73,7 +108,7 @@ class Index extends React.PureComponent {
                     </Row>
                     <Property {...propertyProps}></Property>
                     <FormItem label="已设置的属性范围">
-                        {getFieldDecorator('attrList', {
+                        {getFieldDecorator('attr', {
                             rules: [
                                 { required: true, message: '请选择属性范围' }
                             ],
@@ -90,7 +125,7 @@ class Index extends React.PureComponent {
                             <Textarea rows={5} placeholder="请输入标签说明" />
                         )}
                     </FormItem>
-                    <Button type="primary" size="large">保存</Button>
+                    <Button type="primary" size="large" onClick={submit}>保存</Button>
                     <Button style={{ marginLeft: 15 }} size="large">取消</Button>
                 </Form>
             </div>
@@ -101,7 +136,10 @@ class Index extends React.PureComponent {
 const indexWrap = Form.create()(Index);
 
 function mapStateToProps(state){
-    return state.tagsEdit
+    return {
+        ...state.tagsEdit,
+        classList:state.classify.list
+    }
 }
 
-export default connect(mapStateToProps)(indexWrap)
+export default withRouter(connect(mapStateToProps)(indexWrap))

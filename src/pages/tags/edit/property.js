@@ -6,10 +6,13 @@ const Option = Select.Option
 
 const Property = ({showModel,dispatch,propertys}) => {
 
+    const checkedKeys = [{id:"r645e132v",name:'科比'},{id:"32cv15rt",name:'成都'},{id:"5dw5",name:'上海'}].map(item => item.id)
+
     const treeProps = {
         showModel,
         title:'增加三级属性',
         tree:propertys,
+        checkedKeys,
         onSubmit:(keys) => console.log(keys),
         handleCancel:() => dispatch({type:'tagsEdit/showModel',payload:false})
         

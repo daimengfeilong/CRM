@@ -10,7 +10,7 @@ export function query(data = {}) {
 
 export function add(payload) {
     return request({
-        url: '/api/tags/add',
+        url: '/api/crm/tag/addTag',
         method: 'POST',
         data: payload
     })

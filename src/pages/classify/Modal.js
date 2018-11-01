@@ -128,7 +128,7 @@ const modal = ({ showModel, dispatch, form, classItem }) => {
             onOk={submit}
         >
             <Form>
-                <FormItem label="分类名称" {...formItemLayout} >
+                <FormItem label="分类名称" >
                     {getFieldDecorator('className', {
                         initialValue: classItem.className,
                         rules: [
@@ -139,7 +139,7 @@ const modal = ({ showModel, dispatch, form, classItem }) => {
                         <Input placeholder="请输入标签名称" />
                     )}
                 </FormItem>
-                <FormItem label="添加子分类" {...formItemLayout} >
+                <FormItem label="添加子分类" >
                     {getFieldDecorator('subClassName', {
                         rules: [
                             { required: true, message: '请输入子分类名称' },

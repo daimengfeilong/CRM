@@ -3,7 +3,7 @@ import { Tree } from 'antd'
 
 const TreeNode = Tree.TreeNode;
 
-const tree = ({ tree, searchValue, expandedKeys, autoExpandParent, onExpand, onCheck }) => {
+const tree = ({ tree, searchValue, expandedKeys, autoExpandParent, onExpand, onCheck,checkedKeys }) => {
 
     const deepTree = data => data.map((item) => {
         const index = item.name.indexOf(searchValue);
@@ -32,6 +32,7 @@ const tree = ({ tree, searchValue, expandedKeys, autoExpandParent, onExpand, onC
             checkStrictly
             onExpand={onExpand}
             onCheck={onCheck}
+            checkedKeys={checkedKeys}
             expandedKeys={expandedKeys}
             autoExpandParent={autoExpandParent}
         >

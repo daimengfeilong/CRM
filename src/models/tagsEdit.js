@@ -1,4 +1,4 @@
-import { query,add,queryId,del }  from '../services/tags'
+import { add }  from '../services/tags'
 
 export default{
     namespace: 'tagsEdit',
@@ -71,7 +71,7 @@ export default{
                 ]
             }
         ],
-        showModel:true
+        showModel:false
     },
     reducers:{
         save(state, {payload}){
@@ -88,6 +88,10 @@ export default{
         }
     },
     effects: {
-
+        *add({ payload }, { call, put, select }){
+            const res = yield call(add,payload)
+            
+            return res
+        },
     }
 }

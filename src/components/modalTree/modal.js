@@ -1,9 +1,8 @@
 import React from 'react'
-import { Tree, Modal, Input } from 'antd'
+import { Modal, Input } from 'antd'
 import RenderTree from './tree'
 
 const Search = Input.Search
-const TreeNode = Tree.TreeNode;
 
 /**
  * 公共的ModalTree组件
@@ -68,12 +67,39 @@ const getExpandedKeys = (value, tree) => {
     return expandedKeys.filter((item, i, self) => item && self.indexOf(item) === i);
 }
 
+const getKeysByName = (keys,tree) => {
+    const temp = []
+
+    const deepTree = (item) => {
+        if (keys.includes(item.id)) {
+            temp.push({
+                id:item.id,
+                name:item.name
+            })
+        } else {
+            if (item.children) {
+                item.children.map(deepTree)
+            }
+        }
+    }
+
+    tree.map(deepTree)
+
+    return temp
+}
+
 class modal extends React.Component {
-    state = {
-        checkedKeys: [],
-        expandedKeys: [],
-        searchValue: '',
-        autoExpandParent: true,
+    constructor(props){
+        super(props)
+
+        const { checkedKeys } = this.props
+        
+        this.state = {
+            checkedKeys: checkedKeys,
+            expandedKeys: checkedKeys,
+            searchValue: '',
+            autoExpandParent: true,
+        }
     }
 
 
@@ -83,7 +109,10 @@ class modal extends React.Component {
 
 
     handleSubmit = () => {
-        this.props.onSubmit(this.state.checkedKeys)
+        const { tree } = this.props
+        const checkedKeys = getKeysByName(this.state.checkedKeys,tree)
+
+        this.props.onSubmit(checkedKeys)
         this.handleCancel()
     }
 
@@ -116,15 +145,16 @@ class modal extends React.Component {
 
     render() {
         const { showModel, tree, title } = this.props
-        const { searchValue,expandedKeys,autoExpandParent } = this.state
-
+        const { searchValue,expandedKeys,autoExpandParent,checkedKeys } = this.state
+        
         const treeProps = {
             tree,
-            onExpand:this.onExpand,
-            onCheck:this.onCheck,
             searchValue,
             expandedKeys,
-            autoExpandParent
+            checkedKeys,
+            autoExpandParent,
+            onCheck:this.onCheck,
+            onExpand:this.onExpand,
         }
 
         return (
