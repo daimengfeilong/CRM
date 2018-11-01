@@ -1,4 +1,4 @@
-import { query,queryClassList,queryTagsList,update,addClass,queryClassId,delClass }  from '../services/portrait'
+import { query,update,queryPortraitId,delPortrait,queryClassListByTag,querySubLevelClassList }  from '../services/portrait'
 
 export default{
     namespace: 'portrait',
@@ -13,7 +13,9 @@ export default{
         showModel:false,
         portraitItem:{
           tagList:[]
-        }
+        },
+        listClassTag:[],
+        classList:[]
     },
     reducers:{
         save(state, {payload}){
@@ -66,12 +68,18 @@ export default{
         }
       },
       tagModalList(state, {payload}){
+          let temp=payload.map((item)=>{
+            let su={}
+            su.tagId=item.id
+            su.tagName=item.name
+            return su
+          })
         return {
           ...state,
           checkedKeys:[],
           portraitItem:{
              ...state.portraitItem,
-            tagList:payload
+            tagList:temp
           }
         }
       },
@@ -141,34 +149,37 @@ export default{
         },
         *update({payload},{call,put,select}){
           const res = yield call(update,payload)
-
-          yield put({type:'clearItem'})
-          yield put({type:'query'})
+          return res
         },
-        *addClass({ payload }, { call, put, select }){
-            const res = yield call(addClass,payload)
+        *queryPortraitId({ payload:portraitId }, { call, put, select }){
+            const res = yield call(queryPortraitId,{ portraitId})
+
+            yield put({type:'save',payload:{portraitItem:res.result}})
 
             return res
         },
-        *queryClassId({ payload }, { call, put, select }){
-            const res = yield call(queryClassId,payload)
-
-            yield put({type:'save',payload:{classItem:res.result}})
-
-            return res
-        },
-        *delClass({ payload }, { call, put, select }){
+        *delPortrait({ payload:portraitId }, { call, put, select }){
             const state = yield select(state => state.portrait.list)
 
-            const res = yield call(delClass,payload)
+            const res = yield call(delPortrait,{portraitId})
 
             if(res.code == '0000'){
-                const list = state.filter(item => item.classId != payload.classId)
+                const list = state.filter(item => item.portraitId != portraitId)
 
                 yield put({type:'save',payload:{list}})
             }
 
             return res
-        }
+        },
+      *queryClassListByTag({ payload }, { call, put, select }){
+        const res = yield call(queryClassListByTag,payload)
+        yield put({type:'save',payload:{listClassTag:res.result}})
+      },
+      *querySubLevelClassList({ payload }, { call, put, select }){
+        const res = yield call(querySubLevelClassList, payload)
+        yield put({type:'save',payload:{classList:res.result}})
+      }
+
+
     }
 }

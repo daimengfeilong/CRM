@@ -16,26 +16,36 @@ export function update (data) {
   })
 }
 
-export function addClass(data) {
+export function queryPortraitId(data) {
     return request({
-        url: '/api/crm/class/addClass',
+        url: '/api/crm/portrait/getPortraitByPortraitId',
         method: 'POST',
         data:data
     })
 }
 
-export function queryClassId(data) {
+export function delPortrait(data) {
     return request({
-        url: '/api/crm/class/getClassByClassId',
+        url: '/api/crm/portrait/delPortrait',
         method: 'POST',
         data:data
     })
 }
 
-export function delClass(data) {
-    return request({
-        url: '/api/crm/class/delClass',
-        method: 'POST',
-        data:data
-    })
+export function querySubLevelClassList(data={}) {
+  return request({
+    url: '/api/crm/class/getSubLevelClassList',
+    method: 'POST',
+    data
+  })
+}
+
+
+
+export function queryClassListByTag (data={}) {
+  return request({
+    url: '/api/crm/class/getClassListByTag',
+    method: 'POST',
+    data
+  })
 }

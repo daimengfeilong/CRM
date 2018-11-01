@@ -7,6 +7,22 @@ const Search = Input.Search
 const Option= Select.Option
 const { TextArea } = Input;
 
+const ShowTags=({data,dispatch})=> {
+  const  tagsClose =(tagId)=>{
+    removeTag(tagId)
+  }
+  const removeTag=(tagId)=>{
+    dispatch({
+      type: 'portrait/removeTag',
+      payload: tagId
+    })
+  }
+
+  return data.map((item) => {
+    return (<Tag color="blue" closable key={item.tagId} afterClose={() => tagsClose(item.tagId)}>{item.tagName}</Tag>)
+  });
+}
+
 const modal = ({ showModel, dispatch, form,subClass,portraitItem,classList }) => {
 
     const { getFieldDecorator } = form
@@ -21,25 +37,10 @@ const modal = ({ showModel, dispatch, form,subClass,portraitItem,classList }) =>
         },
     }
   const children = [];
-  console.log("3333")
   for (let i = 0; i < classList.length; i++) {
     children.push(<Option key={classList[i].classId}>{classList[i].className}</Option>);
   }
-  const ShowTags=()=> {
-    console.log("22")
-    return portraitItem.tagList.map((item) => {
-      return (<Tag color="blue" closable key={item.tagId} afterClose={() => tagsClose(item.tagId)}>{item.tagName}</Tag>)
-    });
-  }
-  const  tagsClose =(tagId)=>{
-    removeTag(tagId)
-  }
-  const removeTag=(tagId)=>{
-    dispatch({
-      type: 'portrait/removeTag',
-      payload: tagId
-    })
-  }
+
   const showSelectTags = () =>{
     dispatch({
       type:'portrait/save',
@@ -78,13 +79,18 @@ const modal = ({ showModel, dispatch, form,subClass,portraitItem,classList }) =>
               portraitItem.description=values.description
               portraitItem.classId=values.classId
               dispatch({type: 'portrait/update',payload:portraitItem})
-              dispatch({type: 'portrait/showModel',payload: false})
+              .then(data=>{
+                dispatch({type: 'portrait/showModel',payload: false})
+                dispatch({type: 'portrait/clearItem',payload: false})
+                dispatch({type: 'portrait/clearItem'})
+              })
+
             }
         });
     }
     return (
         <Modal
-            title={ portraitItem.classId ? '编辑画像' : '新增画像' }
+            title={ portraitItem.portraitId ? '编辑画像' : '新增画像' }
             width="60%"
             okText="保存"
             cancelText="取消"
@@ -133,7 +139,7 @@ const modal = ({ showModel, dispatch, form,subClass,portraitItem,classList }) =>
               <Button type="primary" shape="circle" icon="plus"  style={{width:'24px',height:'24px'}} onClick={showSelectTags}/>
               <div style={{minHeight:'100px',padding:'10px'}}>
                 <Row type="flex" gutter={24}>
-                  <ShowTags/>
+                  <ShowTags data={portraitItem.tagList} dispatch={dispatch}/>
                 </Row>
               </div>
 
@@ -142,7 +148,6 @@ const modal = ({ showModel, dispatch, form,subClass,portraitItem,classList }) =>
                       initialValue: portraitItem.description,
                         rules: [
                           { required: true, message: '请输入画像描述（规则、用途等）' },
-                            { pattern: /^([0-9\u4e00-\u9fa5]{1,6})$/, message: '请输入1-6个中文或者数字字符' }
                         ],
                     })(
                       <TextArea rows={4}  placeholder="请输入画像描述（规则、用途等）" />

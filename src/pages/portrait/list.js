@@ -6,21 +6,43 @@ import Head from './Head'
 import ClassModal from './Modal'
 import TagModal from './TagsModal'
 import {timestampToDate} from '../../utils/utils'
+import ModalTree from '../../components/modalTree/modal'
 const confirm = Modal.confirm;
 
+const  getData=(data)=>{
+  return  data.map((item)=>{
+    if (item.tagList.length!=0){
+      let temp={}
+      temp.id=item.classId
+
+      temp.name=item.className
+      temp.children=item.tagList.map((subItem)=>{
+        let subtemp={}
+        subtemp.id= subItem.tagId
+        subtemp.name= subItem.tagName
+        return subtemp
+      })
+      return temp
+    }
+    return null
+  }).filter((item, i, self) => item && self.indexOf(item) === i);
+}
 class List extends React.PureComponent {
+
+
 
     componentDidMount(){
         const { dispatch } = this.props
 
         dispatch({ type: 'portrait/query'});
-        dispatch({ type: 'classify/query',payload:{pageNo:1,pageSize:99}});
-        dispatch({ type: 'tags/query',payload:{pageNo:1,pageSize:99}});
-
+        // dispatch({ type: 'classify/query',payload:{pageNo:1,pageSize:99}});
+        // dispatch({ type: 'tags/query',payload:{pageNo:1,pageSize:99}});
+        dispatch({ type: 'portrait/queryClassListByTag',payload:{pageNo:1,pageSize:99}});
+        dispatch({ type: 'portrait/querySubLevelClassList',payload:{pageNo:1,pageSize:99}});
     }
 
     render() {
-        const { list,classList,tagsList, dispatch,showModel,portraitItem,showTagModel,tagName,expandedKeys,autoExpandParent,checkedKeys,selectedKeys } = this.props
+        const { list,classList,tagsList, dispatch,showModel,portraitItem,showTagModel,listClassTag,tagName,expandedKeys,autoExpandParent,selectedKeys } = this.props
 
         const modalProps = {
               showModel,
@@ -28,25 +50,44 @@ class List extends React.PureComponent {
               portraitItem,
               classList,
         }
-        const modalTagsProps = {
-              dispatch,
-              showTagModel,
-              tagName,
-              tagsList,
-              expandedKeys,
-              autoExpandParent,
-              checkedKeys,
-              selectedKeys
-        }
+      const checkedKeys=portraitItem.tagList.map(item => item.id)
+      const tree =getData(listClassTag)
+      const treeProps = {
+        showModel:showTagModel,
+        dispatch,
+        title:'选择包含标签',
+        tree:tree,
+        checkedKeys,
+        onSubmit:(keys) => dispatch({type:'portrait/tagModalList',payload:keys.filter((item, i, self) => item && self.indexOf(item) === i)}),
+        handleCancel:() => dispatch({type:'portrait/showTagModel',payload:false})
 
-        const onDel = (id) => {
+        // onSubmit:(keys) =>  {
+        //   let temp=[]
+        // tree.map((item) => {
+        //     if (item.children){
+        //       temp=item.children.map((subItem)=>{
+        //         for (let i=0;i<keys.length;i++){
+        //           if (keys[i] === subItem.id)
+        //             return subItem
+        //         }
+        //       })
+        //     }
+        //   })
+        //   dispatch({type:'portrait/tagModalList',payload:temp.filter((item, i, self) => item && self.indexOf(item) === i)})
+        // },
+
+      }
+
+
+
+        const onDel = (portraitId) => {
             confirm({
                 title: '确认删除？',
                 content: '',
                 onOk() {
                     dispatch({
-                        type: 'portrait/delClass',
-                        payload:{classId:id}
+                        type: 'portrait/delPortrait',
+                        payload:portraitId
                     }).then(data => {
                         if(data.code == '0000'){
 
@@ -58,10 +99,10 @@ class List extends React.PureComponent {
             });
         }
 
-        const onEdit = (id) => {
+        const onEdit = (portraitId) => {
             dispatch({
-                type: 'portrait/queryClassId',
-                payload:{classId:id}
+                type: 'portrait/queryPortraitId',
+                payload:portraitId
             }).then(data => {
                 dispatch({
                     type: 'portrait/showModel',
@@ -128,16 +169,17 @@ class List extends React.PureComponent {
             key: 'action',
             render: (row, record) => (
                 <span>
-                    <a href="javascript:" onClick={() => onEdit(row.classId)}>编辑</a>
+                    <a href="javascript:" onClick={() => onEdit(row.portraitId)}>编辑</a>
                     <Divider type="vertical" />
-                    <a href="javascript:" onClick={() => onDel(row.classId)}>删除</a>
+                    <a href="javascript:" onClick={() => onDel(row.portraitId)}>删除</a>
                 </span>
             ),
         }];
 
         return (
             <div>
-                <TagModal {...modalTagsProps}/>
+              <ModalTree {...treeProps}/>
+                {/*<TagModal {...modalTagsProps}/>*/}
                 <ClassModal {...modalProps} />
                 <Head dispatch={dispatch} />
                 <Table columns={columns} dataSource={list} rowKey="classId" />
@@ -147,9 +189,7 @@ class List extends React.PureComponent {
 }
 function mapStateToProps(state) {
     return {
-      ...state.portrait,
-      classList:state.classify.list,
-      tagsList:state.tags.list,
+      ...state.portrait
     }
 }
 
