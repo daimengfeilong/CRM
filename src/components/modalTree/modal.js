@@ -93,27 +93,27 @@ class modal extends React.Component {
         super(props)
 
         const { checkedKeys } = this.props
-
         this.state = {
             checkedKeys: checkedKeys,
             expandedKeys: checkedKeys,
             searchValue: '',
             autoExpandParent: true,
+            historyCheckedKeys:checkedKeys
         }
     }
-  componentWillReceiveProps(nextProps) {
-      const { checkedKeys } =this.state
-      const newCheckedKeys =nextProps.checkedKeys
-      if (newCheckedKeys !== checkedKeys){
-        this.state = {
-          checkedKeys: newCheckedKeys,
-          expandedKeys: newCheckedKeys,
-          searchValue: '',
-          autoExpandParent: true,
-        }
-      }
 
-  }
+     static  getDerivedStateFromProps(props, state){
+       if (props.checkedKeys !== state.historyCheckedKeys){
+         return {
+           checkedKeys: props.checkedKeys,
+           expandedKeys: props.checkedKeys,
+           searchValue: '',
+           autoExpandParent: true,
+           historyCheckedKeys:props.checkedKeys
+         };
+       }
+       return null;
+      }
 
     handleCancel = () => {
         this.props.handleCancel()
