@@ -50,7 +50,6 @@ export default{
         }
       },
       autoExpandParent(state, {payload}){
-          console.log("c:"+payload)
         return {
           ...state,
           autoExpandParent:payload
@@ -75,7 +74,6 @@ export default{
             su.tagName=item.name
             return su
           })
-     console.log(temp)
         return {
           ...state,
           checkedKeys:[],
@@ -86,7 +84,6 @@ export default{
         }
       },
       removeCheckedKeys(state, {payload:id}){
-        console.log(state.checkedKeys)
         return {
           ...state,
           checkedKeys:state.checkedKeys.filter(item => item !== id)
@@ -104,7 +101,6 @@ export default{
         }
       },
       addPortraitName(state, {payload}){
-        console.log(payload)
         return {
           ...state,
           checkedKeys:[],
@@ -115,7 +111,6 @@ export default{
         }
       },
       addClassId(state, {payload}){
-        console.log(payload)
         return {
           ...state,
           portraitItem:{
@@ -125,7 +120,6 @@ export default{
         }
       },
       addDescription(state, {payload}){
-        console.log(payload)
         return {
           ...state,
           portraitItem:{
