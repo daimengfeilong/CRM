@@ -6,7 +6,7 @@ const Search = Input.Search
 
 /**
  * 公共的ModalTree组件
- * 
+ *
  * 接收参数
  * title:String
  * showModel:Boolean
@@ -28,8 +28,8 @@ const Search = Input.Search
             ]
         }
     ]
- * 
- * 
+ *
+ *
  */
 
 const getParentKey = (id, tree) => {
@@ -93,15 +93,27 @@ class modal extends React.Component {
         super(props)
 
         const { checkedKeys } = this.props
-        
         this.state = {
             checkedKeys: checkedKeys,
             expandedKeys: checkedKeys,
             searchValue: '',
             autoExpandParent: true,
+            historyCheckedKeys:checkedKeys
         }
     }
 
+     static  getDerivedStateFromProps(props, state){
+       if (props.checkedKeys !== state.historyCheckedKeys){
+         return {
+           checkedKeys: props.checkedKeys,
+           expandedKeys: props.checkedKeys,
+           searchValue: '',
+           autoExpandParent: true,
+           historyCheckedKeys:props.checkedKeys
+         };
+       }
+       return null;
+      }
 
     handleCancel = () => {
         this.props.handleCancel()
@@ -146,7 +158,7 @@ class modal extends React.Component {
     render() {
         const { showModel, tree, title } = this.props
         const { searchValue,expandedKeys,autoExpandParent,checkedKeys } = this.state
-        
+
         const treeProps = {
             tree,
             searchValue,
@@ -163,6 +175,7 @@ class modal extends React.Component {
                 visible={showModel}
                 onCancel={this.handleCancel}
                 onOk={this.handleSubmit}
+                maskClosable={false}
                 className="modal-tree"
             >
                 <Search style={{ marginBottom: 8 }} placeholder="搜索" onChange={this.onChange} />

@@ -27,6 +27,12 @@ const  getData=(data)=>{
   }).filter((item, i, self) => item && self.indexOf(item) === i);
 }
 
+const  getCheckedKeys = (data)=>{
+  return data.map((item)=>{
+      return item.tagId
+  }).filter((item, i, self) => item && self.indexOf(item) === i);
+}
+
 
 class List extends React.PureComponent {
 
@@ -66,22 +72,17 @@ class List extends React.PureComponent {
         onShowSizeChange:onShowSizeChange,
         showTotal:total => `共 ${total} 条`,
       }
-
       const tree =getData(listClassTag)
       const treeProps = {
         showModel:showTagModel,
         dispatch,
         title:'选择包含标签',
         tree:tree,
-        checkedKeys:portraitItem.tagList.map(item => item.id),
+        checkedKeys:getCheckedKeys(portraitItem.tagList),
         onSubmit:(keys) => dispatch({type:'portrait/tagModalList',payload:keys.filter((item, i, self) => item && self.indexOf(item) === i)}),
         handleCancel:() => dispatch({type:'portrait/showTagModel',payload:false})
 
       }
-
-
-
-
         const onDel = (portraitId) => {
             confirm({
                 title: '确认删除？',
