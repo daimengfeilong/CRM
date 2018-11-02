@@ -1,14 +1,18 @@
+import { query } from '../services/userList'
+
 export default {
   namespace: 'userList',
   state: {
+    list:[],
     count: 0,
-    things:[]
+    things:[],
+    pagination:{}
   },
   reducers: {
-    'add' (state) {
+    save (state, {payload}) {
       return {
         ...state,
-        count: state.count + 1,
+        ...payload
       }
     },
     'minus' (state) {
@@ -36,5 +40,17 @@ export default {
       }
     }
   },
+  effects: {
+    *query ({payload}, {call, put, select}) {
+      const res = yield call(query, payload)
+      const {totalSize, pageNo, pageSize} = res
+      const pagination = {
+        total: totalSize,
+        current: pageNo,
+        pageSize
+      }
+      yield put({type: "save", payload: {list: res.result, pagination}})
+    }
+  }
 }
 

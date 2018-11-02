@@ -4,7 +4,7 @@ const FormItem = Form.Item;
 
 const head =({dispatch,form})=>{
 
-  const {getFieldDecorator} =form
+  const { getFieldDecorator, getFieldsValue, resetFields } =form
 
   const formItemLayout = {
     labelCol: {
@@ -16,25 +16,53 @@ const head =({dispatch,form})=>{
       sm: { span: 19 },
     },
   };
+
+  const queryUser = () => {
+    const values = getFieldsValue()
+    dispatch({
+      type: "userList/query",
+      payload: {
+        params: {
+          userNo: values.userNo,
+          idCard: values.idCard,
+          phone: "",
+          userName: "",
+          regStartTime: "",
+          regEndTime: ""
+        }
+      }
+    })
+  }
+
+  const resetForm = () => {
+    resetFields()
+  }
+
   return(
     <Form>
       <Row gutter={24}>
         <Col span={8}>
-          <FormItem {...formItemLayout} label="用户编号：">
-            {getFieldDecorator('email')(
+          <FormItem {...formItemLayout} label="用户编号">
+            {getFieldDecorator('userNo', {
+              initialValue: ""
+            })(
             <Input placeholder="请输入" />
             )}
           </FormItem>
         </Col>
         <Col span={8} >
-          <FormItem {...formItemLayout}  label="证件号码：">
-            <Input placeholder="请输入" />
+          <FormItem {...formItemLayout}  label="证件号码">
+            {getFieldDecorator('idCard', {
+              initialValue: ""
+            })(
+              <Input placeholder="请输入" />
+            )}
           </FormItem>
         </Col>
         <Col span={6} offset={2}>
           <div style={{textAlign:'right'}}>
-          <Button type="primary">查询</Button>
-          <Button style={{marginLeft:'10px'}}>重置</Button>
+          <Button type="primary" onClick={queryUser}>查询</Button>
+          <Button style={{marginLeft:'10px'}} onClick={resetForm}>重置</Button>
           </div>
         </Col>
       </Row>

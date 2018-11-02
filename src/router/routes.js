@@ -1,18 +1,25 @@
 export default [
-    // {
-    //     title: '客户管理',
-    //     icon: require('../assets/layout/icon_kfgl.png'),
-    //     path: '/userManage',
-    //     subRoutes: [
-    //         {
-    //             path: '/userManage',
-    //             title: '用户列表',
-    //             show: true,
-    //             icon: 'profile',
-    //             component: () => import('../pages/userManage/userList'),
-    //         }
-    //     ]
-    // },
+     {
+         title: '客户管理',
+         icon: require('../assets/layout/icon_kfgl.png'),
+         path: '/userManage',
+         subRoutes: [
+             {
+                 path: '/userManage',
+                 title: '用户列表',
+                 show: true,
+                 icon: 'profile',
+                 component: () => import('../pages/userManage/userList')
+             },
+            {
+              path: '/userDetail',
+              title: '用户详情',
+              show: false,
+              icon: 'profile',
+              component: () => import('../pages/userManage/userDetail')
+            }
+         ]
+     },
     {
         title: '标签管理',
         icon: require('../assets/layout/icon_bqgl.png'),
