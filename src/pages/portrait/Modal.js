@@ -82,6 +82,7 @@ const modal = ({ showModel, dispatch, form,subClass,portraitItem,classList }) =>
               .then(data=>{
                 if (data.code='0000'){
                   dispatch({type: 'portrait/showModel',payload: false})
+                  dispatch({type: 'portrait/query'})
                   dispatch({type: 'portrait/clearItem'})
                 }
 
@@ -93,7 +94,7 @@ const modal = ({ showModel, dispatch, form,subClass,portraitItem,classList }) =>
     return (
         <Modal
             title={ portraitItem.portraitId ? '编辑画像' : '新增画像' }
-            width="60%"
+            width="800px"
             okText="保存"
             cancelText="取消"
             afterClose={handleCancel}

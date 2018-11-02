@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 import { Table, Divider, Modal,Message } from 'antd';
 import Head from './Head'
 import ClassModal from './Modal'
-import TagModal from './TagsModal'
 import {timestampToDate} from '../../utils/utils'
 import ModalTree from '../../components/modalTree/modal'
 const confirm = Modal.confirm;
