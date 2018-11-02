@@ -12,11 +12,11 @@ export default [
                  component: () => import('../pages/userManage/userList')
              },
             {
-              path: '/userDetail',
+              path: '/userManage/userDetail',
               title: '用户详情',
               show: false,
               icon: 'profile',
-              component: () => import('../pages/userManage/userDetail')
+              component: () => import('../pages/userManage/detail/userDetail')
             }
          ]
      },

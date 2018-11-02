@@ -1,6 +1,8 @@
 import React from 'react'
 import { connect } from 'dva'
 import { withRouter } from 'dva/router'
+import { Link,BrowserRouter as Router } from 'react-router-dom'
+import { routerRedux, Route } from 'dva/router';
 import './userList.less'
 import { Input, Modal, Form, Message,  Tree,  Icon, List, Popconfirm, Button, Table } from 'antd'
 import HeadUserList from './head'
@@ -8,10 +10,6 @@ import HeadUserList from './head'
 let params = {
   userNo: "",
   idCard: "",
-  phone: "",
-  userName: "",
-  regStartTime: "",
-  regEndTime: ""
 }
 class userList extends React.Component {
   componentDidMount () {
@@ -60,9 +58,7 @@ class userList extends React.Component {
         title: '操作',
         key: 'action',
         render: (text, record) => (
-          <span>
-            <a href="javascript:;" onClick={() => this.toDetail(text, record)}>详情</a>
-          </span>
+               <Link to={'/userManage/userDetail?userNo='+record.userNo+'&idCard='+record.idCard}>详情</Link>
         )
       }
     ]
@@ -96,6 +92,7 @@ class userList extends React.Component {
 }
 
 function mapStateToProps(state) {
+  console.log(state)
   return state.userList
 }
 

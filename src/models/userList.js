@@ -4,8 +4,6 @@ export default {
   namespace: 'userList',
   state: {
     list:[],
-    count: 0,
-    things:[],
     pagination:{}
   },
   reducers: {
@@ -15,30 +13,6 @@ export default {
         ...payload
       }
     },
-    'minus' (state) {
-      return {
-        ...state,
-        count: state.count - 1,
-      }
-    },
-    'addThings'(state,{payLoad}){
-      let { things } = state
-      if(!things){
-        things = []
-      }
-      console.log(payLoad)
-
-      return{
-        ...state,
-        things:[...things,payLoad]
-      }
-    },
-    'delete'(state,{payload: id}){
-      return{
-        ...state,
-        things:state.things.filter(item => item.id !== id)
-      }
-    }
   },
   effects: {
     *query ({payload}, {call, put, select}) {

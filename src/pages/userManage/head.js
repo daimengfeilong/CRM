@@ -1,4 +1,4 @@
-import { Input, Row, Col, Form, Message,  Button, } from 'antd'
+import { Input, Row, Col, Form,  Button, } from 'antd'
 
 const FormItem = Form.Item;
 
@@ -25,10 +25,6 @@ const head =({dispatch,form})=>{
         params: {
           userNo: values.userNo,
           idCard: values.idCard,
-          phone: "",
-          userName: "",
-          regStartTime: "",
-          regEndTime: ""
         }
       }
     })

@@ -1,9 +1,7 @@
-import { Row, Col, Input, Button, Modal, Form, Message,Tree,Icon,Tag,Select   } from 'antd';
+import { Row, Col, Input, Button, Modal, Form,Tag,Select   } from 'antd';
 
 
 const FormItem = Form.Item;
-const TreeNode = Tree.TreeNode
-const Search = Input.Search
 const Option= Select.Option
 const { TextArea } = Input;
 
@@ -72,21 +70,35 @@ const modal = ({ showModel, dispatch, form,subClass,portraitItem,classList }) =>
         form.validateFields(['portraitName','description','classId'],(err, values) => {
             if (!err) {
               console.log(values)
-              if (portraitItem.tagList==undefined||portraitItem.tagList.length==0){
+              if (portraitItem.tagList===undefined||portraitItem.tagList.length===0){
                 return
+              }
+              if (portraitItem.portraitId) {
+
               }
               portraitItem.portraitName=values.portraitName
               portraitItem.description=values.description
               portraitItem.classId=values.classId
-              dispatch({type: 'portrait/update',payload:portraitItem})
-              .then(data=>{
-                if (data.code='0000'){
-                  dispatch({type: 'portrait/showModel',payload: false})
-                  dispatch({type: 'portrait/query'})
-                  dispatch({type: 'portrait/clearItem'})
-                }
 
-              })
+              if (portraitItem.portraitId) {
+                dispatch({type: 'portrait/update',payload:portraitItem})
+                .then(data=>{
+                  if (data.code='0000'){
+                    dispatch({type: 'portrait/showModel',payload: false})
+                    dispatch({type: 'portrait/query'})
+                    dispatch({type: 'portrait/clearItem'})
+                  }
+                })
+              }else {
+                dispatch({type: 'portrait/add',payload:portraitItem})
+                .then(data=>{
+                  if (data.code='0000'){
+                    dispatch({type: 'portrait/showModel',payload: false})
+                    dispatch({type: 'portrait/query'})
+                    dispatch({type: 'portrait/clearItem'})
+                  }
+                })
+              }
 
             }
         });

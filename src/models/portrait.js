@@ -1,4 +1,4 @@
-import { query,update,queryPortraitId,delPortrait,queryClassListByTag,querySubLevelClassList }  from '../services/portrait'
+import { query,add,update,queryPortraitId,delPortrait,queryClassListByTag,querySubLevelClassList }  from '../services/portrait'
 
 export default{
     namespace: 'portrait',
@@ -149,6 +149,10 @@ export default{
           }
             yield put({type:'save',payload:{list:res.result,pagination}})
         },
+        *add({payload},{call,put,select}){
+          const res = yield call(add,payload)
+          return res
+          },
         *update({payload},{call,put,select}){
           const res = yield call(update,payload)
           return res
@@ -165,8 +169,8 @@ export default{
 
             const res = yield call(delPortrait,{portraitId})
 
-            if(res.code == '0000'){
-                const list = state.filter(item => item.portraitId != portraitId)
+            if(res.code === '0000'){
+                const list = state.filter(item => item.portraitId !== portraitId)
 
                 yield put({type:'save',payload:{list}})
             }

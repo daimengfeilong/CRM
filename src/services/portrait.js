@@ -8,6 +8,17 @@ export function query(data = {}) {
     })
 }
 
+export function add (data) {
+  return request({
+    url:'/api/crm/portrait/addPortrait',
+    method:'POST',
+    data
+  })
+}
+
+
+
+
 export function update (data) {
   return request({
     url:'/api/crm/portrait/updatePortrait',
