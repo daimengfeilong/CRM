@@ -1,64 +1,44 @@
-import { Input, Row, Col, Select, Button, Icon } from 'antd'
-import ModalTree from '../../../components/modalTree/modal'
+import { Input, Row, Col, Select, Button } from 'antd'
+import ThreeTree from './threeTree'
+import FourAttr from './fourAttr'
 
 const InputGroup = Input.Group
 const Option = Select.Option
 
-const Property = ({showModel,dispatch,attrTree}) => {
+const Property = ({dispatch,selectedTree3,selectedTree3Item,fourAttr,attrRange,selectedRange,attrList,checkedAttrList}) => {
 
-    const checkedKeys = [{id:"r645e132v",name:'科比'},{id:"32cv15rt",name:'成都'},{id:"5dw5",name:'上海'}].map(item => item.id)
+    const threeTreeProps = {
+        selectedTree3Item,
+        selectedTree3,
+        dispatch
+    }
 
-    const treeProps = {
-        showModel,
-        title:'增加三级属性',
-        tree:attrTree,
-        checkedKeys,
-        onSubmit:(keys) => console.log(keys),
-        handleCancel:() => dispatch({type:'tagsEdit/showModel',payload:false})
-        
+    const fourProps = {
+        dispatch,
+        fourAttr,
+        attrRange,
+        selectedRange,
+        selectedTree3Item,
+        attrList,
+        checkedAttrList
     }
 
     return (
         <div className="tags-property">
             <div className="head">
                 <span>标签属性</span>
-                <Button type="primary" icon="plus" onClick={() => dispatch({type:'tagsEdit/showModel',payload:true})}>添加</Button>
+                <Button type="primary" icon="plus" onClick={() => dispatch({type:'tagsEdit/save',payload:{showModel:true}})}>添加</Button>
             </div>
             <div className="body">
                 <Row>
                     <Col span={6}>
-                        <div className="three-level">
-                            <h3>三级属性</h3>
-                            <ul>
-                                <li><Button>年龄</Button><Icon type="close-circle" /></li>
-                                <li><Button>年龄</Button><Icon type="close-circle" /></li>
-                            </ul>
-                        </div>
+                        <ThreeTree {...threeTreeProps}></ThreeTree>
                     </Col>
                     <Col span={18}>
-                        <div className="four-level">
-                            <h3>四级属性</h3>
-                            <InputGroup compact>
-                                <Select style={{ width: 100 }} placeholder="请选择">
-                                    <Option value="101">介于</Option>
-                                    <Option value="102">不介于</Option>
-                                    <Option value="103">等于</Option>
-                                    <Option value="104">不等于</Option>
-                                    <Option value="105">大于</Option>
-                                    <Option value="106">小于</Option>
-                                    <Option value="107">大于等于</Option>
-                                    <Option value="108">小于等于</Option>
-                                </Select>
-                                <Input style={{ width: 100, textAlign: 'center' }} placeholder="" />
-                                <Input style={{ width: 40, borderLeft: 0, pointerEvents: 'none', backgroundColor: '#fff' }} placeholder="~" disabled />
-                                <Input style={{ width: 100, textAlign: 'center', borderLeft: 0 }} placeholder="" />
-                            </InputGroup>
-                            <p className="tips">*所有数字均不带单位</p>
-                        </div>
+                        <FourAttr {...fourProps}></FourAttr>
                     </Col>
                 </Row>
             </div>
-            <ModalTree {...treeProps}></ModalTree>
         </div>
     )
 }

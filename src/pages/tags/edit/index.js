@@ -3,6 +3,8 @@ import { connect } from 'dva'
 import { Form, Input, Row, Col, Select, Button,Message } from 'antd'
 import { withRouter } from 'dva/router'
 import Property from './property'
+import SelectedAttr from './selectedAttrList'
+import ModalTree from '../../../components/modalTree/modal'
 import '../tags.less'
 
 const FormItem = Form.Item;
@@ -15,7 +17,6 @@ class Index extends React.PureComponent {
 
         dispatch({type:'portrait/querySubLevelClassList'})
         dispatch({type:'tagsEdit/getAttributeListTree'})
-        dispatch({type:'tagsEdit/getAttributeListEnum',payload:{attrId:"24173P"}})
     }
 
     formItemLayout = {
@@ -32,41 +33,78 @@ class Index extends React.PureComponent {
 
 
     render() {
-        const { form,showModel,dispatch,attrTree,classList,history } = this.props
+        const { form,
+                showModel,
+                dispatch,
+                attrTree,
+                classList,
+                history,
+                selectedTree3,
+                selectedTree3Item,
+                fourAttr,
+                attrRange,
+                selectedRange,
+                attrList,
+                checkedAttrList
+            } = this.props
+
         const { getFieldDecorator } = form
 
-        const propertyProps = {
+        const checkedKeys = selectedTree3.map(item => item.id)
+
+        const modelSubmit = (selectedTree3) => {
+            dispatch({type:'tagsEdit/save',payload:{selectedTree3}})
+        }
+
+        const modalProps = {
             showModel,
+            title:'增加三级属性',
+            tree:attrTree,
+            checkedKeys,
+            onSubmit:(keys) => modelSubmit(keys),
+            handleCancel:() => dispatch({type:'tagsEdit/save',payload:{showModel:false}})
+            
+        }
+
+        console.log(attrList);
+
+        const propertyProps = {
             dispatch,
-            attrTree
+            fourAttr,
+            selectedTree3Item,
+            selectedTree3,
+            attrRange,
+            selectedRange,
+            attrList,
+            checkedAttrList
+        }
+
+        const selectedAttrProps = {
+            dispatch,
+            attrList,
+            checkedAttrList
         }
 
         const submit = () => {
             form.validateFields((err, values) => {
                 if(!err){
-                    const attr = values.attr.split(',')
-                    const attrList = []
-                    
-                    attr.map((item,index) => {
-                        attrList.push({
-                            attrId:index,
-                            attrName:item
+                    if(attrList.length){
+                        dispatch({
+                            type:'tagsEdit/add',
+                            payload:{
+                                ...values,
+                                attrList
+                            }
+                        }).then(data => {
+                            if(data.code == '0000'){
+                                history.push('/tags')
+                            }else{
+                                Message.error(data.msg)
+                            }
                         })
-                    })
-                    
-                    dispatch({
-                        type:'tagsEdit/add',
-                        payload:{
-                            ...values,
-                            attrList
-                        }
-                    }).then(data => {
-                        if(data.code == '0000'){
-                            history.push('/tags')
-                        }else{
-                            Message.error(data.msg)
-                        }
-                    })
+                    }else{
+                        Message.error('请先设置属性范围')
+                    }
                 }
             })
         }
@@ -108,15 +146,7 @@ class Index extends React.PureComponent {
                         </Col>
                     </Row>
                     <Property {...propertyProps}></Property>
-                    <FormItem label="已设置的属性范围">
-                        {getFieldDecorator('attr', {
-                            rules: [
-                                { required: true, message: '请选择属性范围' }
-                            ],
-                        })(
-                            <Textarea rows={5} placeholder="请选择属性范围" />
-                        )}
-                    </FormItem>
+                    <SelectedAttr {...selectedAttrProps}></SelectedAttr>
                     <FormItem label="标签说明（规则、用途等）">
                         {getFieldDecorator('description', {
                             rules: [
@@ -129,6 +159,7 @@ class Index extends React.PureComponent {
                     <Button type="primary" size="large" onClick={submit}>保存</Button>
                     <Button style={{ marginLeft: 15 }} size="large">取消</Button>
                 </Form>
+                <ModalTree {...modalProps}></ModalTree>
             </div>
         )
     }
