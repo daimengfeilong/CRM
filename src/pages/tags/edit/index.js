@@ -5,6 +5,7 @@ import { withRouter } from 'dva/router'
 import Property from './property'
 import SelectedAttr from './selectedAttrList'
 import ModalTree from '../../../components/modalTree/modal'
+import { getQueryString } from '../../../utils/utils'
 import '../tags.less'
 
 const FormItem = Form.Item;
@@ -14,9 +15,20 @@ const Textarea = Input.TextArea
 class Index extends React.PureComponent {
     componentDidMount() {
         const { dispatch } = this.props
+        const id = getQueryString('id')
+
+        if(id){
+            dispatch({type:'tagsEdit/queryId',payload:{tagId:id}})
+        }
+
+        dispatch({type:'tagsEdit/save',payload:{
+            selectedTree3: [],
+            fourAttr: {}
+        }})
 
         dispatch({type:'portrait/querySubLevelClassList'})
         dispatch({type:'tagsEdit/getAttributeListTree'})
+
     }
 
     formItemLayout = {
@@ -44,12 +56,13 @@ class Index extends React.PureComponent {
                 fourAttr,
                 attrRange,
                 selectedRange,
-                attrList,
+                attrItem,
                 checkedAttrList
             } = this.props
 
         const { getFieldDecorator } = form
-
+        const { attrList } = attrItem
+        
         const checkedKeys = selectedTree3.map(item => item.id)
 
         const modelSubmit = (selectedTree3) => {
@@ -65,8 +78,6 @@ class Index extends React.PureComponent {
             handleCancel:() => dispatch({type:'tagsEdit/save',payload:{showModel:false}})
             
         }
-
-        console.log(attrList);
 
         const propertyProps = {
             dispatch,
@@ -85,23 +96,44 @@ class Index extends React.PureComponent {
             checkedAttrList
         }
 
+        const back = () => {
+            history.push('/tags')
+        }
+
+        const submitThen = (data) => {
+            if(data.code === '0000'){
+                history.push('/tags')
+            }else{
+                Message.error(data.msg)
+            }
+        }
+
         const submit = () => {
             form.validateFields((err, values) => {
                 if(!err){
                     if(attrList.length){
-                        dispatch({
-                            type:'tagsEdit/add',
-                            payload:{
-                                ...values,
-                                attrList
-                            }
-                        }).then(data => {
-                            if(data.code == '0000'){
-                                history.push('/tags')
-                            }else{
-                                Message.error(data.msg)
-                            }
-                        })
+                        if(attrItem.tagId){
+                            dispatch({
+                                type:'tagsEdit/edit',
+                                payload:{
+                                    tagId:attrItem.tagId,
+                                    ...values,
+                                    attrList
+                                }
+                            }).then(data => {
+                                submitThen(data)
+                            })
+                        }else{
+                            dispatch({
+                                type:'tagsEdit/add',
+                                payload:{
+                                    ...values,
+                                    attrList
+                                }
+                            }).then(data => {
+                                submitThen(data)
+                            })
+                        }
                     }else{
                         Message.error('请先设置属性范围')
                     }
@@ -118,6 +150,7 @@ class Index extends React.PureComponent {
                         <Col span={5}>
                             <FormItem label="标签名称" {...this.formItemLayout}>
                                 {getFieldDecorator('tagName', {
+                                    initialValue: attrItem.tagName,
                                     rules: [
                                         { required: true, message: '请输入标签名称' },
                                         { pattern: /^([0-9\u4e00-\u9fa5]{1,8})$/, message: '请输入1-8个中文或者数字字符' }
@@ -130,6 +163,7 @@ class Index extends React.PureComponent {
                         <Col span={5}>
                             <FormItem label="类别" {...this.formItemLayout}>
                                 {getFieldDecorator('classId', {
+                                    initialValue: attrItem.classId,
                                     rules: [
                                         { required: true, message: '请选择类别' }
                                     ],
@@ -149,6 +183,7 @@ class Index extends React.PureComponent {
                     <SelectedAttr {...selectedAttrProps}></SelectedAttr>
                     <FormItem label="标签说明（规则、用途等）">
                         {getFieldDecorator('description', {
+                            initialValue: attrItem.description,
                             rules: [
                                 { max: 100, message: '最多输入100汉字' }
                             ],
@@ -157,7 +192,7 @@ class Index extends React.PureComponent {
                         )}
                     </FormItem>
                     <Button type="primary" size="large" onClick={submit}>保存</Button>
-                    <Button style={{ marginLeft: 15 }} size="large">取消</Button>
+                    <Button style={{ marginLeft: 15 }} size="large" onClick={back}>取消</Button>
                 </Form>
                 <ModalTree {...modalProps}></ModalTree>
             </div>

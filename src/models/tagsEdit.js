@@ -1,11 +1,17 @@
-import { add, getAttributeListTree, getAttributeListEnum } from '../services/tags'
+import { add, getAttributeListTree, getAttributeListEnum, queryId, edit } from '../services/tags'
 import toTreeData from '../utils/toTreeData'
 
 export default {
     namespace: 'tagsEdit',
     state: {
+        attrItem:{
+            tagName:'',
+            classId:'',
+            description:'',
+            attrList:[]
+        },
         attrTree: [],
-        selectedTree3: [{ id: '28142K', name: '3个月内手机' }, { id: '111957', name: '行业' }, { id: '25131T', name: '信用卡信用额度' }],
+        selectedTree3: [],
         selectedTree3Item: {},
         fourAttr: {},
         attrRange: [
@@ -18,8 +24,7 @@ export default {
             { value: "107", name: "大于等于" },
             { value: "108", name: "小于等于" }
         ],
-        selectedRange:"102",
-        attrList:[],
+        selectedRange:{},
         checkedAttrList:[],
         showModel: false
     },
@@ -36,6 +41,23 @@ export default {
             const res = yield call(add, payload)
 
             return res
+        },
+        *edit({ payload }, { call, put, select }) {
+            const res = yield call(edit, payload)
+            
+            return res
+        },
+        *queryId({ payload }, { call, put, select }) {
+            const res = yield call(queryId, payload)
+            
+            if(res.code === '0000'){
+                yield put({ type: 'save', payload: { attrItem: res.result } })
+            }
+        },
+        *saveAttrList({ payload }, { call, put, select }) {
+            const attrItem = yield select(state => state.tagsEdit.attrItem)
+
+            yield put({ type: 'save', payload: { attrItem: {...attrItem,attrList:payload.list } } })
         },
         *getAttributeListTree({ payload }, { call, put, select }) {
             const res = yield call(getAttributeListTree, payload)
@@ -55,9 +77,10 @@ export default {
             yield put({ type: 'save', payload: { selectedTree3 } })
         },
         *addAttrListItem({ payload }, { call, put, select }) {
-            const attrList = yield select(state => state.tagsEdit.attrList)
+            const attrItem = yield select(state => state.tagsEdit.attrItem)
+            const { attrList } = attrItem
             
-            yield put({ type: 'save', payload: { attrList:[...attrList,payload] } })
+            yield put({ type: 'save', payload: { attrItem:{...attrItem,attrList:[...attrList,payload]} } })
         },
     }
 }

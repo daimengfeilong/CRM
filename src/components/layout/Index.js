@@ -1,7 +1,6 @@
 import React from 'react';
-import { connect } from 'dva';
 import { withRouter } from 'dva/router'
-import { Layout,Spin } from 'antd';
+import { Layout } from 'antd';
 import './layout.less'
 import Headers from './Header'
 import Siders from './Sider'

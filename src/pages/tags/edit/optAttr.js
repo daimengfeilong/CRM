@@ -1,73 +1,79 @@
 import { Checkbox, Row, Col } from 'antd';
 
-const getHasChecked = (arr,name) => {
-    
-    return arr.find(item => item === name)
-}
 
-const opt = ({ dispatch,fourAttr,attrList,checkedAttrList}) => {
+const opt = ({ dispatch, fourAttr, attrList, checkedAttrList }) => {
     const { datas = [] } = fourAttr
 
-    console.log(checkedAttrList);
-    
-    const onChange = (e) => {
-        const { checked, value } = e.target
-        if(checked){
-            dispatch({
-                type:'tagsEdit/save',
-                payload:{
-                    checkedAttrList:[...checkedAttrList,value]
-                }
-            })
-            dispatch({
-                type:'tagsEdit/addAttrListItem',
-                payload:{
-                    attrId:fourAttr.attrId,
-                    id:`AL${Date.now()}`,
-                    name:value,
-                    optName:value,
-                    attrName:value
-                }
-            })
-        }else{
-            dispatch({
-                type:'tagsEdit/save',
-                payload:{
-                    attrList:attrList.filter(item => item.optName !== value)
-                }
-            })
-            dispatch({
-                type:'tagsEdit/save',
-                payload:{
-                    checkedAttrList:checkedAttrList.filter(item => item !== value)
-                }
-            })
-        }
+    const saveAttrList = (list) => {
+        dispatch({
+            type: 'tagsEdit/saveAttrList',
+            payload: { list }
+        })
     }
+
+    const addAttrListItem = (name) => {
+        dispatch({
+            type: 'tagsEdit/addAttrListItem',
+            payload: {
+                attrId: fourAttr.attrId,
+                alid: `AL${Date.now()}`,
+                name,
+                optName: name,
+                attrName: name
+            }
+        })
+    }
+
+    const difference = (a,b) => {
+        //找出两个数组之间的差集
+        const difference = a.concat(b).filter(v => !a.includes(v) || !b.includes(v))
+
+        return difference[0]
+    }
+
+
+
+    const onChange = (values) => {
+        const flag = difference(checkedAttrList,values)
+
+        if(checkedAttrList.length < values.length){
+            addAttrListItem(flag)
+        }else{
+            saveAttrList(attrList.filter(item => item.optName != flag))
+        }
+
+        dispatch({
+            type: 'tagsEdit/save',
+            payload: {
+                checkedAttrList:values
+            }
+        })
+
+
+
+    }
+
 
     return (
         <>
             {
-                datas[0] ? 
-                    <Row>
-                        {
-                            datas.map((item,index) => (
-                                <Col span={12} style={{marginTop:10}} key={index}>
-                                    {
-                                        getHasChecked(checkedAttrList,item) ?
-                                        <Checkbox defaultChecked onChange={onChange} value={item}>{item}</Checkbox>
-                                        :
+                datas[0] ?
+                    <Checkbox.Group style={{ width: '100%' }} onChange={onChange} value={checkedAttrList}>
+                        <Row>
+                            {
+                                datas.map((item, index) => (
+                                    <Col span={12} style={{ marginTop: 10 }} key={index}>
                                         <Checkbox onChange={onChange} value={item}>{item}</Checkbox>
-                                    }
-                                </Col>
-                            ))
-                        }
-                    </Row>
-                :
-                <p>暂无数据！</p>
+                                    </Col>
+                                ))
+                            }
+                        </Row>
+                    </Checkbox.Group>
+                    :
+                    <p>暂无数据！</p>
             }
         </>
-        
+
     )
 }
 

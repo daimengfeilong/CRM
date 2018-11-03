@@ -1,8 +1,7 @@
 import React from 'react';
-import { Router, Route, Switch } from 'dva/router';
+import { Router, Switch } from 'dva/router';
 import { LocaleProvider } from 'antd';
 import zh_CN from 'antd/lib/locale-provider/zh_CN';
-import dynamic from 'dva/dynamic';
 import Layout from '../components/layout/Index';
 import ContentRoute from './contentRoute'
 

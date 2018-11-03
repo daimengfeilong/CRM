@@ -8,6 +8,22 @@ export function query(data = {}) {
     })
 }
 
+export function queryId(data = {}) {
+    return request({
+        url: '/api/crm/tag/getTagByTagId',
+        method: 'POST',
+        data
+    })
+}
+
+export function edit(data = {}) {
+    return request({
+        url: '/api/crm/tag/updateTag',
+        method: 'POST',
+        data
+    })
+}
+
 export function add(payload) {
     return request({
         url: '/api/crm/tag/addTag',

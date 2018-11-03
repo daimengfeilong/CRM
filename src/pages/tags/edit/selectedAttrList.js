@@ -1,12 +1,14 @@
-import { Row, Col, Tag } from 'antd'
+import { Tag } from 'antd'
 
 const selectedAttrList = ({ dispatch, attrList,checkedAttrList }) => {
 
     const onClose = (row) => {
+        const id = row.alid ? row.alid : row.attrId
+
         dispatch({
             type:'tagsEdit/save',
             payload:{
-                attrList:attrList.filter(item => item.id !== row.id)
+                attrList:attrList.filter(item => item[id] !== row[id])
             }
         })
         
@@ -24,7 +26,7 @@ const selectedAttrList = ({ dispatch, attrList,checkedAttrList }) => {
             <div className="body">
                 {
                     attrList.map(item => (
-                        <Tag key={item.id} closable onClose={() => onClose(item)}>{item.name}</Tag>
+                        <Tag key={item.alid || item.attrId} closable onClose={() => onClose(item)}>{item.attrName}</Tag>
                     ))
                 }
             </div>

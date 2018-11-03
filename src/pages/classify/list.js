@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'dva';
-import { Link } from 'react-router-dom'
 import { Table, Divider, Modal,Message } from 'antd';
 import Head from './Head'
 import ClassModal from './Modal'
@@ -62,7 +61,7 @@ class List extends React.Component {
                         type: 'classify/delClass',
                         payload:{classId:id}
                     }).then(data => {
-                        if(data.code == '0000'){
+                        if(data.code === '0000'){
 
                         }else{
                             Message.error(data.msg)

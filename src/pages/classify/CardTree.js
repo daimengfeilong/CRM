@@ -1,4 +1,4 @@
-import { Row, Col, Input, Button, Message, Card, Icon } from 'antd';
+import { Input, Button, Message, Card, Icon } from 'antd';
 
 const Search = Input.Search
 
@@ -55,13 +55,13 @@ const CardTree = ({ dispatch, classItem }) => {
 
     //删除子分类
     const delSubClass = (id) => {
-        if (subClassList.every(item => item.isSelected == false)) return false;
+        if (subClassList.every(item => item.isSelected === false)) return false;
 
         if (classItem.classId) {
             dispatch({
                 type: 'classify/delSubClass'
             }).then(data => {
-                if (data.code == '0000') {
+                if (data.code === '0000') {
                     dispatch({ type: 'classify/handlerDel' })
                 } else {
                     Message.error(data.msg)

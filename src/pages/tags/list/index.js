@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'dva';
+import { Link } from 'react-router-dom'
 import { Table, Divider, Tag, Modal } from 'antd';
 import Head from './Head'
 
@@ -30,11 +31,11 @@ class List extends React.Component {
         }
 
         const onPageChange = (page, pageSize) => {
-            dispatch({ type: 'classify/query',payload:{pageNo:page}})
+            dispatch({ type: 'tags/query',payload:{pageNo:page}})
         }
 
         const onShowSizeChange = (page, pageSize) => {
-            dispatch({ type: 'classify/query',payload:{pageSize}})
+            dispatch({ type: 'tags/query',payload:{pageSize}})
         }
 
         const paginationProps = {
@@ -87,19 +88,19 @@ class List extends React.Component {
             title: '操作',
             key: 'action',
             render: (row, record) => (
-                <span>
-                    <a href="javascript:">编辑</a>
+                <>
+                    <Link to={`/tags/edit?id=${row.tagId}`}>编辑</Link>
                     <Divider type="vertical" />
                     <a href="javascript:">删除</a>
-                </span>
+                </>
             ),
         }];
 
         return (
-            <div>
+            <>
                 <Head dispatch={dispatch} />
                 <Table columns={columns} dataSource={list} rowKey="tagId" pagination={paginationProps} />
-            </div>
+            </>
         );
     }
 }

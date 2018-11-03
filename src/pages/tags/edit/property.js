@@ -1,9 +1,7 @@
-import { Input, Row, Col, Select, Button } from 'antd'
+import { Row, Col, Button } from 'antd'
 import ThreeTree from './threeTree'
 import FourAttr from './fourAttr'
 
-const InputGroup = Input.Group
-const Option = Select.Option
 
 const Property = ({dispatch,selectedTree3,selectedTree3Item,fourAttr,attrRange,selectedRange,attrList,checkedAttrList}) => {
 
@@ -31,7 +29,7 @@ const Property = ({dispatch,selectedTree3,selectedTree3Item,fourAttr,attrRange,s
             </div>
             <div className="body">
                 <Row>
-                    <Col span={6}>
+                    <Col span={6} className="three-row">
                         <ThreeTree {...threeTreeProps}></ThreeTree>
                     </Col>
                     <Col span={18}>

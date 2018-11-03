@@ -1,4 +1,4 @@
-import { query,add,queryId,del }  from '../services/tags'
+import { query,queryId,del }  from '../services/tags'
 
 export default{
     namespace: 'tags',
