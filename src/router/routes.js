@@ -48,7 +48,7 @@ export default [
                 path: '/classify',
                 title: '分类列表',
                 show: true,
-                component: () => import('../pages/classify/list'),
+                component: () => import('../pages/classify/index'),
             }
         ]
     },
@@ -65,17 +65,17 @@ export default [
             }
         ]
     },
-    // {
-    //     title: '属性管理',
-    //     icon: require('../assets/layout/icon_sxsz.png'),
-    //     path: '/attribute',
-    //     subRoutes: [
-    //         {
-    //             path: '/attribute',
-    //             title: '属性列表',
-    //             show: true,
-    //             component: () => import('../pages/attribute/list'),
-    //         }
-    //     ]
-    // }
+    {
+        title: '属性管理',
+        icon: require('../assets/layout/icon_sxsz.png'),
+        path: '/attribute',
+        subRoutes: [
+            {
+                path: '/attribute',
+                title: '属性列表',
+                show: true,
+                component: () => import('../pages/attribute/index'),
+            }
+        ]
+    }
 ]

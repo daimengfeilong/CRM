@@ -118,11 +118,11 @@ class List extends React.Component {
         }];
 
         return (
-            <div>
-                <ClassModal {...modalProps} />
+            <>
+                {showModel && <ClassModal {...modalProps} />}
                 <Head dispatch={dispatch} />
                 <Table columns={columns} dataSource={list} rowKey="classId" pagination={paginationProps} />
-            </div>
+            </>
         );
     }
 }
