@@ -1,42 +1,44 @@
-import { Tabs,Card } from 'antd'
 import React from 'react'
 import {connect} from 'dva'
-import { withRouter } from 'dva/router'
 import UserTabs from './UserTabs'
 import  {getQueryString} from '../../../utils/utils'
-
 import Head from './Head'
 
-const TabPane = Tabs.TabPane;
 
 class userDetail extends React.Component {
   componentDidMount(){
     const { dispatch } = this.props
     const  idCard=getQueryString('idCard')
     const  userNo=getQueryString('userNo')
-    dispatch({type:'userDetail/saveIdCardAndUserNo',payload:{userNo,idCard}})
-    dispatch({ type: 'userDetail/queryUserTagClassList',payload:{idCard,type:1}});
-    dispatch({ type: 'userDetail/queryUserBasicInfo',payload:{idCard,type:1}});
-
+    dispatch({type:'userDetail/save',payload:{userNo,idCard}})
+    dispatch({ type: 'userDetail/queryUserTagClassList'});//获取用户taglist
+    dispatch({ type: 'userDetail/queryUserBasicInfo',payload:{type:1}});//获取用户级别信息
+    dispatch({ type: 'userDetail/queryUserInfo'});//获取公共用户信息
+    dispatch({ type: 'userDetail/queryUserRemark'});//获取公共用户信息
   }
 
 
 
   render () {
-    const { userNo,dispatch,idCard }=this.props
+    const { userNo,dispatch,idCard,userInfo,showModel,userTagList,description }=this.props
+    const tabProps=this.props
     const headProps={
       dispatch,
-      userNo
+      userNo,
+      userInfo,
+      showModel,
+      userTagList,
+      description
     }
     const userProps={
       dispatch,
       userNo,
-      idCard
+      idCard,
+      tabProps
     }
 
-
     return (
-      <div>
+      <div id="userDetail">
         <Head {...headProps}/>
         <UserTabs {...userProps}/>
 
