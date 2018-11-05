@@ -15,12 +15,6 @@ export default{
                 ...payload
             }
         },
-        showModel(state, {payload}){
-            return {
-                ...state,
-                showModel:payload
-            }
-        },
         addSubClass(state, {payload}){
             let { subClassList } = state.classItem
 

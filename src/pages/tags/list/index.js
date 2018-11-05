@@ -24,7 +24,7 @@ class List extends React.Component {
                 onOk() {
                     dispatch({
                         type: 'tags/del',
-                        payload: { _id: id }
+                        payload: { tagId: id }
                     })
                 },
             });
@@ -91,7 +91,7 @@ class List extends React.Component {
                 <>
                     <Link to={`/tags/edit?id=${row.tagId}`}>编辑</Link>
                     <Divider type="vertical" />
-                    <a href="javascript:">删除</a>
+                    <a href="javascript:" onClick={() => del(row.tagId)}>删除</a>
                 </>
             ),
         }];

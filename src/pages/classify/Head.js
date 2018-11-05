@@ -21,8 +21,10 @@ const Head = ({dispatch}) => {
         })
 
         dispatch({
-            type:'classify/showModel',
-            payload:true
+            type: 'classify/save',
+            payload: {
+                showModel:true
+            }
         })
     }
 

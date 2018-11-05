@@ -24,6 +24,14 @@ export function edit(data = {}) {
     })
 }
 
+export function del(data = {}) {
+    return request({
+        url: '/api/crm/tag/delTag',
+        method: 'POST',
+        data
+    })
+}
+
 export function add(payload) {
     return request({
         url: '/api/crm/tag/addTag',

@@ -15,21 +15,45 @@ const { Content } = Layout;
  * @returns Index
  * 
  */
-const layout = ({children,history}) => {
-    return (
-        <Layout style={{ minHeight: '100vh' }} id='crm-layout'>
-            <Siders history={history} />
-            <Layout>
-                <Headers history={history} />
-                <Content style={{ margin: '15px' }}>
-                    <Breadcrumbs history={history} />
-                    <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
-                        {children}
-                    </div>
-                </Content>
+class layout extends React.Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            collapsed: false
+        }
+    }
+
+    toggle = () => {
+        this.setState({
+            collapsed: !this.state.collapsed
+        })
+    }
+    render() {
+        const { children, history } = this.props
+        const { collapsed } = this.state
+
+        const layoutProps = {
+            collapsed,
+            toggle:this.toggle,
+            history
+        }
+
+        return (
+            <Layout style={{ minHeight: '100vh' }} id='crm-layout'>
+                <Siders {...layoutProps} />
+                <Layout>
+                    <Headers {...layoutProps} />
+                    <Content style={{ margin: '15px' }}>
+                        <Breadcrumbs {...layoutProps} />
+                        <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+                            {children}
+                        </div>
+                    </Content>
+                </Layout>
             </Layout>
-        </Layout>
-    );
-    
+        );
+
+    }
 }
 export default withRouter(layout)

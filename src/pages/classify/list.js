@@ -78,8 +78,10 @@ class List extends React.Component {
                 payload:{classId:id}
             }).then(data => {
                 dispatch({
-                    type: 'classify/showModel',
-                    payload: true
+                    type: 'classify/save',
+                    payload: {
+                        showModel:true
+                    }
                 })
             })
         }

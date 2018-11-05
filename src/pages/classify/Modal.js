@@ -44,8 +44,10 @@ const modal = ({ showModel, dispatch, form, classItem }) => {
     //关闭弹窗
     const handleCancel = () => {
         dispatch({
-            type: 'classify/showModel',
-            payload: false
+            type: 'classify/save',
+            payload: {
+                showModel:false
+            }
         })
 
         form.resetFields()

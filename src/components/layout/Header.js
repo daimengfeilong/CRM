@@ -1,4 +1,3 @@
-import { connect } from 'dva';
 import { Layout, Menu, Icon } from 'antd';
 
 const { Header } = Layout;
@@ -7,21 +6,12 @@ const SubMenu = Menu.SubMenu;
 /**
  * 头部组件
  * zxl 
- * @param {collapsed,dispatch,history}
+ * @param {collapsed,toggle,history}
  * @returns Headers
  * 
  */
-const Headers = ({collapsed,dispatch,history}) => {
-    const loginOut = () => {
-        // localStorage.removeItem('token')
-        // history.push('/login')
-    }
+const Headers = ({collapsed,toggle}) => {
 
-    const toggle = () => {
-        dispatch({
-            type:'layout/toggle'
-        })
-    }
     return (
         <Header className="header" style={{ background: '#fff', padding: 0 }}>
             <div className="button" onClick={toggle}>
@@ -44,7 +34,7 @@ const Headers = ({collapsed,dispatch,history}) => {
                             guest
                         </span>}
                     >
-                        <Menu.Item key="logout" onClick={loginOut}>
+                        <Menu.Item key="logout">
                             Sign out
                         </Menu.Item>
                     </SubMenu>
@@ -54,9 +44,4 @@ const Headers = ({collapsed,dispatch,history}) => {
     )
 }
 
-function mapStateToProps(state) {
-    return {
-        ...state.layout
-    }
-}
-export default connect(mapStateToProps)(Headers);
+export default Headers

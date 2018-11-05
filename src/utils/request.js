@@ -15,14 +15,8 @@ function checkStatus(response) {
 }
 
 function checkData(data) {
-    
-    if(data.code === 911){
-        const { origin,pathname } = window.location
-
+    if(data.code === '9999'){
         Message.error(data.msg);
-        setTimeout(() => {
-            window.location.href = `${origin}${pathname}#/login`
-        },2000)
     }else{
         return data
     }

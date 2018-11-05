@@ -14,12 +14,6 @@ export default{
                 ...state,
                 ...payload
             }
-        },
-        showModel(state, {payload}){
-            return {
-                ...state,
-                showModel:payload
-            }
         }
     },
     effects: {
@@ -41,13 +35,13 @@ export default{
             yield put({type:'save',payload:{data:res.data.data[0]}})
         },
         *del({ payload }, { call, put, select }){
-            const state = yield select(state => state.tags.tags)
+            const state = yield select(state => state.tags.list)
             const res = yield call(del,payload)
 
-            if(res.data.code === 1){
-                const tags = state.filter(item => item._id != payload._id)
+            if(res.code === '0000'){
+                const list = state.filter(item => item.tagId !== payload.tagId)
 
-                yield put({type:'save',payload:{tags}})
+                yield put({type:'save',payload:{list}})
             }
         }
     }

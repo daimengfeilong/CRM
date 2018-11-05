@@ -67,14 +67,14 @@ const getExpandedKeys = (value, tree) => {
     return expandedKeys.filter((item, i, self) => item && self.indexOf(item) === i);
 }
 
-const getKeysByName = (keys,tree) => {
+const getKeysByName = (keys, tree) => {
     const temp = []
 
     const deepTree = (item) => {
         if (keys.includes(item.id)) {
             temp.push({
-                id:item.id,
-                name:item.name
+                id: item.id,
+                name: item.name
             })
         } else {
             if (item.children) {
@@ -89,7 +89,7 @@ const getKeysByName = (keys,tree) => {
 }
 
 class modal extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props)
 
         const { checkedKeys } = this.props
@@ -98,22 +98,22 @@ class modal extends React.Component {
             expandedKeys: checkedKeys,
             searchValue: '',
             autoExpandParent: true,
-            historyCheckedKeys:checkedKeys
+            historyCheckedKeys: checkedKeys
         }
     }
 
-     static  getDerivedStateFromProps(props, state){
-       if (props.checkedKeys !== state.historyCheckedKeys){
-         return {
-           checkedKeys: props.checkedKeys,
-           expandedKeys: props.checkedKeys,
-           searchValue: '',
-           autoExpandParent: true,
-           historyCheckedKeys:props.checkedKeys
-         };
-       }
-       return null;
-      }
+    static getDerivedStateFromProps(props, state) {
+        if (props.checkedKeys !== state.historyCheckedKeys) {
+            return {
+                checkedKeys: props.checkedKeys,
+                expandedKeys: props.checkedKeys,
+                searchValue: '',
+                autoExpandParent: true,
+                historyCheckedKeys: props.checkedKeys
+            };
+        }
+        return null;
+    }
 
     handleCancel = () => {
         this.props.handleCancel()
@@ -122,7 +122,7 @@ class modal extends React.Component {
 
     handleSubmit = () => {
         const { tree } = this.props
-        const checkedKeys = getKeysByName(this.state.checkedKeys,tree)
+        const checkedKeys = getKeysByName(this.state.checkedKeys, tree)
 
         this.props.onSubmit(checkedKeys)
         this.handleCancel()
@@ -157,7 +157,7 @@ class modal extends React.Component {
 
     render() {
         const { showModel, tree, title } = this.props
-        const { searchValue,expandedKeys,autoExpandParent,checkedKeys } = this.state
+        const { searchValue, expandedKeys, autoExpandParent, checkedKeys } = this.state
 
         const treeProps = {
             tree,
@@ -165,8 +165,8 @@ class modal extends React.Component {
             expandedKeys,
             checkedKeys,
             autoExpandParent,
-            onCheck:this.onCheck,
-            onExpand:this.onExpand,
+            onCheck: this.onCheck,
+            onExpand: this.onExpand,
         }
 
         return (
