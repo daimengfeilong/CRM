@@ -17,9 +17,9 @@ function checkStatus(response) {
 function checkData(data) {
     if(data.code === '9999'){
         Message.error(data.msg);
-    }else{
-        return data
     }
+    
+    return data
 }
 
 function queryParams(params) {
