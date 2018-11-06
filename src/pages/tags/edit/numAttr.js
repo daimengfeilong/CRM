@@ -36,8 +36,11 @@ class num extends React.Component {
     render() {
         const { dispatch, fourAttr, attrRange, selectedRange } = this.props
         const { datas = [] } = fourAttr
-        const { min } = datas.find(item => item.min)
-        const { max } = datas.find(item => item.max)
+            
+        if(datas.length && datas[0]){
+            var { min } = datas.find(item => item.min)
+            var { max } = datas.find(item => item.max)
+        }
 
         const rangeChange = (value) => {
             dispatch({
@@ -125,7 +128,9 @@ class num extends React.Component {
                             <Input style={{ width: 240, textAlign: 'center' }} placeholder="请输入" onBlur={blurEqual} />
                     }
                 </InputGroup>
-                <p>参考范围{`${min} ~ ${max}`}</p>
+                <p>
+                    参考范围：{min ? `${min} - ${max}` : '无'}
+                </p>
                 <p style={{ color: '#999' }}>*所有数字均不带单位</p>
             </>
         )

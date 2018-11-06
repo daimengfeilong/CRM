@@ -1,15 +1,15 @@
 import React from 'react'
 import { connect } from 'dva';
-import { Table } from 'antd';
+import { Table, Spin } from 'antd';
 import Modal from './Modal'
 
 class List extends React.Component {
 
-    componentDidMount(){
+    componentDidMount() {
         const { dispatch } = this.props
 
         dispatch({
-            type:'attribute/query'
+            type: 'attribute/query'
         })
     }
 
@@ -19,20 +19,20 @@ class List extends React.Component {
         dispatch({
             type: 'tagsEdit/getAttributeListEnum',
             payload: {
-                attrId:id
+                attrId: id
             }
-        }).then(data => {            
+        }).then(data => {
             dispatch({
                 type: 'attribute/save',
                 payload: {
-                    showModel:true
+                    showModel: true
                 }
             })
         })
     }
 
     render() {
-        const { dispatch, list, pagination, showModel, attrItem } = this.props
+        const { dispatch, list, pagination, showModel, attrItem, loading } = this.props
 
         const modalProps = {
             dispatch,
@@ -41,51 +41,51 @@ class List extends React.Component {
         }
 
         const onPageChange = (page, pageSize) => {
-            dispatch({ type: 'attribute/query',payload:{pageNo:page}})
+            dispatch({ type: 'attribute/query', payload: { pageNo: page } })
         }
 
         const onShowSizeChange = (page, pageSize) => {
-            dispatch({ type: 'attribute/query',payload:{pageSize}})
+            dispatch({ type: 'attribute/query', payload: { pageSize } })
         }
 
         const paginationProps = {
-            showQuickJumper:true,
-            showSizeChanger:true,
-            total:pagination.total,
-            onChange:onPageChange,
-            onShowSizeChange:onShowSizeChange,
-            showTotal:total => `共 ${total} 条`,
+            showQuickJumper: true,
+            showSizeChanger: true,
+            total: pagination.total,
+            onChange: onPageChange,
+            onShowSizeChange: onShowSizeChange,
+            showTotal: total => `共 ${total} 条`,
         }
 
         const columns = [{
             title: '序号',
             dataIndex: 'index',
             key: 'index',
-            render (text, record, index) {
+            render(text, record, index) {
                 return index + 1
             }
         },
-          {
+        {
             title: '一级属性',
             dataIndex: 'firstAttrName',
             key: 'firstAttrName'
         },
-          {
+        {
             title: '二级属性',
             dataIndex: 'secondAttrName',
             key: 'secondAttrName'
-          },
-          {
+        },
+        {
             title: '三级属性',
             dataIndex: 'thirdAttrName',
             key: 'thirdAttrName'
-          },
-          {
+        },
+        {
             title: '包含的四级属性',
             dataIndex: 'fourthAttrNum',
             key: 'fourthAttrNum'
-          },
-          {
+        },
+        {
             title: '操作',
             key: 'action',
             render: (row, record) => (
@@ -94,17 +94,18 @@ class List extends React.Component {
         }];
 
         return (
-            <>
+            <Spin spinning={loading}>
                 {showModel && <Modal {...modalProps}></Modal>}
                 <Table columns={columns} dataSource={list} pagination={paginationProps} rowKey="thirdAttrId" />
-            </>
+            </Spin>
         );
     }
 }
 function mapStateToProps(state) {
     return {
         ...state.attribute,
-        attrItem:state.tagsEdit.fourAttr
+        attrItem: state.tagsEdit.fourAttr,
+        loading: state.loading.global
     }
 }
 

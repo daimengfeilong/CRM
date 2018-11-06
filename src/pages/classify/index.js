@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'dva';
-import { Table, Divider, Modal,Message } from 'antd';
+import { Table, Divider, Modal, Message, Spin } from 'antd';
 import Head from './Head'
 import ClassModal from './Modal'
 import './classify.less'
@@ -16,14 +16,14 @@ const confirm = Modal.confirm;
  */
 class List extends React.Component {
 
-    componentDidMount(){
+    componentDidMount() {
         const { dispatch } = this.props
 
-        dispatch({ type: 'classify/query'});
+        dispatch({ type: 'classify/query' });
     }
 
     render() {
-        const { list, dispatch,showModel,subClass,classItem,pagination } = this.props
+        const { list, dispatch, showModel, subClass, classItem, pagination, loading } = this.props
 
         const modalProps = {
             showModel,
@@ -33,20 +33,20 @@ class List extends React.Component {
         }
 
         const onPageChange = (page, pageSize) => {
-            dispatch({ type: 'classify/query',payload:{pageNo:page}})
+            dispatch({ type: 'classify/query', payload: { pageNo: page } })
         }
 
         const onShowSizeChange = (page, pageSize) => {
-            dispatch({ type: 'classify/query',payload:{pageSize}})
+            dispatch({ type: 'classify/query', payload: { pageSize } })
         }
 
         const paginationProps = {
-            showQuickJumper:true,
-            showSizeChanger:true,
-            total:pagination.total,
-            onChange:onPageChange,
-            onShowSizeChange:onShowSizeChange,
-            showTotal:total => `共 ${total} 条`,
+            showQuickJumper: true,
+            showSizeChanger: true,
+            total: pagination.total,
+            onChange: onPageChange,
+            onShowSizeChange: onShowSizeChange,
+            showTotal: total => `共 ${total} 条`,
         }
 
         //删除分类
@@ -54,16 +54,16 @@ class List extends React.Component {
             confirm({
                 title: '确认删除？',
                 content: '',
-                okText:'确认',
-                cancelText:'取消',
+                okText: '确认',
+                cancelText: '取消',
                 onOk() {
                     dispatch({
                         type: 'classify/delClass',
-                        payload:{classId:id}
+                        payload: { classId: id }
                     }).then(data => {
-                        if(data.code === '0000'){
+                        if (data.code === '0000') {
 
-                        }else{
+                        } else {
                             Message.error(data.msg)
                         }
                     })
@@ -75,12 +75,12 @@ class List extends React.Component {
         const onEdit = (id) => {
             dispatch({
                 type: 'classify/queryClassId',
-                payload:{classId:id}
+                payload: { classId: id }
             }).then(data => {
                 dispatch({
                     type: 'classify/save',
                     payload: {
-                        showModel:true
+                        showModel: true
                     }
                 })
             })
@@ -90,9 +90,9 @@ class List extends React.Component {
             title: '序号',
             dataIndex: 'index',
             key: 'index',
-            render (text, record, index) {
+            render(text, record, index) {
                 return index + 1
-            } 
+            }
         },
         {
             title: '分类ID',
@@ -102,7 +102,7 @@ class List extends React.Component {
             title: '分类名称',
             dataIndex: 'className',
             key: 'className',
-            render:(row,record) => (
+            render: (row, record) => (
                 <span>{`${row}（${record.subClassNum}）`}</span>
             )
         }, {
@@ -118,16 +118,19 @@ class List extends React.Component {
         }];
 
         return (
-            <>
+            <Spin spinning={loading}>
                 {showModel && <ClassModal {...modalProps} />}
                 <Head dispatch={dispatch} />
                 <Table columns={columns} dataSource={list} rowKey="classId" pagination={paginationProps} />
-            </>
+            </Spin>
         );
     }
 }
 function mapStateToProps(state) {
-    return state.classify
+    return {
+        ...state.classify,
+        loading: state.loading.global
+    }
 }
 
 export default connect(mapStateToProps)(List);

@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'dva';
 import { Link } from 'react-router-dom'
-import { Table, Divider, Tag, Modal } from 'antd';
+import { Table, Divider, Tag, Modal, Spin } from 'antd';
 import Head from './Head'
 
 const confirm = Modal.confirm;
@@ -15,7 +15,7 @@ class List extends React.Component {
     }
 
     render() {
-        const { list, dispatch, pagination } = this.props
+        const { list, dispatch, pagination, loading } = this.props
 
         const del = (id) => {
             confirm({
@@ -97,15 +97,18 @@ class List extends React.Component {
         }];
 
         return (
-            <>
+            <Spin spinning={loading}>
                 <Head dispatch={dispatch} />
                 <Table columns={columns} dataSource={list} rowKey="tagId" pagination={paginationProps} />
-            </>
+            </Spin>
         );
     }
 }
 function mapStateToProps(state) {
-    return state.tags
+    return {
+        ...state.tags,
+        loading:state.loading.global
+    }
 }
 
 export default connect(mapStateToProps)(List);
