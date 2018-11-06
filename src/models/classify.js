@@ -36,7 +36,7 @@ export default{
 
             //保存子类编辑
             subClassList.map(item => {
-                if(item.cid == payload.cid){
+                if(item.cid === payload.cid){
                     item.className = payload.className
                     item.isEdit = false
                 }
@@ -55,7 +55,7 @@ export default{
 
             //显示编辑的状态
             subClassList.map(item => {
-                if(item.cid == payload.cid){
+                if(item.cid === payload.cid){
                     item.isEdit = true
                 }
             })
@@ -73,7 +73,7 @@ export default{
 
             //选择子分类
             subClassList.map(item => {
-                if(item.cid == payload.cid){
+                if(item.cid === payload.cid){
                     item.isSelected = !item.isSelected
                 }
             })
@@ -129,8 +129,8 @@ export default{
             
             const res = yield call(delClass,payload)
 
-            if(res.code == '0000'){
-                const list = state.filter(item => item.classId != payload.classId)
+            if(res.code === '0000'){
+                const list = state.filter(item => item.classId !== payload.classId)
 
                 yield put({type:'save',payload:{list}})
             }

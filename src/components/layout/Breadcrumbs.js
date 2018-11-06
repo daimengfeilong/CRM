@@ -1,5 +1,6 @@
 import routes from '../../router/routes'
 import { Link } from 'react-router-dom'
+import { withRouter } from 'dva/router'
 
 /**
  * 面包屑
@@ -10,7 +11,7 @@ import { Link } from 'react-router-dom'
  */
 const Breadcrumbs = ({ history }) => {
     const { pathname } = history.location
-    
+
     let content = []
 
     //递归面包屑
@@ -23,7 +24,7 @@ const Breadcrumbs = ({ history }) => {
                 if (Array.isArray(item.subRoutes)) {
                     deepBreadcrumbs(item.subRoutes)
                 }
-                
+
             }
         })
     }
@@ -32,9 +33,9 @@ const Breadcrumbs = ({ history }) => {
 
     return (
         <div style={{ marginBottom: '15px' }} id="breadcrumbs">
-            { content }
+            {content}
         </div>
     )
 }
 
-export default Breadcrumbs
+export default withRouter(Breadcrumbs)
