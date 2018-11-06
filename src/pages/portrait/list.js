@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'dva';
-import { Link } from 'react-router-dom'
 import { Table, Divider, Modal,Message } from 'antd';
 import Head from './Head'
 import ClassModal from './Modal'
@@ -10,7 +9,7 @@ const confirm = Modal.confirm;
 
 const  getData=(data)=>{
   return  data.map((item)=>{
-    if (item.tagList.length!=0){
+    if (item.tagList.length!==0){
       let temp={}
       temp.id=item.classId
       temp.name=item.className
@@ -46,7 +45,7 @@ class List extends React.PureComponent {
     }
 
     render() {
-        const { list,classList,tagsList, dispatch,showModel,portraitItem,showTagModel,listClassTag,pagination } = this.props
+        const { list,classList, dispatch,showModel,portraitItem,showTagModel,listClassTag,pagination } = this.props
 
         const modalProps = {
               showModel,
@@ -91,8 +90,7 @@ class List extends React.PureComponent {
                         type: 'portrait/delPortrait',
                         payload:portraitId
                     }).then(data => {
-                        if(data.code == '0000'){
-
+                        if(data.code === '0000'){
                         }else{
                             Message.error(data.msg)
                         }

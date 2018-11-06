@@ -1,5 +1,6 @@
 import { queryUserTagClassList,queryUserBasicInfo,queryUserAccountInfo,queryUserPortraitList,queryUserInfo,updateUserRemark,queryUserLoanInfo,queryUserInsuranceInfo
         ,queryUserRemark} from '../services/userList'
+import {queryPortraitId} from '../services/portrait'
 
 export default {
   namespace: 'userDetail',
@@ -25,6 +26,7 @@ export default {
     },
     creditList:[],
     insureList:[],
+    portraitItem:''
   },
   reducers: {
     save (state, {payload}) {
@@ -54,6 +56,10 @@ export default {
       const idCard = yield select(state => state.userDetail.idCard)
       const res = yield call(queryUserPortraitList,  {idCard:idCard,type:1})
       yield put({type: "save", payload: {userPortraitList: res.result}})
+    },
+    *queryPortraitId({payload:portraitId}, {call, put, select}) {
+      const res = yield call(queryPortraitId,{ portraitId})
+      yield put({type:'save',payload:{portraitItem:res.result}})
     },
     *queryUserInfo({payload}, {call, put, select}) {
       const idCard = yield select(state => state.userDetail.idCard)

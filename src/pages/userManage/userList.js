@@ -1,10 +1,9 @@
 import React from 'react'
 import { connect } from 'dva'
 import { withRouter } from 'dva/router'
-import { Link,BrowserRouter as Router } from 'react-router-dom'
-import { routerRedux, Route } from 'dva/router';
+import { Link } from 'react-router-dom'
 import './userList.less'
-import { Input, Modal, Form, Message,  Tree,  Icon, List, Popconfirm, Button, Table } from 'antd'
+import {  Table } from 'antd'
 import HeadUserList from './head'
 
 let params = {
@@ -13,15 +12,11 @@ let params = {
 }
 class userList extends React.Component {
   componentDidMount () {
-    const { dispatch, history } = this.props
+    const { dispatch } = this.props
 
     dispatch({ type: 'userList/query', payload: {pageNo:1, pageSize:10, params}});
   }
 
-  toDetail (text, record) {
-    console.log(text)
-    console.log(record)
-  }
 
   render() {
     const { dispatch, list, pagination} = this.props

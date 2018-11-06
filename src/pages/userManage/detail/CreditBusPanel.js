@@ -38,23 +38,15 @@ const columns = [
 
 
 
-const CreditBusPanel =({dispatch,creditList,pagination,type})=>{
+const CreditBusPanel =({dispatch,creditList,pagination})=>{
 
   const onPageChange = (page, pageSize) => {
-    if (type===1){
       dispatch({ type: 'userDetail/queryUserLoanInfo',payload:{pageNo:page}})
-    } else {
-      dispatch({ type: 'userDetail/queryUserLoanInfo',payload:{pageNo:page}})
-    }
 
   }
 
   const onShowSizeChange = (page, pageSize) => {
-    if (type===1){
       dispatch({ type: 'userDetail/queryUserLoanInfo',payload:{pageNo:page,pageSize}})
-    } else {
-      dispatch({ type: 'userDetail/queryUserLoanInfo',payload:{pageNo:page,pageSize}})
-    }
 
   }
   const paginationProps = {

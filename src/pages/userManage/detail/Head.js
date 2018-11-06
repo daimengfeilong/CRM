@@ -6,7 +6,7 @@ const UserTags=({data})=>{
 
   return data.map((item)=>{
 
-    return (<Tag color="#2db7f5"  key={item.classId} style={{marginLeft:'10px'}} >{item.className}</Tag>)
+    return (<Tag color="#7070ef"  key={item.classId} style={{marginLeft:'10px'}} >{item.className}</Tag>)
 
   })
 
@@ -37,7 +37,9 @@ const Head=({dispatch,userNo,userInfo,showModel,userTagList,description})=>{
             </div>
             <div style={{color:'black',fontSize:'14px',margin:'0px',}}> 用户编号：{userNo}
             </div>
-            <p style={{margin:'0px',fontSize:'12px'}}>备注：{description}</p>
+            <p style={{margin:'0px',fontSize:'12px'}}>备注：{
+              (description!==''&&description!==undefined)?description:'无'
+            }</p>
           </div>
         </Col>
         <Col span={2}>

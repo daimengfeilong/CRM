@@ -1,4 +1,4 @@
-import { Row,Col,Card,Table } from 'antd'
+import { Row,Col,Card } from 'antd'
 
 const UserAccountInsurePanel =({accountInfo})=>{
 
