@@ -1,5 +1,5 @@
 import { queryUserTagClassList,queryUserBasicInfo,queryUserAccountInfo,queryUserPortraitList,queryUserInfo,updateUserRemark,queryUserLoanInfo,queryUserInsuranceInfo
-        ,queryUserRemark} from '../services/userList'
+        ,queryUserRemark,queryFileList,queryCodes} from '../services/userList'
 import {queryPortraitId} from '../services/portrait'
 
 export default {
@@ -26,7 +26,10 @@ export default {
     },
     creditList:[],
     insureList:[],
-    portraitItem:''
+    portraitItem:'',
+    fileList:[],
+    pics:{},
+    codes:[]
   },
   reducers: {
     save (state, {payload}) {
@@ -40,25 +43,30 @@ export default {
     *queryUserTagClassList ({payload}, {call, put, select}) {
       const idCard = yield select(state => state.userDetail.idCard)
       const res = yield call(queryUserTagClassList, {idCard:idCard,type:1})
+      if (res.code==='0000'&&res.result!== null)
       yield put({type: "save", payload: {userTagList: res.result}})
     },
     *queryUserBasicInfo ({payload}, {call, put, select}) {
       const idCard = yield select(state => state.userDetail.idCard)
       const res = yield call(queryUserBasicInfo, {idCard:idCard,type:payload.type})
+      if (res.code==='0000'&&res.result!== null)
       yield put({type: "save", payload: {userBaseInfo:res.result}})
     },
     *queryUserAccountInfo ({payload}, {call, put, select}) {
       const idCard = yield select(state => state.userDetail.idCard)
       const res = yield call(queryUserAccountInfo,  {idCard:idCard,type:payload.type})
+      if (res.code==='0000'&&res.result!== null)
       yield put({type: "save", payload: {accountInfo: res.result}})
     },
     *queryUserPortraitList({payload}, {call, put, select}) {
       const idCard = yield select(state => state.userDetail.idCard)
       const res = yield call(queryUserPortraitList,  {idCard:idCard,type:1})
+      if (res.code==='0000'&&res.result!== null)
       yield put({type: "save", payload: {userPortraitList: res.result}})
     },
     *queryPortraitId({payload:portraitId}, {call, put, select}) {
       const res = yield call(queryPortraitId,{ portraitId})
+      if (res.code==='0000'&&res.result!== null)
       yield put({type:'save',payload:{portraitItem:res.result}})
     },
     *queryUserInfo({payload}, {call, put, select}) {
@@ -115,6 +123,22 @@ export default {
         yield put({type: "save", payload: {insureList: res.result}})
       }
     },
+    *queryFileList({payload}, {call, put, select}) {
+      const certNo = yield select(state => state.userDetail.idCard)
+      const loanNo = yield select(state => state.userDetail.userNo)
+      const  params={params:{fileType:'ATT',certNo,loanNo}}
+      const res = yield call(queryFileList,  params)
+      if (res.code === '0000') {
+        yield put({type: "save", payload: {fileList: res.result}})
+      }
+    },
+    *queryCodes({payload}, {call, put, select}) {
+      const res = yield call(queryCodes)
+      if (res.code === '0000') {
+        yield put({type: "save", payload: {codes: res.result}})
+      }
+    },
+
   }
 }
 

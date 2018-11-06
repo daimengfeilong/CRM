@@ -34,6 +34,8 @@ class PortraitPanel extends React.Component{
         portraitName:'数据测试22'
       }
       userPortraitList.push(temp)
+    }else {
+
     }
 
     if (userPortraitList.length !== 0){
@@ -68,13 +70,13 @@ class PortraitPanel extends React.Component{
         }
 
         const temp4={
-          portraitId:'222',
+          portraitId:'2222',
           portraitName:'数据测试2c3c'
         }
       userPortraitList.push(temp)
       userPortraitList.push(temp1)
-        // userPortraitList.push(temp3)
-        // userPortraitList.push(temp4)
+        userPortraitList.push(temp3)
+        userPortraitList.push(temp4)
     }
 
 
@@ -88,11 +90,11 @@ class PortraitPanel extends React.Component{
 
 
     const show=(item)=>{
-        if (item.isSelected!=undefined&&item.isSelected) {
-          return <div className="portrait"><h3>{item.portraitName}</h3></div>
+        if (item.isSelected!==undefined&&item.isSelected) {
+          return   <div className="portrait2" ><h3>{item.portraitName}</h3></div>
          }
           else{
-           return   <div className="portrait2" ><h3>{item.portraitName}</h3></div>
+          return <div className="portrait"><h3>{item.portraitName}</h3></div>
         }
     }
 
@@ -124,7 +126,9 @@ class PortraitPanel extends React.Component{
 
     const settings = {
       dots: false,
+      focusOnSelect: true,
       slidesToShow: 3,
+      infinite: true,
       slidesToScroll: 1,
       speed: 500,
     }

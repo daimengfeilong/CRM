@@ -18,20 +18,21 @@ const UserAccountPanl = ({accountInfo}) =>{
           开户机构：{accountInfo.openAccBank}
         </Col>
         <Col span={16} >
-          银行预留手机号：{accountInfo.reservedPhoneNo}
+          开户机构所在区县：{accountInfo.openAccOrgRegion}
         </Col>
       <div style={{paddingTop:'16px',paddingBottom:'16px'}}>
         <Col span={8} className="manageTop">
+          银行预留手机号：{accountInfo.reservedPhoneNo}
+        </Col>
+        <Col span={16} className="manageTop">
           开户机构所在省：{accountInfo.openAccOrgProvince}
         </Col>
-        <Col span={6} className="manageTop">
-          开户机构所在市：{accountInfo.openAccOrgCity}
-        </Col>
-        <Col span={10} className="manageTop">
-          开户机构所在区县：{accountInfo.openAccOrgRegion}
-        </Col>
       </div>
-      <Col span={24} className="manageTop">
+
+      <Col span={8} className="manageTop">
+        开户机构所在市：{accountInfo.openAccOrgCity}
+      </Col>
+      <Col span={16} className="manageTop">
         开户支行所在地：{accountInfo.openAccBankLocation}
       </Col>
 

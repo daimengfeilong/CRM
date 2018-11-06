@@ -7,7 +7,14 @@
             "pathRewrite": {
                 "^/api": ""
             }
-        }
+        },
+         "/dfs": {
+                   "target": "http://gateway.hn1test.boyacx.com:8730/",
+                   "changeOrigin": true,
+                   "pathRewrite": {
+                       "^/dfs": ""
+                   }
+               }
     },
     "theme": {
         "@primary-color": "#7070ef"

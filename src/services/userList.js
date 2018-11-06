@@ -123,3 +123,36 @@ export function queryTagListByClassId(data){
     data
   })
 }
+//   请求：
+// {
+//   "idCard": "411002198012264027",
+//   "type":"1",
+//   "classId":"d91a07d0d1d246d6a84835e1dfe94afc70a5"
+// }
+//   String
+//   fileType
+//   文件类型 ( 必传 )：合同-CONTR;流水单-ORDER;对公凭证-PUBLIC;附件-ATT;视频-VIDEO
+//   String
+//   attType
+//   附件类型 ( 必传 )，文件类型为附件-ATT时，附件类型为（码类：Atta_Type）
+// String
+//   loanNo
+//   订单编号 ( 必传 )
+//   String
+//   certNo
+//   身份证号码 ( 选传 ),如果fileType为附件-ATT时，该字段为必填项
+//根据标签类型ID查询用户标签列表
+export function queryFileList(data){
+  return request({
+    url: '/dfs/bycx-dfs-service/aSysFileAtt/getList',
+    method: 'POST',
+    data
+  })
+}
+export function queryCodes(data={params: {list: [{'type': 'Atta_Type',}],},}){//获取文件码表
+  return request({
+    url: '/dfs/bycx-rece-service/api/sys/code/mobile/query',
+    method: 'POST',
+    data
+  })
+}

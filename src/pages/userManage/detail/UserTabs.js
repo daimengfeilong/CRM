@@ -6,6 +6,8 @@ import UserBaseInsurePanel from './UserBaseInsurePanel'
 import UserAccountInsurePanel from './UserAccountInsurePanel'
 import CreditBusPanel from './CreditBusPanel'
 import InsureBusPanel from './InsureBusPanel'
+import AttachmentPanel from './AttachmentPanel'
+import ClassTagPanel from './ClassTagPanel'
 
 const TabPane = Tabs.TabPane;
 const UserTabs=({tabProps})=>{
@@ -13,15 +15,23 @@ const UserTabs=({tabProps})=>{
   const portraitPanelPorps={
     tabProps
   }
-  const {dispatch,userBaseInfo,accountInfo,creditList,insureList,creditPagination,insurePagination}=tabProps
+  const {dispatch,userBaseInfo,accountInfo,creditList,insureList,creditPagination,insurePagination,fileList,pics,userNo,idCard,codes,userTagList}=tabProps
 
   const userBasePanelPorps={
     dispatch,
     userBaseInfo
   }
-
-
-
+  const attachmentPanelPorps={
+    dispatch,
+    fileList,
+    pics,
+    userNo,
+    idCard,
+    codes
+  }
+  const classTagPanelPorps={
+    userTagList
+  }
   function callback(key) {
 
     switch (key) {
@@ -49,15 +59,23 @@ const UserTabs=({tabProps})=>{
       case 'portrait':
         dispatch({ type: 'userDetail/queryUserPortraitList'});
         break
+      case 'credit_att':
+        dispatch({ type: 'userDetail/queryFileList'});
+        dispatch({ type: 'userDetail/queryCodes'});//获取码表
+        break
+      case 'tags':
+        dispatch({ type: 'userDetail/queryUserTagClassList'});
+        break
       default:
         break
     }
   }
   return(
-    <Card style={{marginTop:'16px'}} >
-      <Tabs defaultActiveKey="credit" onChange={callback} >
+    <div style={{marginTop:'16px'}} >
+      <Tabs defaultActiveKey="credit" onChange={callback}  >
         <TabPane tab="信贷档案" key="credit">
-            <Tabs defaultActiveKey="credit_basic" onChange={callback} >
+          <div className="subTab">
+            <Tabs defaultActiveKey="credit_basic" onChange={callback} className="subTabs">
               <TabPane tab="基本信息" key="credit_basic">
                 <UserBasePanl {...userBasePanelPorps}/>
               </TabPane>
@@ -67,13 +85,16 @@ const UserTabs=({tabProps})=>{
               <TabPane tab="账户信息" key="credit_account">
                 <UserAccountPanl accountInfo={accountInfo}/>
               </TabPane>
-              <TabPane tab="附件信息" key="credit_att">Content of Tab Pane 2</TabPane>
-
-              <TabPane tab="后续扩展" key="credit_ex"></TabPane>
+              <TabPane tab="附件信息" key="credit_att">
+                <AttachmentPanel {...attachmentPanelPorps}/>
+              </TabPane>
+              {/*<TabPane tab="后续扩展" key="credit_ex"></TabPane>*/}
             </Tabs>
+          </div>
         </TabPane>
         <TabPane tab="保险档案" key="insure">
-            <Tabs defaultActiveKey="insure_basic" onChange={callback}>
+          <div className="subTab">
+            <Tabs defaultActiveKey="insure_basic" onChange={callback} className="subTabs">
               <TabPane tab="基本信息" key="insure_basic">
                 <UserBaseInsurePanel {...userBasePanelPorps}/>
               </TabPane>
@@ -84,15 +105,19 @@ const UserTabs=({tabProps})=>{
                 <UserAccountInsurePanel accountInfo={accountInfo}/>
               </TabPane>
             </Tabs>
+          </div>
         </TabPane>
         <TabPane tab="画像档案" key="portrait">
           <PortraitPanel {...portraitPanelPorps}/>
         </TabPane>
-        <TabPane tab="标签信息" key="tags">Content of Tab Pane 1</TabPane>
-        <TabPane tab="用户数据分析" key="user"></TabPane>
-        <TabPane tab="行为日志" key="logs"></TabPane>
+        <TabPane tab="标签信息" key="tags">
+          <ClassTagPanel {...classTagPanelPorps}/>
+        </TabPane>
+        {/*<TabPane tab="用户数据分析" key="user"></TabPane>*/}
+        {/*<TabPane tab="行为日志" key="logs">*/}
+        {/*</TabPane>*/}
       </Tabs>
-    </Card>
+    </div>
   )
 }
 
