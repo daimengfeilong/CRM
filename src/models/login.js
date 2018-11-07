@@ -1,16 +1,14 @@
 import { getPhoneNo,sendSms,userLogin } from '../services/login'
 import { Message } from 'antd'
 
-const delay = (ms) => new Promise((resolve) => {
-    setTimeout(resolve, ms);
-})
 
 export default {
     namespace: 'login',
     state: {
         phoneNo: 0,
         captchaSrc:'',
-        timeNumSms: 60
+        timeNumSms: 60,
+        loading:false,
     },
     reducers: {
         save(state, { payload }) {
@@ -53,17 +51,23 @@ export default {
             return res
         },
         *Interval({ payload = {} }, { put, call, select }) {
+            const delay = (ms) => new Promise((resolve) => {setTimeout(resolve, ms)})
+
             //60秒倒计时... 
             let i = 60
             while (i > 0) {
                 i--;
-                yield call(delay, 1000);
-                yield put({
-                    type: 'save',
-                    payload: {
-                        timeNumSms: i
-                    }
-                })
+                const { hash } = window.location
+
+                if( hash === '#/' || hash === '#/login' ){
+                    yield call(delay, 1000);
+                    yield put({
+                        type: 'save',
+                        payload: {
+                            timeNumSms: i
+                        }
+                    })
+                }
             }
         }
     }

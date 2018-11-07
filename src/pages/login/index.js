@@ -13,7 +13,7 @@ let smsTimer = null;
 
 class Login extends React.Component {
     render() {
-        const { form, dispatch, phoneNo, timeNumSms, history, captchaSrc } = this.props
+        const { form, dispatch, phoneNo, timeNumSms, history, captchaSrc, loading } = this.props
         const { getFieldDecorator, getFieldsValue } = form
 
 
@@ -26,6 +26,12 @@ class Login extends React.Component {
             e.preventDefault();
             form.validateFields((err, values) => {
                 if (!err && phoneNo !== 0) {
+                    dispatch({
+                        type:'login/save',
+                        payload:{
+                            loading:true
+                        }
+                    })
                     dispatch({
                         type:'login/userLogin',
                         payload:{
@@ -172,9 +178,7 @@ class Login extends React.Component {
                             </>
                         }
                         <FormItem>
-                            <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
-                                登录
-                            </Button>
+                            <Button type="primary" htmlType="submit" style={{ width: '100%' }} loading={loading}>登录</Button>
                         </FormItem>
                         <div className="login-icon">
                             <img src={loginIcon} />
