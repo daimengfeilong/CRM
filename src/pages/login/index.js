@@ -68,7 +68,7 @@ class Login extends React.Component {
         const captcha = () => {
             const ts = phoneNo + 1
 
-            return `/dfs/bycx-rece-service/aSysMsgCaptcha/getCodeImg?phoneNo=${phoneNo}&ts=${ts}`
+            return `/api/bycx-rece-service/aSysMsgCaptcha/getCodeImg?phoneNo=${phoneNo}&ts=${ts}`
         }
 
         const sendSmsCode = () => {
