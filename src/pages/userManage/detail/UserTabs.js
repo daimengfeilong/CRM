@@ -15,7 +15,8 @@ const UserTabs=({tabProps})=>{
   const portraitPanelPorps={
     tabProps
   }
-  const {dispatch,userBaseInfo,accountInfo,creditList,insureList,creditPagination,insurePagination,fileList,pics,userNo,idCard,codes,userTagList}=tabProps
+  const {dispatch,userBaseInfo,accountInfo,creditList,insureList,creditPagination,insurePagination,fileList,pics,userNo,idCard,codes,userTagList,allData
+  ,checkedValues}=tabProps
 
   const userBasePanelPorps={
     dispatch,
@@ -31,7 +32,9 @@ const UserTabs=({tabProps})=>{
   }
   const classTagPanelPorps={
     dispatch,
-    userTagList
+    userTagList,
+    allData,
+    checkedValues
   }
   function callback(key) {
 
@@ -65,8 +68,8 @@ const UserTabs=({tabProps})=>{
         dispatch({ type: 'userDetail/queryCodes'});//获取码表
         break
       case 'tags':
+        // dispatch({ type: 'userDetail/queryAllHash'});
         dispatch({ type: 'userDetail/queryUserTagClassList'});
-        dispatch({ type: 'userDetail/queryAllHash'});
         break
       default:
         break

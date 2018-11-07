@@ -31,7 +31,7 @@ const assembleData=(dispatch,pics,fileList,userNo,idCard)=>{
   for (var i = 0; i < fileList.length; i++) {
     let temp = fileList[i].attType
 
-    const url = '/dfs/bycx-dfs-service/aSysFileAtt/downLoadAtt'
+    const url = '/api/bycx-dfs-service/aSysFileAtt/downLoadAtt'
     const params = '?fileType=ATT&attType=' + temp + '&loanNo=' + userNo + '&certNo=' +
       idCard
     switch (temp) {

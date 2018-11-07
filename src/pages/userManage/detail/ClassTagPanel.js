@@ -1,4 +1,4 @@
-import { Checkbox,Row,Col } from 'antd';
+import { Checkbox,Row,Col,Tag,Card } from 'antd';
 const CheckboxGroup = Checkbox.Group;
 
 
@@ -41,41 +41,62 @@ const getData = (data) => {
   }).filter((item, i, self) => item && self.indexOf(item) === i);
 }
 
-const ClassTagPanel =({dispatch,userTagList})=>{
+const showTags =(checkedValues,data)=>{
+   return data.map((item)=>{
+      return (
+        <Tag color="blue" key={item.tagId}>{item.tagName}</Tag>
+      )
+    })
+}
 
-  const  datas=getData(userTagList);
-  const  maxFloor=getMaxFloor(datas)
-  console.log(maxFloor)
-  console.log(datas)
+const difference = (a,b) => {
+  //找出两个数组之间的差集
+  const difference = a.concat(b).filter(v => !a.includes(v) || !b.includes(v))
 
+  return difference[0]
+}
+const ClassTagPanel =({dispatch,userTagList,allData,checkedValues})=>{
 
-  let checksItem=[]
-  const onChange=(checkedValues)=> {
-    checksItem=checkedValues
-    console.log('checked = ', checkedValues);
+  // const  datas=getData(userTagList);
+  // const  maxFloor=getMaxFloor(datas)
+  // console.log(maxFloor)
+  // console.log(datas)
+
+  const onChange=(nowValues)=> {
+    let classId=''
+    if (nowValues.length !== checkedValues.length) {
+      if (nowValues.length>checkedValues.length) {
+        const className= difference(nowValues,checkedValues)
+          userTagList.map((item)=>{
+           if (item.className==className) {
+             classId= item.classId
+           }
+         })
+        dispatch({ type: 'userDetail/queryTagsByClassId',payload:classId});
+        // dispatch({ type: 'userDetail/saveFilter',payload:{classId,type:'add'}});
+      }else {
+        const className= difference(nowValues,checkedValues)
+        console.log(className)
+         userTagList.map((item)=>{
+          if (item.className==className) {
+            classId= item.classId
+          }
+        })
+        dispatch({ type: 'userDetail/saveFilter',payload:{classId}});
+      }
+    }
+    dispatch({ type: 'userDetail/save',payload:{checkedValues:nowValues}});
   }
-
-
   const classOptions =  showClassOptions(userTagList)
-
+  console.log(showTags(checkedValues,allData))
   return(
     <>
       <div>
         标签类型： <CheckboxGroup options={classOptions} onChange={onChange} />
       </div>
-
-
-      <Row>
-        <Col span={2}>
-          <div className="floor">
-            标签
-          </div>
-        </Col>
-        <Col span={20}>
-          <CheckboxGroup options={classOptions} onChange={onChange} />
-        </Col>
-      </Row>
-
+      <Card className="manageTop">
+        {showTags(checkedValues,allData)}
+      </Card>
     </>
   )
 

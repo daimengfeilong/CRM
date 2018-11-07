@@ -16,6 +16,8 @@ class userDetail extends React.Component {
     dispatch({ type: 'userDetail/queryUserBasicInfo',payload:{type:1}});//获取用户级别信息
     dispatch({ type: 'userDetail/queryUserInfo'});//获取公共用户信息
     dispatch({ type: 'userDetail/queryUserRemark'});//获取公共用户信息
+
+
   }
 
 

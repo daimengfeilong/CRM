@@ -1,7 +1,6 @@
 import { queryUserTagClassList,queryUserBasicInfo,queryUserAccountInfo,queryUserPortraitList,queryUserInfo,updateUserRemark,queryUserLoanInfo,queryUserInsuranceInfo
         ,queryUserRemark,queryFileList,queryCodes,queryTagsByClassId} from '../services/userList'
 import {queryPortraitId} from '../services/portrait'
-import HashMap from '../utils/HashMap'
 
 export default {
   namespace: 'userDetail',
@@ -32,13 +31,36 @@ export default {
     pics:{},
     codes:[],
     tagList:[],
-    allHashData:new HashMap()
+    allData:[],
+    checkedValues:[]
   },
   reducers: {
     save (state, {payload}) {
       return {
         ...state,
         ...payload
+      }
+    },
+    saveAll (state, {payload}) {
+      let temp=state.allData
+      let add=[]
+      if (temp.length==0){
+        add=payload
+      } else {
+        add=[...add,...payload]
+        add = add.filter(function (item, index, self) {
+          return self.indexOf(item) == index;
+        });
+      }
+      return {
+        ...state,
+        allData:[...state.allData,...add]
+      }
+    },
+    saveFilter (state, {payload}) {
+      return {
+        ...state,
+        allData:state.allData.filter(item => item.classId !== payload.classId)
       }
     },
   },
@@ -51,24 +73,38 @@ export default {
     },
     *queryTagsByClassId ({payload:classId}, {call, put, select}) {
       const idCard = yield select(state => state.userDetail.idCard)
+      const allData = yield select(state => state.userDetail.allData)
       const res = yield call(queryTagsByClassId, {idCard:idCard,type:1,classId})
 
-      return res
+      yield put({type: "saveAll", payload:  [...res.result]})
       // if (res.code==='0000'&&res.result!== null){
       //   yield put({type: "save", payload: {tagList: res.result}})
       // }
     },
     *queryAllHash ({payload}, {call, put, select}) {
       const userTagList = yield select(state => state.userDetail.userTagList)
-      const allHashData = yield select(state => state.userDetail.allHashData)
+      // let allData = yield select(state => state.userDetail.allData)
       for (let i=0;i<userTagList.length;i++){
         const classId=userTagList[i].classId
-       const res= yield put({type: "queryTagsByClassId", payload:classId})
-        res.then(data=> {
-          if (data.code==='0000')
-            allHashData.put(classId,data.result)
-        });
+        yield put({type: "queryTagsByClassId", payload:classId})
+        // res.then(data=> {
+        //   if (data.code==='0000') {
+        //     const sub = data.result.map((item) => {
+        //       var temp = {}
+        //       temp.classId = item.classId
+        //       temp.tagId = item.tagId
+        //       temp.tagName = item.tagName
+        //       return temp
+        //     })
+        //     allData = [...allData, ...sub]
+        //     console.log(allData)
+        //
+        //     put({type: "save", payload: {allData:allData}})
+        //   }
+        // });
       }
+      // console.log(allData)
+      // yield put({type: "save", payload: {allData:allData}})
       // const res = yield call(queryTagsByClassId, {idCard:idCard,type:1,classId})
       //
       // return res
