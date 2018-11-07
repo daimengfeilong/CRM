@@ -44,7 +44,7 @@ export default async function request(options) {
     options.headers = options.headers ? options.headers : {}
 
     if(!options.url.includes('login')){
-        options.headers.token = localStorage.getItem('token')
+        options.headers.Authorization = localStorage.getItem('token')
     }
 
     if(method == 'get'){
