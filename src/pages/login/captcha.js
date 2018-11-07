@@ -1,6 +1,6 @@
-const captcha = ({ phoneNo }) => {
+const captcha = ({ dispatch,captchaSrc }) => {
     return (
-        <img style={{ width: '100%' }} src={`/api/bycx-rece-service/aSysMsgCaptcha/getCodeImg?phoneNo=${phoneNo}&ts=${new Date().getTime()}`} />
+        <img style={{ width: '100%' }} src={captchaSrc} onClick={() => dispatch({type:'login/getCaptchaSrc'})} />
     )
 }
 

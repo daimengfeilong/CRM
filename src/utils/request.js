@@ -21,6 +21,12 @@ function checkStatus(response) {
 function checkData(data) {
     if(data.code === '9999'){
         Message.error(data.msg);
+    }else if(data.code === '9997'){
+        const { origin,pathname } = window.location
+
+        Message.error(data.msg,2,() => {
+            window.location.href = `${origin}${pathname}#/login`
+        })
     }
     
     return data
@@ -39,11 +45,12 @@ function queryParams(params) {
  * @return {object}           An object containing either "data" or "err"
  */
 export default async function request(options) {
+    const { hash } = window.location
     const method = options.method.toLocaleLowerCase()
 
     options.headers = options.headers ? options.headers : {}
 
-    if(!options.url.includes('login')){
+    if(hash !== '#/login' && hash !== '#/'){
         options.headers.Authorization = localStorage.getItem('token')
     }
 

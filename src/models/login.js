@@ -9,6 +9,7 @@ export default {
     namespace: 'login',
     state: {
         phoneNo: 0,
+        captchaSrc:'',
         timeNumSms: 60
     },
     reducers: {
@@ -17,7 +18,15 @@ export default {
                 ...state,
                 ...payload
             }
-        }
+        },
+        getCaptchaSrc(state, { payload }) {
+            const captchaSrc = `/api/bycx-rece-service/aSysMsgCaptcha/getCodeImg?phoneNo=${state.phoneNo}&ts=${new Date().getTime()}`
+
+            return {
+                ...state,
+                captchaSrc
+            }
+        },
     },
     effects: {
         *getPhone({ payload }, { call, put, select }) {
@@ -26,6 +35,7 @@ export default {
             if (res.code === '0000') {
                 const phoneNo = res.result.phoneNo
 
+                yield put({ type: 'getCaptchaSrc'})
                 yield put({ type: 'save', payload: { phoneNo } })
             } else {
                 Message.error(res.msg)

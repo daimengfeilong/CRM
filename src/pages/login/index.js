@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'dva'
 import { Row, Col, Form, Icon, Input, Button, Message } from "antd"
 import { withRouter } from "dva/router"
+import Captcha from './captcha'
 import './login.less'
 
 import loginBg from '../../assets/login/login_bg.png'
@@ -12,14 +13,19 @@ let smsTimer = null;
 
 class Login extends React.Component {
     render() {
-        const { form, dispatch, phoneNo, timeNumSms, history } = this.props
+        const { form, dispatch, phoneNo, timeNumSms, history, captchaSrc } = this.props
         const { getFieldDecorator, getFieldsValue } = form
 
+
+        const captchaProps = {
+            captchaSrc,
+            dispatch
+        }
 
         const handleSubmit = (e) => {
             e.preventDefault();
             form.validateFields((err, values) => {
-                if (!err) {
+                if (!err && phoneNo !== 0) {
                     dispatch({
                         type:'login/userLogin',
                         payload:{
@@ -65,12 +71,6 @@ class Login extends React.Component {
             })
         }
 
-        const captcha = () => {
-            const ts = phoneNo + 1
-
-            return `/api/bycx-rece-service/aSysMsgCaptcha/getCodeImg?phoneNo=${phoneNo}&ts=${ts}`
-        }
-
         const sendSmsCode = () => {
 
             form.validateFields(['verificationCode'],(err, values) => {
@@ -87,10 +87,9 @@ class Login extends React.Component {
                         }
                     }).then(data => {
                         if(data.code === '0000'){
-                            dispatch({
-                                type:'login/Interval'
-                            })
+                            dispatch({type:'login/Interval'})
                         }else{
+                            dispatch({type:'login/getCaptchaSrc'})
                             Message.error(data.msg)
                         }
                     })
@@ -129,7 +128,7 @@ class Login extends React.Component {
                             )}
                         </FormItem>
                         {
-                            phoneNo !== 0 &&
+                            phoneNo !== 0 && captchaSrc &&
                             <>                            
                                 <FormItem>
                                     <Row>
@@ -144,7 +143,7 @@ class Login extends React.Component {
                                             )}
                                         </Col>
                                         <Col span={9} offset={1}>
-                                            <img style={{ width: '100%' }} src={captcha()} onClick={captcha} />
+                                            <Captcha {...captchaProps}></Captcha>
                                         </Col>
                                     </Row>
                                 </FormItem>

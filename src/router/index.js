@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, Switch, Route } from 'dva/router';
+import { Router, Switch, Route, Redirect } from 'dva/router';
 import dynamic from 'dva/dynamic';
 import { LocaleProvider } from 'antd';
 import zh_CN from 'antd/lib/locale-provider/zh_CN';
@@ -12,13 +12,13 @@ const RouterConfig = ({ history,app }) => {
         app,
         component: () => import('../pages/login/index')
     });
-
+    
     return (
         <LocaleProvider locale={zh_CN}>
             <Router history={history}>
                 <Switch>
-                    <Route path="/" exact component={Login} />
-                    <Route path="/login" exact component={Login} />
+                    <Route exact path='/' component={Login} />
+                    <Route exact path='/login' component={Login} />
                     <Layout>
                         <ContentRoute app={app} />
                     </Layout>
