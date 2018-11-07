@@ -74,20 +74,20 @@ const assembleData=(dispatch,pics,fileList,userNo,idCard)=>{
   }
   if (mOther.length != 0) {
    pics.other = mOther
+    console.log(mOther.length)
   }
   dispatch({ type: 'userDetail/save',payload:{pics}});
 }
 
 const getOther=(data,codes)=>{
-  for (let i = 0; i < data.length; i++) {
-    return <Col span={11} offset={getOffset(i)}>
-        <img src={pic}/>
-        <div style={{textAlign:'center',color:'black',padding:'10px'}}>
-          {getName(data[i].code,codes)}
-        </div>
-      </Col>
-
-  }
+ return data.map((item,i)=>{
+    return (<Col key={item.code} span={11} offset={getOffset(i)} >
+      <img src={item.pic}/>
+      <div style={{textAlign:'center',color:'black',padding:'10px'}}>
+        {getName(item.code,codes)}
+      </div>
+    </Col>)
+  })
 }
 
 function  getName (val,codes) {

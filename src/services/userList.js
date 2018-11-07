@@ -15,6 +15,15 @@ export function queryUserTagClassList(data) {
     data
   })
 }
+export function queryTagListByClassId(data) {
+  return request({
+    url: '/apicrm/user/getTagListByClassId',
+    method: 'POST',
+    data
+  })
+}
+
+
 export function queryUserBasicInfo(data) {
   return request({
     url: '/api/crm/user/getUserBasicInfo',
@@ -109,8 +118,8 @@ export function updateUserRemark (data) {
     data
   })
 }
-//根据标签类型ID查询用户标签列表
-export function queryTagListByClassId(data){
+//根据标签类型ID查询用户标签列表s
+export function queryTagsByClassId(data){
 //   请求：
 // {
 //   "idCard": "411002198012264027",

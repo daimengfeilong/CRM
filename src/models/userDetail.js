@@ -1,6 +1,7 @@
 import { queryUserTagClassList,queryUserBasicInfo,queryUserAccountInfo,queryUserPortraitList,queryUserInfo,updateUserRemark,queryUserLoanInfo,queryUserInsuranceInfo
-        ,queryUserRemark,queryFileList,queryCodes} from '../services/userList'
+        ,queryUserRemark,queryFileList,queryCodes,queryTagsByClassId} from '../services/userList'
 import {queryPortraitId} from '../services/portrait'
+import HashMap from '../utils/HashMap'
 
 export default {
   namespace: 'userDetail',
@@ -29,7 +30,9 @@ export default {
     portraitItem:'',
     fileList:[],
     pics:{},
-    codes:[]
+    codes:[],
+    tagList:[],
+    allHashData:new HashMap()
   },
   reducers: {
     save (state, {payload}) {
@@ -46,6 +49,34 @@ export default {
       if (res.code==='0000'&&res.result!== null)
       yield put({type: "save", payload: {userTagList: res.result}})
     },
+    *queryTagsByClassId ({payload:classId}, {call, put, select}) {
+      const idCard = yield select(state => state.userDetail.idCard)
+      const res = yield call(queryTagsByClassId, {idCard:idCard,type:1,classId})
+
+      return res
+      // if (res.code==='0000'&&res.result!== null){
+      //   yield put({type: "save", payload: {tagList: res.result}})
+      // }
+    },
+    *queryAllHash ({payload}, {call, put, select}) {
+      const userTagList = yield select(state => state.userDetail.userTagList)
+      const allHashData = yield select(state => state.userDetail.allHashData)
+      for (let i=0;i<userTagList.length;i++){
+        const classId=userTagList[i].classId
+       const res= yield put({type: "queryTagsByClassId", payload:classId})
+        res.then(data=> {
+          if (data.code==='0000')
+            allHashData.put(classId,data.result)
+        });
+      }
+      // const res = yield call(queryTagsByClassId, {idCard:idCard,type:1,classId})
+      //
+      // return res
+      // if (res.code==='0000'&&res.result!== null){
+      //   yield put({type: "save", payload: {tagList: res.result}})
+      // }
+    },
+
     *queryUserBasicInfo ({payload}, {call, put, select}) {
       const idCard = yield select(state => state.userDetail.idCard)
       const res = yield call(queryUserBasicInfo, {idCard:idCard,type:payload.type})
@@ -135,7 +166,7 @@ export default {
     *queryCodes({payload}, {call, put, select}) {
       const res = yield call(queryCodes)
       if (res.code === '0000') {
-        yield put({type: "save", payload: {codes: res.result}})
+        yield put({type: "save", payload: {codes: res.result.Atta_Type}})
       }
     },
 

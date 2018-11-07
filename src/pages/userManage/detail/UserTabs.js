@@ -30,6 +30,7 @@ const UserTabs=({tabProps})=>{
     codes
   }
   const classTagPanelPorps={
+    dispatch,
     userTagList
   }
   function callback(key) {
@@ -65,6 +66,7 @@ const UserTabs=({tabProps})=>{
         break
       case 'tags':
         dispatch({ type: 'userDetail/queryUserTagClassList'});
+        dispatch({ type: 'userDetail/queryAllHash'});
         break
       default:
         break
