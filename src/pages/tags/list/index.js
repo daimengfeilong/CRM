@@ -54,10 +54,6 @@ class List extends React.Component {
             render (text, record, index) {
                 return index + 1
             } 
-        },{
-            title: '标签ID',
-            dataIndex: 'tagId',
-            key: 'tagId'
         }, {
             title: '标签名称',
             dataIndex: 'tagName',

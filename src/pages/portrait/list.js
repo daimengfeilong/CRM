@@ -120,11 +120,6 @@ class List extends React.PureComponent {
             }
         },
         {
-            title: '画像ID',
-            dataIndex: 'portraitId',
-            key: 'portraitId'
-        },
-        {
             title: '画像名称',
             dataIndex: 'portraitName',
             key: 'portraitName'

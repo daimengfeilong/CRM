@@ -2,7 +2,7 @@ import request from '../utils/request';
 
 export function query(data) {
     return request({
-        url: '/api/crm/user/getUserList',
+        url: '/api/bycx-crm-service/crm/user/getUserList',
         method: 'POST',
         data: data
     })
@@ -10,14 +10,14 @@ export function query(data) {
 
 export function queryUserTagClassList(data) {
   return request({
-    url: '/api/crm/user/getUserTagClassList',
+    url: '/api/bycx-crm-service/crm/user/getUserTagClassList',
     method: 'POST',
     data
   })
 }
 export function queryTagListByClassId(data) {
   return request({
-    url: '/apicrm/user/getTagListByClassId',
+    url: '/api/bycx-crm-service/crm/user/getTagListByClassId',
     method: 'POST',
     data
   })
@@ -26,21 +26,21 @@ export function queryTagListByClassId(data) {
 
 export function queryUserBasicInfo(data) {
   return request({
-    url: '/api/crm/user/getUserBasicInfo',
+    url: '/api/bycx-crm-service/crm/user/getUserBasicInfo',
     method: 'POST',
     data
   })
 }
 export function queryUserAccountInfo(data) {
   return request({
-    url: '/api/crm/user/getUserAccountInfo',
+    url: '/api/bycx-crm-service/crm/user/getUserAccountInfo',
     method: 'POST',
     data
   })
 }
 export function queryUserPortraitList(data) {
   return request({
-    url: '/api/crm/user/getUserPortraitList',
+    url: '/api/bycx-crm-service/crm/user/getUserPortraitList',
     method: 'POST',
     data
   })
@@ -54,7 +54,7 @@ export function queryUserInsuranceInfo (data) { //业务信息-保险
   //     "type":"2"
   // }
   return request({
-    url: '/api/crm/user/getUserInsuranceInfo',
+    url: '/api/bycx-crm-service/crm/user/getUserInsuranceInfo',
     method: 'POST',
     data
   })
@@ -70,7 +70,7 @@ export function queryUserLoanInfo (data) { //业务-贷款
   // }
   // }
   return request({
-    url: '/api/crm/user/getUserLoanInfo',
+    url: '/api/bycx-crm-service/crm/user/getUserLoanInfo',
     method: 'POST',
     data
   })
@@ -81,7 +81,7 @@ export function queryUserLoanInfo (data) { //业务-贷款
 //"idCard": "411002198012264027"
 export function queryUserInfo (data) {
   return request({
-    url: '/api/crm/user/getUserInfo',
+    url: '/api/bycx-crm-service/crm/user/getUserInfo',
     method: 'POST',
     data
   })
@@ -89,7 +89,7 @@ export function queryUserInfo (data) {
 //根据用户身份证号查询属性列表
 export function queryAttrListByIdCard (data) {
   return request({
-    url: '/api/crm/user/getAttrListByIdCard',
+    url: '/api/bycx-crm-service/crm/user/getAttrListByIdCard',
     method: 'POST',
     data
   })
@@ -98,7 +98,7 @@ export function queryAttrListByIdCard (data) {
 
 export function queryUserRemark (data) {
   return request({
-    url: '/api/crm/user/getUserInfoById',
+    url: '/api/bycx-crm-service/crm/user/getUserInfoById',
     method: 'POST',
     data
   })
@@ -113,7 +113,7 @@ export function updateUserRemark (data) {
 //   "description":"123"
 // }
   return request({
-    url: '/api/crm/user/updateUser',
+    url: '/api/bycx-crm-service/crm/user/updateUser',
     method: 'POST',
     data
   })
@@ -127,7 +127,7 @@ export function queryTagsByClassId(data){
 //   "classId":"d91a07d0d1d246d6a84835e1dfe94afc70a5"
 // }
   return request({
-    url: '/api/crm/user/getTagListByClassId',
+    url: '/api/bycx-crm-service/crm/user/getTagListByClassId',
     method: 'POST',
     data
   })
@@ -153,14 +153,14 @@ export function queryTagsByClassId(data){
 //根据标签类型ID查询用户标签列表
 export function queryFileList(data){
   return request({
-    url: '/dfs/bycx-dfs-service/aSysFileAtt/getList',
+    url: '/api/bycx-dfs-service/aSysFileAtt/getList',
     method: 'POST',
     data
   })
 }
 export function queryCodes(data={params: {list: [{'type': 'Atta_Type',}],},}){//获取文件码表
   return request({
-    url: '/dfs/bycx-rece-service/api/sys/code/mobile/query',
+    url: '/api/bycx-rece-service/api/sys/code/mobile/query',
     method: 'POST',
     data
   })

@@ -6,10 +6,14 @@ function parseJSON(response) {
 }
 
 function checkStatus(response) {
+    const token = response.headers.get('authorization')
+
+    //更新token
+    if (token) localStorage.setItem('token', token);
+
     if (response.status == 200) {
         return response;
     }
-    console.log(response);
     Message.error(`${response.status} (${response.statusText})`);
     return Promise.reject();
 }

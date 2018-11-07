@@ -1,18 +1,11 @@
 {
     "disableCSSModules":true,
     "proxy": {
-        "/api": {
-            "target": "http://gateway.hn1test.boyacx.com:8730/bycx-crm-service/",
-            "changeOrigin": true,
-            "pathRewrite": {
-                "^/api": ""
-            }
-        },
-         "/dfs": {
+         "/api": {
                    "target": "http://gateway.hn1test.boyacx.com:8730/",
                    "changeOrigin": true,
                    "pathRewrite": {
-                       "^/dfs": ""
+                       "^/api": ""
                    }
                }
     },

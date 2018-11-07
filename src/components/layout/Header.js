@@ -26,7 +26,7 @@ class Headers extends React.Component {
                 </div>
                 <div className="rightWarpper">
                     <div className="button">
-                        <Icon type="alert" theme="outlined" />
+                        <Icon type="bell" />
                     </div>
                     <Menu mode="horizontal">
                         <SubMenu
