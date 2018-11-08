@@ -29,7 +29,7 @@ const columns = [
     title: '操作',
     key: 'action',
     render: (text, record) => (
-      <Link >详情</Link>
+      <Link to='#' >详情</Link>
     )
   }
 ]
