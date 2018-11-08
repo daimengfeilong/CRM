@@ -17,14 +17,18 @@ export default {
   effects: {
     *query ({payload}, {call, put, select}) {
       const res = yield call(query, payload)
-      const {totalSize, pageNo, pageSize} = res
-      const pagination = {
-        total: totalSize,
-        current: pageNo,
-        pageSize
+
+      if (res.code === '0000'){
+        const {totalSize, pageNo, pageSize} = res
+        const pagination = {
+          total: totalSize,
+          current: pageNo,
+          pageSize
+        }
+
+        yield put({type: "save", payload: {list: res.result, pagination}})
       }
-      if (res.code === '0000')
-      yield put({type: "save", payload: {list: res.result, pagination}})
+
     }
   }
 }

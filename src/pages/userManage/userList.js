@@ -66,6 +66,7 @@ class userList extends React.Component {
             }
         ]
         const paginationProps = {
+            current:pagination.current,
             showQuickJumper: true,
             showSizeChanger: true,
             total: pagination.total,
