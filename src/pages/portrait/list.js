@@ -26,10 +26,10 @@ const getData = (data) => {
 }
 
 const getCheckedKeys = (data) => {
-  if (data === undefined)
+  if (data.tagList === undefined)
     return []
 
-    return data.map((item) => {
+    return data.tagList.map((item) => {
         return item.tagId
     }).filter((item, i, self) => item && self.indexOf(item) === i);
 }
@@ -43,7 +43,6 @@ class List extends React.PureComponent {
         dispatch({ type: 'portrait/queryClassListByTag', payload: {} });
         dispatch({ type: 'portrait/querySubLevelClassList', payload: { pageNo: 1, pageSize: 99 } });
     }
-
 
    onPageChange = (pageNo, pageSize) => {
      const { dispatch } = this.props
@@ -80,10 +79,8 @@ class List extends React.PureComponent {
       type: 'portrait/queryPortraitId',
       payload: portraitId
     }).then(data => {
-      dispatch({
-        type: 'portrait/showModel',
-        payload: true
-      })
+      if (data.code === '0000')
+        dispatch({type: 'portrait/save',payload: {showModel:true}})
     })
   }
 
@@ -111,9 +108,9 @@ class List extends React.PureComponent {
             dispatch,
             title: '选择包含标签',
             tree: tree,
-            checkedKeys: getCheckedKeys(portraitItem.tagList),
+            checkedKeys: getCheckedKeys(portraitItem),
             onSubmit: (keys) => dispatch({ type: 'portrait/tagModalList', payload: keys.filter((item, i, self) => item && self.indexOf(item) === i) }),
-            handleCancel: () => dispatch({ type: 'portrait/showTagModel', payload: false })
+            handleCancel: () => dispatch({ type: 'portrait/save', payload:{showTagModel:false}  })
 
         }
 

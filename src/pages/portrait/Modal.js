@@ -40,29 +40,17 @@ const modal = ({ showModel, dispatch, form,subClass,portraitItem,classList }) =>
   }
 
   const showSelectTags = () =>{
-    dispatch({
-      type:'portrait/save',
-      payload:{
-        classItem:{}
-      }
-    })
-
-    dispatch({
-      type:'portrait/showTagModel',
-      payload:true
-    })
+    dispatch({type:'portrait/save',payload:{classItem:{}}})
+    dispatch({type: 'portrait/save',payload:{showTagModel:true}})
   }
 
     const handleCancel = () => {
-      dispatch({
-        type: 'portrait/showModel',
-        payload: false
-      })
+      dispatch({type: 'portrait/save',payload:{showModel:false}})
         dispatch({
           type: 'portrait/tagModalList',
           payload: []
         })
-        dispatch({type: 'portrait/clearItem'})
+        dispatch({type: 'portrait/save',payload:{tagList:[]}})
         form.resetFields()
     }
 
@@ -84,18 +72,18 @@ const modal = ({ showModel, dispatch, form,subClass,portraitItem,classList }) =>
                 dispatch({type: 'portrait/update',payload:portraitItem})
                 .then(data=>{
                   if (data.code='0000'){
-                    dispatch({type: 'portrait/showModel',payload: false})
+                    dispatch({type: 'portrait/save',payload:{showModel:false}})
                     dispatch({type: 'portrait/query'})
-                    dispatch({type: 'portrait/clearItem'})
+                    dispatch({type: 'portrait/save',payload:{portraitItem:{tagList:[]}}})
                   }
                 })
               }else {
                 dispatch({type: 'portrait/add',payload:portraitItem})
                 .then(data=>{
                   if (data.code='0000'){
-                    dispatch({type: 'portrait/showModel',payload: false})
+                    dispatch({type: 'portrait/save',payload:{showModel:false}})
                     dispatch({type: 'portrait/query'})
-                    dispatch({type: 'portrait/clearItem'})
+                    dispatch({type: 'portrait/save',payload:{portraitItem:{tagList:[]}}})
                   }
                 })
               }

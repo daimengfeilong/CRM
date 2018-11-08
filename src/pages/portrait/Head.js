@@ -5,29 +5,12 @@ const Search = Input.Search
 const Head = ({dispatch}) => {
 
     const add = () =>{
-        dispatch({
-            type:'portrait/save',
-            payload:{
-                classItem:{}
-            }
-        })
-
-        dispatch({
-            type:'portrait/showModel',
-            payload:true
-        })
+        dispatch({type:'portrait/save', payload:{classItem:{}}})
+        dispatch({type:'portrait/save',payload:{showModel:true}})
     }
 
     const onSearch = (value) => {
-
-        dispatch({
-            type:'portrait/query',
-            payload:{
-                params:{
-                  portraitName:value
-                }
-            }
-        })
+        dispatch({type:'portrait/query',payload:{params:{portraitName:value}}})
     }
 
     return (
