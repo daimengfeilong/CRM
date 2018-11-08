@@ -6,36 +6,36 @@ import {queryId} from '../services/tags'
 export default {
   namespace: 'userDetail',
   state: {
-    userTagList:[],
-    userNo:'',
-    idCard:'',
+    userTagList:[],//用户标签列表
+    userNo:'',//用户编号
+    idCard:'',//身份证号
     userInfo:'',//用户公共信息
     description:'',//用户备注
-    userBaseInfo:'',
-    accountInfo:'',
-    showModel:false,
-    userPortraitList:[],
-    creditPagination:{
+    userBaseInfo:'',//用户基本信息
+    accountInfo:'',//用户账户信息
+    showModel:false,//更新备注对话框
+    userPortraitList:[],//用户画像列表
+    creditPagination:{//信贷分页
       pageNo:1,
       pageSize:10,
       totalSize:''
     },
-    insurePagination:{
+    insurePagination:{//保险分页
       pageNo:1,
       pageSize:10,
       totalSize:''
     },
-    creditList:[],
-    insureList:[],
-    portraitItem:'',
-    fileList:[],
-    pics:{},
-    codes:[],
-    tagList:[],
-    allData:[],
-    checkedValues:[],
-    showTagModel:false,
-    tagItem:''
+    creditList:[],//信贷list
+    insureList:[],//保险list
+    portraitItem:'',//当前画像
+    fileList:[],//文件列表
+    pics:{},//附件图片对象
+    codes:[],//码表-文件码表
+    tagList:[],//标签列表
+    allData:[],//所有标签数据
+    checkedValues:[],//选择的分类
+    showTagModel:false,//显示tag对话框
+    tagItem:''//当前tag item
   },
   reducers: {
     save (state, {payload}) {
@@ -80,42 +80,15 @@ export default {
       const res = yield call(queryTagsByClassId, {idCard:idCard,type:1,classId})
 
       yield put({type: "saveAll", payload:  [...res.result]})
-      // if (res.code==='0000'&&res.result!== null){
-      //   yield put({type: "save", payload: {tagList: res.result}})
-      // }
     },
     *queryAllHash ({payload}, {call, put, select}) {
       const userTagList = yield select(state => state.userDetail.userTagList)
       // let allData = yield select(state => state.userDetail.allData)
-      for (let i=0;i<userTagList.length;i++){
-        const classId=userTagList[i].classId
-        yield put({type: "queryTagsByClassId", payload:classId})
-        // res.then(data=> {
-        //   if (data.code==='0000') {
-        //     const sub = data.result.map((item) => {
-        //       var temp = {}
-        //       temp.classId = item.classId
-        //       temp.tagId = item.tagId
-        //       temp.tagName = item.tagName
-        //       return temp
-        //     })
-        //     allData = [...allData, ...sub]
-        //     console.log(allData)
-        //
-        //     put({type: "save", payload: {allData:allData}})
-        //   }
-        // });
+      for (let i=0;i<userTagList.length;i++) {
+        const classId = userTagList[i].classId
+        yield put({type: "queryTagsByClassId", payload: classId})
       }
-      // console.log(allData)
-      // yield put({type: "save", payload: {allData:allData}})
-      // const res = yield call(queryTagsByClassId, {idCard:idCard,type:1,classId})
-      //
-      // return res
-      // if (res.code==='0000'&&res.result!== null){
-      //   yield put({type: "save", payload: {tagList: res.result}})
-      // }
     },
-
     *queryUserBasicInfo ({payload}, {call, put, select}) {
       const idCard = yield select(state => state.userDetail.idCard)
       const res = yield call(queryUserBasicInfo, {idCard:idCard,type:payload.type})

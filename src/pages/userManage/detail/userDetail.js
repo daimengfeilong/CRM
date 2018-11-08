@@ -12,15 +12,10 @@ class userDetail extends React.Component {
     const  idCard=getQueryString('idCard')
     const  userNo=getQueryString('userNo')
     dispatch({type:'userDetail/save',payload:{userNo,idCard}})
-    // dispatch({ type: 'userDetail/queryUserTagClassList'});//获取用户taglist
     dispatch({ type: 'userDetail/queryUserBasicInfo',payload:{type:1}});//获取用户级别信息
     dispatch({ type: 'userDetail/queryUserInfo'});//获取公共用户信息
     dispatch({ type: 'userDetail/queryUserRemark'});//获取公共用户信息
-
-
   }
-
-
 
   render () {
     const { userNo,dispatch,idCard,userInfo,showModel,description,loading }=this.props
@@ -44,7 +39,6 @@ class userDetail extends React.Component {
       <div id="userDetail">
         <Head {...headProps}/>
         <UserTabs {...userProps}/>
-
       </div>
       </Spin>
     )

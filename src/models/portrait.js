@@ -147,6 +147,7 @@ export default{
             current:pageNo,
             pageSize,
           }
+          if (res.code==='0000')
             yield put({type:'save',payload:{list:res.result,pagination}})
         },
         *add({payload},{call,put,select}){
@@ -179,11 +180,13 @@ export default{
         },
       *queryClassListByTag({ payload }, { call, put, select }){
         const res = yield call(queryClassListByTag,payload)
-        yield put({type:'save',payload:{listClassTag:res.result}})
+        if (res.code==='0000')
+          yield put({type:'save',payload:{listClassTag:res.result}})
       },
       *querySubLevelClassList({ payload }, { call, put, select }){
         const res = yield call(querySubLevelClassList, payload)
-        yield put({type:'save',payload:{classList:res.result}})
+        if (res.code==='0000')
+          yield put({type:'save',payload:{classList:res.result}})
       }
 
 

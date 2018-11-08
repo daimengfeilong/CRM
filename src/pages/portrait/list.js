@@ -26,15 +26,15 @@ const getData = (data) => {
 }
 
 const getCheckedKeys = (data) => {
+  if (data === undefined)
+    return []
+
     return data.map((item) => {
         return item.tagId
     }).filter((item, i, self) => item && self.indexOf(item) === i);
 }
 
-
 class List extends React.PureComponent {
-
-
 
     componentDidMount() {
         const { dispatch } = this.props
@@ -43,6 +43,49 @@ class List extends React.PureComponent {
         dispatch({ type: 'portrait/queryClassListByTag', payload: {} });
         dispatch({ type: 'portrait/querySubLevelClassList', payload: { pageNo: 1, pageSize: 99 } });
     }
+
+
+   onPageChange = (page, pageSize) => {
+     const { dispatch } = this.props
+    dispatch({ type: 'portrait/query', payload: { pageNo: page } })
+  }
+
+   onShowSizeChange = (page, pageSize) => {
+     const { dispatch } = this.props
+    dispatch({ type: 'portrait/query', payload: { pageNo: page, pageSize } })
+  }
+
+   onDel = (portraitId) => {
+     const { dispatch } = this.props
+    confirm({
+      title: '确认删除？',
+      content: '',
+      onOk() {
+        dispatch({
+          type: 'portrait/delPortrait',
+          payload: portraitId
+        }).then(data => {
+          if (data.code === '0000') {
+          } else {
+            Message.error(data.msg)
+          }
+        })
+      },
+    });
+  }
+
+   onEdit = (portraitId) => {
+     const { dispatch } = this.props
+    dispatch({
+      type: 'portrait/queryPortraitId',
+      payload: portraitId
+    }).then(data => {
+      dispatch({
+        type: 'portrait/showModel',
+        payload: true
+      })
+    })
+  }
 
     render() {
         const { list, classList, dispatch, showModel, portraitItem, showTagModel, listClassTag, pagination, loading } = this.props
@@ -53,21 +96,12 @@ class List extends React.PureComponent {
             portraitItem,
             classList,
         }
-
-
-        const onPageChange = (page, pageSize) => {
-            dispatch({ type: 'portrait/query', payload: { pageNo: page } })
-        }
-
-        const onShowSizeChange = (page, pageSize) => {
-            dispatch({ type: 'portrait/query', payload: { pageNo: page, pageSize } })
-        }
         const paginationProps = {
             showQuickJumper: true,
             showSizeChanger: true,
             total: pagination.total,
-            onChange: onPageChange,
-            onShowSizeChange: onShowSizeChange,
+            onChange: this.onPageChange,
+            onShowSizeChange: this.onShowSizeChange,
             showTotal: total => `共 ${total} 条`,
         }
         const tree = getData(listClassTag)
@@ -80,35 +114,6 @@ class List extends React.PureComponent {
             onSubmit: (keys) => dispatch({ type: 'portrait/tagModalList', payload: keys.filter((item, i, self) => item && self.indexOf(item) === i) }),
             handleCancel: () => dispatch({ type: 'portrait/showTagModel', payload: false })
 
-        }
-        const onDel = (portraitId) => {
-            confirm({
-                title: '确认删除？',
-                content: '',
-                onOk() {
-                    dispatch({
-                        type: 'portrait/delPortrait',
-                        payload: portraitId
-                    }).then(data => {
-                        if (data.code === '0000') {
-                        } else {
-                            Message.error(data.msg)
-                        }
-                    })
-                },
-            });
-        }
-
-        const onEdit = (portraitId) => {
-            dispatch({
-                type: 'portrait/queryPortraitId',
-                payload: portraitId
-            }).then(data => {
-                dispatch({
-                    type: 'portrait/showModel',
-                    payload: true
-                })
-            })
         }
 
         const columns = [{
@@ -170,9 +175,9 @@ class List extends React.PureComponent {
             width:'110px',
             render: (row, record) => (
                 <span>
-                    <a href="javascript:" onClick={() => onEdit(row.portraitId)}>编辑</a>
+                    <a href="javascript:" onClick={() => this.onEdit(row.portraitId)}>编辑</a>
                     <Divider type="vertical" />
-                    <a href="javascript:" onClick={() => onDel(row.portraitId)}>删除</a>
+                    <a href="javascript:" onClick={() => this.onDel(row.portraitId)}>删除</a>
                 </span>
             ),
         }];

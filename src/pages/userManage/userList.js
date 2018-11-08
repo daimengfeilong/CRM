@@ -17,7 +17,15 @@ class userList extends React.Component {
         dispatch({ type: 'userList/query', payload: { pageNo: 1, pageSize: 10, params } });
     }
 
+   onPageChange = (page, pageSize) => {
+     const { dispatch } = this.props
+    dispatch({ type: 'userList/query', payload: { pageNo: page, pageSize, params } })
+  }
 
+   onShowSizeChange = (page, pageSize) => {
+     const { dispatch } = this.props
+    dispatch({ type: 'userList/query', payload: { pageNo: page, pageSize, params } })
+  }
     render() {
         const { dispatch, list, pagination, loading } = this.props
         const columns = [
@@ -57,25 +65,14 @@ class userList extends React.Component {
                 )
             }
         ]
-
-        const onPageChange = (page, pageSize) => {
-            dispatch({ type: 'userList/query', payload: { pageNo: page, pageSize, params } })
-        }
-
-        const onShowSizeChange = (page, pageSize) => {
-            dispatch({ type: 'userList/query', payload: { pageNo: page, pageSize, params } })
-        }
-
         const paginationProps = {
             showQuickJumper: true,
             showSizeChanger: true,
             total: pagination.total,
-            onChange: onPageChange,
-            onShowSizeChange: onShowSizeChange,
+            onChange: this.onPageChange,
+            onShowSizeChange: this.onShowSizeChange,
             showTotal: total => `共 ${total} 条`
         }
-
-
         return (
             <Spin spinning={loading}>
                 <HeadUserList dispatch={dispatch} />

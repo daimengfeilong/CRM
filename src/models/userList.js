@@ -23,6 +23,7 @@ export default {
         current: pageNo,
         pageSize
       }
+      if (res.code === '0000')
       yield put({type: "save", payload: {list: res.result, pagination}})
     }
   }

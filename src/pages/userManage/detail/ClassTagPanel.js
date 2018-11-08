@@ -71,10 +71,6 @@ const difference = (a,b) => {
 }
 const ClassTagPanel =({dispatch,userTagList,allData,checkedValues,showTagModel,tagItem})=>{
 
-  // const  datas=getData(userTagList);
-  // const  maxFloor=getMaxFloor(datas)
-  // console.log(maxFloor)
-  // console.log(datas)
   const showTagPorps={
     dispatch,
     showTagModel,
@@ -82,8 +78,6 @@ const ClassTagPanel =({dispatch,userTagList,allData,checkedValues,showTagModel,t
     checkedValues,
     allData
   }
-
-
   const tagPorps={
     dispatch,
     showTagModel,
@@ -101,7 +95,6 @@ const ClassTagPanel =({dispatch,userTagList,allData,checkedValues,showTagModel,t
            }
          })
         dispatch({ type: 'userDetail/queryTagsByClassId',payload:classId});
-        // dispatch({ type: 'userDetail/saveFilter',payload:{classId,type:'add'}});
       }else {
         const className= difference(nowValues,checkedValues)
         console.log(className)
@@ -116,7 +109,6 @@ const ClassTagPanel =({dispatch,userTagList,allData,checkedValues,showTagModel,t
     dispatch({ type: 'userDetail/save',payload:{checkedValues:nowValues}});
   }
   const classOptions =  showClassOptions(userTagList)
-  // console.log(showTags(checkedValues,allData))
   return(
     <>
       <TagModal {...tagPorps}/>

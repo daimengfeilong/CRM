@@ -38,7 +38,7 @@ const UserTabs=({tabProps})=>{
     showTagModel,
     tagItem
   }
-  function callback(key) {
+  function callback( key) {
 
     switch (key) {
       case 'credit_basic':
