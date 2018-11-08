@@ -28,15 +28,15 @@ class PortraitPanel extends React.Component{
 
   componentDidMount(){
     const { userPortraitList,dispatch }  =this.props.tabProps
-    if (userPortraitList.length===0){
-      const temp={
-        portraitId:'01c9d7dcdcc24bd799dc2352925e9b121zds',
-        portraitName:'数据测试22'
-      }
-      userPortraitList.push(temp)
-    }else {
-
-    }
+    // if (userPortraitList.length===0){
+    //   const temp={
+    //     portraitId:'01c9d7dcdcc24bd799dc2352925e9b121zds',
+    //     portraitName:'数据测试22'
+    //   }
+    //   userPortraitList.push(temp)
+    // }else {
+    //
+    // }
 
     if (userPortraitList.length !== 0){
       const portraitId=userPortraitList[0].portraitId
@@ -52,32 +52,32 @@ class PortraitPanel extends React.Component{
 
   const { userPortraitList,portraitItem,dispatch }  =this.props.tabProps
 
-      if (userPortraitList.length===0){
-      const temp={
-        portraitId:'01c9d7dcdcc24bd799dc2352925e9b121zds',
-        portraitName:'数据测试22',
-        isSelected:true
-      }
-      const temp1={
-        portraitId:'98b17449efd74b319e9926e3483d5aa25wk3',
-        portraitName:'数据测试2cc'
-      }
-
-
-        const temp3={
-          portraitId:'222',
-          portraitName:'数据测试2c3c'
-        }
-
-        const temp4={
-          portraitId:'2222',
-          portraitName:'数据测试2c3c'
-        }
-      userPortraitList.push(temp)
-      userPortraitList.push(temp1)
-        userPortraitList.push(temp3)
-        userPortraitList.push(temp4)
-    }
+    //   if (userPortraitList.length===0){
+    //   const temp={
+    //     portraitId:'01c9d7dcdcc24bd799dc2352925e9b121zds',
+    //     portraitName:'数据测试22',
+    //     isSelected:true
+    //   }
+    //   const temp1={
+    //     portraitId:'98b17449efd74b319e9926e3483d5aa25wk3',
+    //     portraitName:'数据测试2cc'
+    //   }
+    //
+    //
+    //     const temp3={
+    //       portraitId:'222',
+    //       portraitName:'数据测试2c3c'
+    //     }
+    //
+    //     const temp4={
+    //       portraitId:'2222',
+    //       portraitName:'数据测试2c3c'
+    //     }
+    //   userPortraitList.push(temp)
+    //   userPortraitList.push(temp1)
+    //     userPortraitList.push(temp3)
+    //     userPortraitList.push(temp4)
+    // }
 
 
     const loop = data => data.map((item)=>{
@@ -99,7 +99,6 @@ class PortraitPanel extends React.Component{
     }
 
     function onChange (a) {
-    console.log(a)
       userPortraitList.map((item)=>{
         if (userPortraitList[a].portraitId===item.portraitId){
           item.isSelected=true
@@ -109,9 +108,11 @@ class PortraitPanel extends React.Component{
 
       })
 
+      if (userPortraitList.length!==0){
+        const portraitId=userPortraitList[a].portraitId
+        dispatch({type:'userDetail/queryPortraitId',payload:portraitId})
+      }
 
-      const portraitId=userPortraitList[a].portraitId
-      dispatch({type:'userDetail/queryPortraitId',payload:portraitId})
     }
 
     const prev = () => {
