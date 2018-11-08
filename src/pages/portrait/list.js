@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'dva';
-import { Table, Divider, Modal, Message, Spin } from 'antd';
+import { Table, Divider, Modal, Message, Spin,Tag } from 'antd';
 import Head from './Head'
 import ClassModal from './Modal'
 import { timestampToDate } from '../../utils/utils'
@@ -115,6 +115,7 @@ class List extends React.PureComponent {
             title: '序号',
             dataIndex: 'index',
             key: 'index',
+            width:'80px',
             render(text, record, index) {
                 return index + 1
             }
@@ -122,11 +123,13 @@ class List extends React.PureComponent {
         {
             title: '画像名称',
             dataIndex: 'portraitName',
-            key: 'portraitName'
+            key: 'portraitName',
+            width:'120px',
         },
         {
             title: '画像分类',
             key: 'classification',
+            width:'160px',
             render: (row, record) => {
                 return (
                     <span>
@@ -142,7 +145,7 @@ class List extends React.PureComponent {
                 return (
                     <span>
                         {row.tagList.map((item, index) => {
-                            return item.tagName
+                            return <Tag key={item.tagId} color='blue'>{item.tagName}</Tag>
                         }
                         )}
                     </span>)
@@ -151,17 +154,20 @@ class List extends React.PureComponent {
         {
             title: '覆盖人数',
             dataIndex: 'personNum',
-            key: 'personNum'
+            key: 'personNum',
+            width:'100px',
         },
         {
             title: '创建时间',
             dataIndex: 'instDate',
             key: 'instDate',
+            width:'110px',
             render: text => { return timestampToDate(text) },
         },
         {
             title: '操作',
             key: 'action',
+            width:'110px',
             render: (row, record) => (
                 <span>
                     <a href="javascript:" onClick={() => onEdit(row.portraitId)}>编辑</a>

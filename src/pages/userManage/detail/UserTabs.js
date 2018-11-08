@@ -16,7 +16,7 @@ const UserTabs=({tabProps})=>{
     tabProps
   }
   const {dispatch,userBaseInfo,accountInfo,creditList,insureList,creditPagination,insurePagination,fileList,pics,userNo,idCard,codes,userTagList,allData
-  ,checkedValues}=tabProps
+  ,checkedValues,showTagModel,tagItem}=tabProps
 
   const userBasePanelPorps={
     dispatch,
@@ -34,7 +34,9 @@ const UserTabs=({tabProps})=>{
     dispatch,
     userTagList,
     allData,
-    checkedValues
+    checkedValues,
+    showTagModel,
+    tagItem
   }
   function callback(key) {
 

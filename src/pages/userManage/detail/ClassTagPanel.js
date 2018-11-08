@@ -1,4 +1,5 @@
-import { Checkbox,Row,Col,Tag,Card } from 'antd';
+import { Checkbox,Tag,Card } from 'antd';
+import TagModal from './TagModal'
 const CheckboxGroup = Checkbox.Group;
 
 
@@ -41,13 +42,26 @@ const getData = (data) => {
   }).filter((item, i, self) => item && self.indexOf(item) === i);
 }
 
-const showTags =(checkedValues,data)=>{
-   return data.map((item)=>{
+const ShowTags =({checkedValues,allData,dispatch})=>{
+
+  const showTag=(tagId)=>{
+    dispatch({ type: 'userDetail/queryId',payload:tagId})
+    .then(data=>{
+      if (data.code==='0000'){
+        dispatch({ type: 'userDetail/save',payload:{showTagModel:true}});
+      }
+    })
+  }
+
+  return allData.map((item)=>{
       return (
-        <Tag color="blue" key={item.tagId}>{item.tagName}</Tag>
+        <Tag color="blue" key={item.tagId} onClick={() => showTag(item.tagId)}>{item.tagName}</Tag>
       )
     })
 }
+
+
+
 
 const difference = (a,b) => {
   //找出两个数组之间的差集
@@ -55,12 +69,26 @@ const difference = (a,b) => {
 
   return difference[0]
 }
-const ClassTagPanel =({dispatch,userTagList,allData,checkedValues})=>{
+const ClassTagPanel =({dispatch,userTagList,allData,checkedValues,showTagModel,tagItem})=>{
 
   // const  datas=getData(userTagList);
   // const  maxFloor=getMaxFloor(datas)
   // console.log(maxFloor)
   // console.log(datas)
+  const showTagPorps={
+    dispatch,
+    showTagModel,
+    tagItem,
+    checkedValues,
+    allData
+  }
+
+
+  const tagPorps={
+    dispatch,
+    showTagModel,
+    tagItem,
+  }
 
   const onChange=(nowValues)=> {
     let classId=''
@@ -88,14 +116,16 @@ const ClassTagPanel =({dispatch,userTagList,allData,checkedValues})=>{
     dispatch({ type: 'userDetail/save',payload:{checkedValues:nowValues}});
   }
   const classOptions =  showClassOptions(userTagList)
-  console.log(showTags(checkedValues,allData))
+  // console.log(showTags(checkedValues,allData))
   return(
     <>
+      <TagModal {...tagPorps}/>
       <div>
         标签类型： <CheckboxGroup options={classOptions} onChange={onChange} />
       </div>
       <Card className="manageTop">
-        {showTags(checkedValues,allData)}
+        {/*{showTags(checkedValues,allData,dispatch)}*/}
+        <ShowTags {...showTagPorps}/>
       </Card>
     </>
   )

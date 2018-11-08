@@ -1,6 +1,7 @@
 import { queryUserTagClassList,queryUserBasicInfo,queryUserAccountInfo,queryUserPortraitList,queryUserInfo,updateUserRemark,queryUserLoanInfo,queryUserInsuranceInfo
         ,queryUserRemark,queryFileList,queryCodes,queryTagsByClassId} from '../services/userList'
 import {queryPortraitId} from '../services/portrait'
+import {queryId} from '../services/tags'
 
 export default {
   namespace: 'userDetail',
@@ -32,7 +33,9 @@ export default {
     codes:[],
     tagList:[],
     allData:[],
-    checkedValues:[]
+    checkedValues:[],
+    showTagModel:false,
+    tagItem:''
   },
   reducers: {
     save (state, {payload}) {
@@ -205,7 +208,14 @@ export default {
         yield put({type: "save", payload: {codes: res.result.Atta_Type}})
       }
     },
-
+    *queryId({payload:tagId}, {call, put, select}) {
+      const res = yield call(queryId,{tagId})
+      if (res.code === '0000') {
+        yield put({type: "save", payload: {tagItem: res.result}})
+      }
+      console.log(res)
+      return res
+    },
   }
 }
 
