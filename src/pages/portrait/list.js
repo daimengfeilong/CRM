@@ -89,6 +89,7 @@ class List extends React.PureComponent {
 
     render() {
         const { list, classList, dispatch, showModel, portraitItem, showTagModel, listClassTag, pagination, loading } = this.props
+        const { total, current, pageSize } = pagination
 
         const modalProps = {
             showModel,
@@ -99,7 +100,7 @@ class List extends React.PureComponent {
         const paginationProps = {
             showQuickJumper: true,
             showSizeChanger: true,
-            total: pagination.total,
+            total: total,
             onChange: this.onPageChange,
             onShowSizeChange: this.onShowSizeChange,
             showTotal: total => `共 ${total} 条`,
@@ -122,7 +123,7 @@ class List extends React.PureComponent {
             key: 'index',
             width:'80px',
             render(text, record, index) {
-                return index + 1
+                return (current - 1) * pageSize + index + 1
             }
         },
         {

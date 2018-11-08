@@ -43,11 +43,12 @@ class List extends React.Component {
 
     render() {
         const { list, dispatch, pagination, loading } = this.props
+        const { total, current, pageSize } = pagination
 
         const paginationProps = {
             showQuickJumper:true,
             showSizeChanger:true,
-            total:pagination.total,
+            total:total,
             onChange:this.onPageChange,
             onShowSizeChange:this.onShowSizeChange,
             showTotal:total => `共 ${total} 条`,
@@ -58,7 +59,7 @@ class List extends React.Component {
             dataIndex: 'index',
             key: 'index',
             render (text, record, index) {
-                return index + 1
+                return (current - 1) * pageSize + index + 1
             } 
         }, {
             title: '标签名称',

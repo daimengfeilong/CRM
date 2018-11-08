@@ -45,6 +45,7 @@ class List extends React.Component {
 
     render() {
         const { dispatch, list, pagination, showModel, attrItem, loading } = this.props
+        const { total, current, pageSize } = pagination
 
         const modalProps = {
             dispatch,
@@ -55,7 +56,7 @@ class List extends React.Component {
         const paginationProps = {
             showQuickJumper: true,
             showSizeChanger: true,
-            total: pagination.total,
+            total: total,
             onChange: this.onPageChange,
             onShowSizeChange: this.onShowSizeChange,
             showTotal: total => `共 ${total} 条`,
@@ -66,7 +67,7 @@ class List extends React.Component {
             dataIndex: 'index',
             key: 'index',
             render(text, record, index) {
-                return index + 1
+                return (current - 1) * pageSize + index + 1
             }
         },
         {
