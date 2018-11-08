@@ -40,13 +40,13 @@ const columns = [
 
 const CreditBusPanel =({dispatch,creditList,pagination})=>{
 
-  const onPageChange = (page, pageSize) => {
-      dispatch({ type: 'userDetail/queryUserLoanInfo',payload:{pageNo:page}})
+  const onPageChange = (pageNo, pageSize) => {
+      dispatch({ type: 'userDetail/queryUserLoanInfo',payload:{pageNo, pageSize}})
 
   }
 
-  const onShowSizeChange = (page, pageSize) => {
-      dispatch({ type: 'userDetail/queryUserLoanInfo',payload:{pageNo:page,pageSize}})
+  const onShowSizeChange = (pageNo, pageSize) => {
+      dispatch({ type: 'userDetail/queryUserLoanInfo',payload:{pageNo, pageSize}})
 
   }
   const paginationProps = {

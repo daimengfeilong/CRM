@@ -31,16 +31,16 @@ class List extends React.Component {
         })
     }
 
-    onPageChange = (page, pageSize) => {
+    onPageChange = (pageNo, pageSize) => {
         const { dispatch } = this.props
 
-        dispatch({ type: 'attribute/query', payload: { pageNo: page } })
+        dispatch({ type: 'attribute/query', payload: { pageNo,pageSize } })
     }
 
-    onShowSizeChange = (page, pageSize) => {
+    onShowSizeChange = (pageNo, pageSize) => {
         const { dispatch } = this.props
         
-        dispatch({ type: 'attribute/query', payload: { pageSize } })
+        dispatch({ type: 'attribute/query', payload: { pageNo,pageSize } })
     }
 
     render() {

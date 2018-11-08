@@ -17,14 +17,14 @@ class userList extends React.Component {
         dispatch({ type: 'userList/query', payload: { pageNo: 1, pageSize: 10, params } });
     }
 
-   onPageChange = (page, pageSize) => {
+   onPageChange = (pageNo, pageSize) => {
      const { dispatch } = this.props
-    dispatch({ type: 'userList/query', payload: { pageNo: page, pageSize, params } })
+    dispatch({ type: 'userList/query', payload: { pageNo, pageSize } })
   }
 
-   onShowSizeChange = (page, pageSize) => {
+   onShowSizeChange = (pageNo, pageSize) => {
      const { dispatch } = this.props
-    dispatch({ type: 'userList/query', payload: { pageNo: page, pageSize, params } })
+    dispatch({ type: 'userList/query', payload: { pageNo, pageSize } })
   }
     render() {
         const { dispatch, list, pagination, loading } = this.props

@@ -22,15 +22,15 @@ class List extends React.Component {
         dispatch({ type: 'classify/query' });
     }
 
-    onPageChange = (page, pageSize) => {
+    onPageChange = (pageNo, pageSize) => {
         const { dispatch } = this.props
 
-        dispatch({ type: 'classify/query', payload: { pageNo: page } })
+        dispatch({ type: 'classify/query', payload: { pageNo, pageSize } })
     }
 
-    onShowSizeChange = (page, pageSize) => {
+    onShowSizeChange = (pageNo, pageSize) => {
         const { dispatch } = this.props
-        dispatch({ type: 'classify/query', payload: { pageSize } })
+        dispatch({ type: 'classify/query', payload: { pageNo, pageSize } })
     }
 
     //删除分类

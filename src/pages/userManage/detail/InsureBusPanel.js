@@ -38,12 +38,12 @@ const columns = [
 
 const CreditBusPanel =({dispatch,insureList,pagination})=>{
 
-  const onPageChange = (page, pageSize) => {
-      dispatch({ type: 'userDetail/queryUserInsuranceInfo',payload:{pageNo:page}})
+  const onPageChange = (pageNo, pageSize) => {
+      dispatch({ type: 'userDetail/queryUserInsuranceInfo',payload:{pageNo, pageSize}})
     }
 
-  const onShowSizeChange = (page, pageSize) => {
-      dispatch({ type: 'userDetail/queryUserInsuranceInfo',payload:{pageNo:page,pageSize}})
+  const onShowSizeChange = (pageNo, pageSize) => {
+      dispatch({ type: 'userDetail/queryUserInsuranceInfo',payload:{pageNo, pageSize}})
   }
   const paginationProps = {
     showQuickJumper:true,

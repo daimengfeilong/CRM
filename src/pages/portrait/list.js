@@ -45,14 +45,14 @@ class List extends React.PureComponent {
     }
 
 
-   onPageChange = (page, pageSize) => {
+   onPageChange = (pageNo, pageSize) => {
      const { dispatch } = this.props
-    dispatch({ type: 'portrait/query', payload: { pageNo: page } })
+    dispatch({ type: 'portrait/query', payload: { pageNo, pageSize } })
   }
 
-   onShowSizeChange = (page, pageSize) => {
+   onShowSizeChange = (pageNo, pageSize) => {
      const { dispatch } = this.props
-    dispatch({ type: 'portrait/query', payload: { pageNo: page, pageSize } })
+    dispatch({ type: 'portrait/query', payload: { pageNo, pageSize } })
   }
 
    onDel = (portraitId) => {
