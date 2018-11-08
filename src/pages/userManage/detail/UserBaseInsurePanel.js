@@ -33,73 +33,81 @@ const UserBasePanl = ({ dispatch,userBaseInfo})=>{
     }
   ]
 
+  const filterData=(val)=>{
+    if (val === undefined || val === 'None' || val === '' || val === null)
+      return '暂无'
+    else
+      return val
+  }
+
+
   return(
     <>
     <Card style={{lineHeight:'2'}}>
       <Row type="flex" justify="space-around">
-        <Col span={6}>姓名：{userBaseInfo.userName}</Col>
-        <Col span={6}>生日：{userBaseInfo.birthday}</Col>
-        <Col span={6}>年龄：{userBaseInfo.age}</Col>
+        <Col span={6}>姓名：{filterData(userBaseInfo.userName)}</Col>
+        <Col span={6}>生日：{filterData(userBaseInfo.birthday)}</Col>
+        <Col span={6}>年龄：{filterData(userBaseInfo.age)}</Col>
       </Row>
       <Row type="flex"  justify="space-around">
-        <Col span={6}>性别：{userBaseInfo.sex}</Col>
-        <Col span={6}>学历：{userBaseInfo.education}</Col>
-        <Col span={6}>注册时间：{userBaseInfo.regTime}</Col>
+        <Col span={6}>性别：{filterData(userBaseInfo.sex)}</Col>
+        <Col span={6}>学历：{filterData(userBaseInfo.education)}</Col>
+        <Col span={6}>注册时间：{filterData(userBaseInfo.regTime)}</Col>
       </Row>
 
       <Row type="flex" className="manageTop"  justify="space-around">
-        <Col span={6}>证件类型：{userBaseInfo.certType}</Col>
-        <Col span={6}>电子邮箱：{userBaseInfo.email}</Col>
+        <Col span={6}>证件类型：{filterData(userBaseInfo.certType)}</Col>
+        <Col span={6}>电子邮箱：{filterData(userBaseInfo.email)}</Col>
         <Col span={6}>&nbsp;</Col>
       </Row>
       <Row type="flex"   justify="space-around">
-        <Col span={6}>证件号：{userBaseInfo.certNo}</Col>
-        <Col span={6}>居住地址：{userBaseInfo.residentDetailAddress}</Col>
+        <Col span={6}>证件号：{filterData(userBaseInfo.certNo)}</Col>
+        <Col span={6}>居住地址：{filterData(userBaseInfo.residentDetailAddress)}</Col>
         <Col span={6}>&nbsp;</Col>
       </Row>
       <Row type="flex"  justify="space-around" >
-        <Col span={6}>证件有效期：{userBaseInfo.certExpire}</Col>
-        <Col span={6}>联系地址：{userBaseInfo.commonContact}</Col>
+        <Col span={6}>证件有效期：{filterData(userBaseInfo.certExpire)}</Col>
+        <Col span={6}>联系地址：{filterData(userBaseInfo.commonContact)}</Col>
         <Col span={6}>&nbsp;</Col>
       </Row>
       <Row type="flex"  justify="space-around">
-        <Col span={6}>联系电话：{userBaseInfo.phone}</Col>
-        <Col span={6}>家庭地址：{userBaseInfo.homeAddress}</Col>
+        <Col span={6}>联系电话：{filterData(userBaseInfo.phone)}</Col>
+        <Col span={6}>家庭地址：{filterData(userBaseInfo.homeAddress)}</Col>
         <Col span={6}>&nbsp;</Col>
       </Row>
       <Row type="flex"  justify="space-around">
-        <Col span={6}>微信号：{userBaseInfo.weixin}</Col>
-        <Col span={6}>办公地址：{userBaseInfo.workDetailAddress}</Col>
+        <Col span={6}>微信号：{filterData(userBaseInfo.weixin)}</Col>
+        <Col span={6}>办公地址：{filterData(userBaseInfo.workDetailAddress)}</Col>
         <Col span={6}>&nbsp;</Col>
       </Row>
       <Row type="flex"  justify="space-around">
-        <Col span={6}>职业：{userBaseInfo.work}</Col>
-        <Col span={6}>常用联系地址地址：{userBaseInfo.contactAddress}</Col>
+        <Col span={6}>职业：{filterData(userBaseInfo.work)}</Col>
+        <Col span={6}>常用联系地址地址：{filterData(userBaseInfo.contactAddress)}</Col>
         <Col span={6}>&nbsp;</Col>
       </Row>
       <Row type="flex"  justify="space-around">
-        <Col span={6}>数据来源：{userBaseInfo.dataSource}</Col>
-        <Col span={6}>投保职业等级：{userBaseInfo.insureWorkLevel}</Col>
+        <Col span={6}>数据来源：{filterData(filterData.dataSource)}</Col>
+        <Col span={6}>投保职业等级：{filterData(userBaseInfo.insureWorkLevel)}</Col>
         <Col span={6}>&nbsp;</Col>
       </Row>
       <Row type="flex"  justify="space-around">
-        <Col span={6}>婚姻状态：{userBaseInfo.marryStatus}</Col>
-        <Col span={6}>房屋类型：{userBaseInfo.houseType}</Col>
+        <Col span={6}>婚姻状态：{filterData(userBaseInfo.marryStatus)}</Col>
+        <Col span={6}>房屋类型：{filterData(userBaseInfo.houseType)}</Col>
         <Col span={6}>&nbsp;</Col>
       </Row>
       <Row type="flex"  justify="space-around">
-        <Col span={6}>财产所在地：{userBaseInfo.assetsAddress}</Col>
-        <Col span={6}>是否有医保：{userBaseInfo.isMedicalInsurance}</Col>
+        <Col span={6}>财产所在地：{filterData(userBaseInfo.assetsAddress)}</Col>
+        <Col span={6}>是否有医保：{filterData(userBaseInfo.isMedicalInsurance)}</Col>
         <Col span={6}>&nbsp;</Col>
       </Row>
       <Row type="flex" justify="space-around" >
-        <Col span={6}>身高：{userBaseInfo.height}</Col>
-        <Col span={6}>体重：{userBaseInfo.weight}</Col>
+        <Col span={6}>身高：{filterData(userBaseInfo.height)}</Col>
+        <Col span={6}>体重：{filterData(userBaseInfo.weight)}</Col>
         <Col span={6}>&nbsp;</Col>
       </Row>
       <Row type="flex"  justify="space-around">
-        <Col span={6}>年收入：{userBaseInfo.yearSalary}</Col>
-        <Col span={6}>国籍：{userBaseInfo.nationality}</Col>
+        <Col span={6}>年收入：{filterData(userBaseInfo.yearSalary)}</Col>
+        <Col span={6}>国籍：{filterData(userBaseInfo.nationality)}</Col>
         <Col span={6}>&nbsp;</Col>
       </Row>
     </Card>

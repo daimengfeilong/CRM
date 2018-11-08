@@ -19,14 +19,7 @@ class PortraitPanel extends React.Component{
       this.carouselRef = el;
     };
   }
-  componentDidMount(){
-    const { userPortraitList,dispatch }  =this.props.tabProps
-    if (userPortraitList.length !== 0){
-      const portraitId=userPortraitList[0].portraitId
-      dispatch({type:'userDetail/queryPortraitId',payload:portraitId})
-    }
 
-  }
   loops = data => data.map((item)=>{
     return (
       <div key ={item.portraitId} >
@@ -54,6 +47,8 @@ class PortraitPanel extends React.Component{
     if (userPortraitList.length!==0){
       const portraitId=userPortraitList[a].portraitId
       dispatch({type:'userDetail/queryPortraitId',payload:portraitId})
+      const index=a
+      dispatch({type:'userDetail/save',payload:index})
     }
   }
   prev = () => {
@@ -76,6 +71,8 @@ class PortraitPanel extends React.Component{
       slidesToScroll: 1,
       speed: 500,
     }
+
+
     return (
       <>
         <Row>
