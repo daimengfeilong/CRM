@@ -9,7 +9,6 @@ import loginBg from '../../assets/login/login_bg.png'
 import loginIcon from '../../assets/login/login_icon.png'
 
 const FormItem = Form.Item;
-let smsTimer = null;
 
 class Login extends React.Component {
     componentDidMount(){
@@ -20,6 +19,129 @@ class Login extends React.Component {
         document.querySelector('body').style.background = '#fff'
     }
 
+    handleSubmit = (e) => {
+        const { dispatch,form,phoneNo,history } = this.props
+
+        e.preventDefault();
+        form.validateFields((err, values) => {
+            if (!err && phoneNo !== 0) {
+                dispatch({
+                    type:'login/save',
+                    payload:{
+                        loading:true
+                    }
+                })
+                dispatch({
+                    type:'login/userLogin',
+                    payload:{
+                        params:{
+                            ...values
+                        }
+                    }
+                }).then(data => {
+                    if(data.code === '0000'){
+                        localStorage.setItem('userName',data.result.user.userName)
+                        history.push('/userManage')
+                    }else{
+                        dispatch({
+                            type:'login/save',
+                            payload:{
+                                loading:false
+                            }
+                        })                            
+                    }
+                })
+            }
+        })
+    }
+
+    getPhoneNo = () =>{
+        const { dispatch,form } = this.props
+        const { getFieldsValue } = form
+
+        const values = getFieldsValue()
+
+        dispatch({
+            type:'login/getPhone',
+            payload:{
+                params: {
+                    ...values
+                }
+            }
+        })
+    }
+
+    onBlurName = () => {
+        const { dispatch,form } = this.props
+
+        form.validateFields((err, values) => {
+            if (!err) {
+                this.getPhoneNo()
+            }
+        })            
+    }
+
+    onBlurPwd = () => {
+        const { dispatch,form } = this.props
+
+        form.validateFields(['loginName'],(err, values) => {
+            if (!err) {
+                this.getPhoneNo()
+            }
+        })
+    }
+
+    sendSmsCode = () => {
+        const { dispatch,form,phoneNo } = this.props
+
+        form.validateFields(['verificationCode'],(err, values) => {
+            if (!err) {
+
+                dispatch({
+                    type:'login/sendSms',
+                    payload:{
+                        params:{
+                            ...values,
+                            phone:phoneNo,
+                            sourceOsType:'30500005'
+                        }
+                    }
+                }).then(data => {
+                    if(data.code === '0000'){
+                        this.Interval()
+                    }else{
+                        dispatch({type:'login/getCaptchaSrc'})
+                        Message.error(data.msg)
+                    }
+                })
+            }
+        })
+    }
+    
+    Interval = () => {
+        const { dispatch,timeNumSms } = this.props
+        //60秒倒计时... 
+        let i = timeNumSms
+
+        const timer = window.setInterval(() => {
+            dispatch({
+                type: 'login/save',
+                payload: {
+                    timeNumSms: i--
+                }
+            })
+            if(i < 0){
+                dispatch({
+                    type: 'login/save',
+                    payload: {
+                        timeNumSms: 60
+                    }
+                })
+                window.clearInterval(timer)
+            }
+        }, 1000)
+    }
+
     render() {
         const { form, dispatch, phoneNo, timeNumSms, history, captchaSrc, loading } = this.props
         const { getFieldDecorator, getFieldsValue } = form
@@ -28,119 +150,7 @@ class Login extends React.Component {
             captchaSrc,
             dispatch
         }
-
-        const handleSubmit = (e) => {
-            e.preventDefault();
-            form.validateFields((err, values) => {
-                if (!err && phoneNo !== 0) {
-                    dispatch({
-                        type:'login/save',
-                        payload:{
-                            loading:true
-                        }
-                    })
-                    dispatch({
-                        type:'login/userLogin',
-                        payload:{
-                            params:{
-                                ...values
-                            }
-                        }
-                    }).then(data => {
-                        if(data.code === '0000'){
-                            localStorage.setItem('userName',data.result.user.userName)
-                            history.push('/userManage')
-                        }else{
-                            dispatch({
-                                type:'login/save',
-                                payload:{
-                                    loading:false
-                                }
-                            })                            
-                        }
-                    })
-                }
-            })
-        }
-
-        const getPhoneNo = () =>{
-            const values = getFieldsValue()
-
-            dispatch({
-                type:'login/getPhone',
-                payload:{
-                    params: {
-                        ...values
-                    }
-                }
-            })
-        }
-
-        const onBlurName = () => {
-            form.validateFields((err, values) => {
-                if (!err) {
-                    getPhoneNo()
-                }
-            })            
-        }
-
-        const onBlurPwd = () => {
-            form.validateFields(['loginName'],(err, values) => {
-                if (!err) {
-                    getPhoneNo()
-                }
-            })
-        }
-
-        const sendSmsCode = () => {
-
-            form.validateFields(['verificationCode'],(err, values) => {
-                if (!err) {
-
-                    dispatch({
-                        type:'login/sendSms',
-                        payload:{
-                            params:{
-                                ...values,
-                                phone:phoneNo,
-                                sourceOsType:'30500005'
-                            }
-                        }
-                    }).then(data => {
-                        if(data.code === '0000'){
-                            Interval()
-                        }else{
-                            dispatch({type:'login/getCaptchaSrc'})
-                            Message.error(data.msg)
-                        }
-                    })
-                }
-            })
-        }
-        
-        const Interval = () => {
-            //60秒倒计时... 
-            let i = timeNumSms
-
-            const timer = window.setInterval(() => {
-                dispatch({
-                    type: 'login/save',
-                    payload: {
-                        timeNumSms: i--
-                    }
-                })
-                if(i < 0){
-                    dispatch({
-                        type: 'login/save',
-                        payload: {
-                            timeNumSms: 60
-                        }
-                    })
-                    window.clearInterval(timer)
-                }
-            }, 1000)
-        }
-        
+      
 
         return (
             <Row className="login-container">
@@ -150,7 +160,7 @@ class Login extends React.Component {
                     </div>
                 </Col>
                 <Col span={5}>
-                    <Form onSubmit={handleSubmit} className="login-box">
+                    <Form onSubmit={this.handleSubmit} className="login-box">
                         <h3 className="title">CRM系统登录</h3>
                         <FormItem>
                             {getFieldDecorator('loginName', {
@@ -159,7 +169,7 @@ class Login extends React.Component {
                                     { pattern: /^\w{6,16}$/, message: '请输入6-16位账号' }
                                 ],
                             })(
-                                <Input prefix={<Icon type="user" />} onBlur={onBlurName} placeholder="账号" />
+                                <Input prefix={<Icon type="user" />} onBlur={this.onBlurName} placeholder="账号" />
                             )}
                         </FormItem>
                         <FormItem>
@@ -169,7 +179,7 @@ class Login extends React.Component {
                                     { pattern: /^\w{6,16}$/, message: '请输入6-16位密码' }
                                 ],
                             })(
-                                <Input prefix={<Icon type="lock" />} onBlur={onBlurPwd} type="password" placeholder="密码" />
+                                <Input prefix={<Icon type="lock" />} onBlur={this.onBlurPwd} type="password" placeholder="密码" />
                             )}
                         </FormItem>
                         {
@@ -207,7 +217,7 @@ class Login extends React.Component {
                                         <Col span={9} offset={1}>
                                             {
                                                 timeNumSms === 60 || timeNumSms === 0 ?
-                                                <Button type="primary" onClick={sendSmsCode}>获取验证码</Button>
+                                                <Button type="primary" onClick={this.sendSmsCode}>获取验证码</Button>
                                                 :
                                                 <Button disabled style={{width:'100%'}}>{timeNumSms}s 后重发</Button>
                                             }

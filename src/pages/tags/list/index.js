@@ -14,36 +14,42 @@ class List extends React.Component {
         dispatch({ type: 'tags/query'});
     }
 
+    del = (id) => {
+        const { dispatch } = this.props
+
+        confirm({
+            title: '确认删除？',
+            content: '',
+            onOk() {
+                dispatch({
+                    type: 'tags/del',
+                    payload: { tagId: id }
+                })
+            },
+        });
+    }
+
+    onPageChange = (page, pageSize) => {
+        const { dispatch } = this.props
+
+        dispatch({ type: 'tags/query',payload:{pageNo:page}})
+    }
+
+    onShowSizeChange = (page, pageSize) => {
+        const { dispatch } = this.props
+
+        dispatch({ type: 'tags/query',payload:{pageSize}})
+    }
+
     render() {
         const { list, dispatch, pagination, loading } = this.props
-
-        const del = (id) => {
-            confirm({
-                title: '确认删除？',
-                content: '',
-                onOk() {
-                    dispatch({
-                        type: 'tags/del',
-                        payload: { tagId: id }
-                    })
-                },
-            });
-        }
-
-        const onPageChange = (page, pageSize) => {
-            dispatch({ type: 'tags/query',payload:{pageNo:page}})
-        }
-
-        const onShowSizeChange = (page, pageSize) => {
-            dispatch({ type: 'tags/query',payload:{pageSize}})
-        }
 
         const paginationProps = {
             showQuickJumper:true,
             showSizeChanger:true,
             total:pagination.total,
-            onChange:onPageChange,
-            onShowSizeChange:onShowSizeChange,
+            onChange:this.onPageChange,
+            onShowSizeChange:this.onShowSizeChange,
             showTotal:total => `共 ${total} 条`,
         }
 
@@ -87,7 +93,7 @@ class List extends React.Component {
                 <>
                     <Link to={`/tags/edit?id=${row.tagId}`}>编辑</Link>
                     <Divider type="vertical" />
-                    <a href="javascript:" onClick={() => del(row.tagId)}>删除</a>
+                    <a href="javascript:" onClick={() => this.del(row.tagId)}>删除</a>
                 </>
             ),
         }];

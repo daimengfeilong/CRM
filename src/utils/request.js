@@ -11,11 +11,14 @@ function checkStatus(response) {
     //更新token
     if (token) localStorage.setItem('token', token);
 
-    if (response.status == 200) {
+    if (response.status === 200) {
         return response;
     }
     Message.error(`${response.status} (${response.statusText})`);
-    return Promise.reject();
+    
+    const error = new Error(response.statusText);
+    throw error;
+
 }
 
 function checkData(data) {
@@ -54,13 +57,13 @@ export default async function request(options) {
         options.headers.Authorization = localStorage.getItem('token')
     }
 
-    if(method == 'get'){
+    if(method === 'get'){
         if(options.data){
             const query = queryParams(options.data)
     
             options.url = `${options.url}?${query}`
         }
-    }else if(method == 'post'){
+    }else if(method === 'post'){
         options.body = JSON.stringify(options.data)
         options.headers['Content-Type'] = 'application/json'
     }

@@ -33,18 +33,64 @@ class Index extends React.PureComponent {
 
     }
 
-    formItemLayout = {
-        labelCol: {
-            span: 6,
-            style: {
-                textAlign: 'left'
-            }
-        },
-        wrapperCol: {
-            span: 17
-        },
+
+    back = () => {
+        const { history } = this.props
+
+        history.push('/tags')
     }
 
+    submitThen = (data) => {
+        const { history } = this.props
+
+        if (data.code === '0000') {
+            history.push('/tags')
+        } else {
+            Message.error(data.msg)
+        }
+    }
+
+    submit = () => {
+        const { dispatch,form,attrItem } = this.props
+        const { attrList } = attrItem
+        
+        form.validateFields((err, values) => {
+            if (!err) {
+                if (attrList.length) {
+                    if (attrItem.tagId) {
+                        dispatch({
+                            type: 'tagsEdit/edit',
+                            payload: {
+                                tagId: attrItem.tagId,
+                                ...values,
+                                attrList
+                            }
+                        }).then(data => {
+                            this.submitThen(data)
+                        })
+                    } else {
+                        dispatch({
+                            type: 'tagsEdit/add',
+                            payload: {
+                                ...values,
+                                attrList
+                            }
+                        }).then(data => {
+                            this.submitThen(data)
+                        })
+                    }
+                } else {
+                    Message.error('请先设置属性范围')
+                }
+            }
+        })
+    }
+
+    modelSubmit = (selectedTree3) => {
+        const { dispatch } = this.props
+
+        dispatch({ type: 'tagsEdit/save', payload: { selectedTree3 } })
+    }
 
     render() {
         const { form,
@@ -68,8 +114,16 @@ class Index extends React.PureComponent {
 
         const checkedKeys = selectedTree3.map(item => item.id)
 
-        const modelSubmit = (selectedTree3) => {
-            dispatch({ type: 'tagsEdit/save', payload: { selectedTree3 } })
+        const formItemLayout = {
+            labelCol: {
+                span: 6,
+                style: {
+                    textAlign: 'left'
+                }
+            },
+            wrapperCol: {
+                span: 17
+            },
         }
 
         const modalProps = {
@@ -77,7 +131,7 @@ class Index extends React.PureComponent {
             title: '增加三级属性',
             tree: attrTree,
             checkedKeys,
-            onSubmit: (keys) => modelSubmit(keys),
+            onSubmit: (keys) => this.modelSubmit(keys),
             handleCancel: () => dispatch({ type: 'tagsEdit/save', payload: { showModel: false } })
 
         }
@@ -97,51 +151,6 @@ class Index extends React.PureComponent {
             dispatch,
             attrList,
             checkedAttrList
-        }
-
-        const back = () => {
-            history.push('/tags')
-        }
-
-        const submitThen = (data) => {
-            if (data.code === '0000') {
-                history.push('/tags')
-            } else {
-                Message.error(data.msg)
-            }
-        }
-
-        const submit = () => {
-            form.validateFields((err, values) => {
-                if (!err) {
-                    if (attrList.length) {
-                        if (attrItem.tagId) {
-                            dispatch({
-                                type: 'tagsEdit/edit',
-                                payload: {
-                                    tagId: attrItem.tagId,
-                                    ...values,
-                                    attrList
-                                }
-                            }).then(data => {
-                                submitThen(data)
-                            })
-                        } else {
-                            dispatch({
-                                type: 'tagsEdit/add',
-                                payload: {
-                                    ...values,
-                                    attrList
-                                }
-                            }).then(data => {
-                                submitThen(data)
-                            })
-                        }
-                    } else {
-                        Message.error('请先设置属性范围')
-                    }
-                }
-            })
         }
 
         return (
@@ -195,8 +204,8 @@ class Index extends React.PureComponent {
                                 <Textarea rows={5} placeholder="请输入标签说明" />
                             )}
                         </FormItem>
-                        <Button type="primary" size="large" onClick={submit}>保存</Button>
-                        <Button style={{ marginLeft: 15 }} size="large" onClick={back}>取消</Button>
+                        <Button type="primary" size="large" onClick={this.submit}>保存</Button>
+                        <Button style={{ marginLeft: 15 }} size="large" onClick={this.back}>取消</Button>
                     </Form>
                     <ModalTree {...modalProps}></ModalTree>
                 </div>

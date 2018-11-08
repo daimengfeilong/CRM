@@ -31,6 +31,18 @@ class List extends React.Component {
         })
     }
 
+    onPageChange = (page, pageSize) => {
+        const { dispatch } = this.props
+
+        dispatch({ type: 'attribute/query', payload: { pageNo: page } })
+    }
+
+    onShowSizeChange = (page, pageSize) => {
+        const { dispatch } = this.props
+        
+        dispatch({ type: 'attribute/query', payload: { pageSize } })
+    }
+
     render() {
         const { dispatch, list, pagination, showModel, attrItem, loading } = this.props
 
@@ -40,20 +52,12 @@ class List extends React.Component {
             attrItem
         }
 
-        const onPageChange = (page, pageSize) => {
-            dispatch({ type: 'attribute/query', payload: { pageNo: page } })
-        }
-
-        const onShowSizeChange = (page, pageSize) => {
-            dispatch({ type: 'attribute/query', payload: { pageSize } })
-        }
-
         const paginationProps = {
             showQuickJumper: true,
             showSizeChanger: true,
             total: pagination.total,
-            onChange: onPageChange,
-            onShowSizeChange: onShowSizeChange,
+            onChange: this.onPageChange,
+            onShowSizeChange: this.onShowSizeChange,
             showTotal: total => `共 ${total} 条`,
         }
 
