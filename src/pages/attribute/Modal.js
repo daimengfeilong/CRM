@@ -1,11 +1,4 @@
-import { Modal, Form } from 'antd';
-
-const fourBody = {
-    padding: '10px 15px',
-    border: '1px solid #efefef',
-    borderRadius: '7px',
-    marginTop: '10px'
-}
+import { Modal, Form, Card } from 'antd';
 
 const modal = ({ showModel, dispatch, attrItem }) => {
     const { datas = [],isNum } = attrItem
@@ -35,14 +28,14 @@ const modal = ({ showModel, dispatch, attrItem }) => {
         >
             <p>三级属性：{attrItem.attrName}</p>
             <label>四级属性：</label>
-            <div style={fourBody}>
+            <Card style={{marginTop: '10px'}}>
             {
                 datas[0] ? 
                 isNum ? `${min} - ${max}` : datas.join('，')
                 :
                 <p>暂无数据！</p>
             }
-            </div>
+            </Card>
         </Modal>
     )
 }

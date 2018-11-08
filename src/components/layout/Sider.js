@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'dva'
-import { Layout } from 'antd';
+import { Layout } from 'antd'
 import { withRouter } from 'dva/router'
 import Menus from './Menu'
 

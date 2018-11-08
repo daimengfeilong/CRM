@@ -12,10 +12,17 @@ const FormItem = Form.Item;
 let smsTimer = null;
 
 class Login extends React.Component {
+    componentDidMount(){
+        document.querySelector('body').style.background = '#93defe'
+    }
+
+    componentWillUnmount(){
+        document.querySelector('body').style.background = '#fff'
+    }
+
     render() {
         const { form, dispatch, phoneNo, timeNumSms, history, captchaSrc, loading } = this.props
         const { getFieldDecorator, getFieldsValue } = form
-
 
         const captchaProps = {
             captchaSrc,
@@ -41,7 +48,15 @@ class Login extends React.Component {
                         }
                     }).then(data => {
                         if(data.code === '0000'){
+                            localStorage.setItem('userName',data.result.user.userName)
                             history.push('/userManage')
+                        }else{
+                            dispatch({
+                                type:'login/save',
+                                payload:{
+                                    loading:false
+                                }
+                            })                            
                         }
                     })
                 }
@@ -93,7 +108,7 @@ class Login extends React.Component {
                         }
                     }).then(data => {
                         if(data.code === '0000'){
-                            dispatch({type:'login/Interval'})
+                            Interval()
                         }else{
                             dispatch({type:'login/getCaptchaSrc'})
                             Message.error(data.msg)
@@ -103,6 +118,30 @@ class Login extends React.Component {
             })
         }
         
+        const Interval = () => {
+            //60秒倒计时... 
+            let i = timeNumSms
+
+            const timer = window.setInterval(() => {
+                dispatch({
+                    type: 'login/save',
+                    payload: {
+                        timeNumSms: i--
+                    }
+                })
+                if(i < 0){
+                    dispatch({
+                        type: 'login/save',
+                        payload: {
+                            timeNumSms: 60
+                        }
+                    })
+                    window.clearInterval(timer)
+                }
+            }, 1000)
+        }
+        
+
         return (
             <Row className="login-container">
                 <Col span={8} offset={6}>

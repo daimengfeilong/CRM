@@ -1,14 +1,14 @@
-import { getPhoneNo,sendSms,userLogin } from '../services/login'
+import { getPhoneNo, sendSms, userLogin } from '../services/login'
 import { Message } from 'antd'
 
-
+var timer = null
 export default {
     namespace: 'login',
     state: {
         phoneNo: 0,
-        captchaSrc:'',
+        captchaSrc: '',
         timeNumSms: 60,
-        loading:false,
+        loading: false,
     },
     reducers: {
         save(state, { payload }) {
@@ -33,7 +33,7 @@ export default {
             if (res.code === '0000') {
                 const phoneNo = res.result.phoneNo
 
-                yield put({ type: 'getCaptchaSrc'})
+                yield put({ type: 'getCaptchaSrc' })
                 yield put({ type: 'save', payload: { phoneNo } })
             } else {
                 Message.error(res.msg)
@@ -49,26 +49,6 @@ export default {
             const res = yield call(userLogin, payload)
 
             return res
-        },
-        *Interval({ payload = {} }, { put, call, select }) {
-            const delay = (ms) => new Promise((resolve) => {setTimeout(resolve, ms)})
-
-            //60秒倒计时... 
-            let i = 60
-            while (i > 0) {
-                i--;
-                const { hash } = window.location
-
-                if( hash === '#/' || hash === '#/login' ){
-                    yield call(delay, 1000);
-                    yield put({
-                        type: 'save',
-                        payload: {
-                            timeNumSms: i
-                        }
-                    })
-                }
-            }
         }
     }
 }

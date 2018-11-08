@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'dva'
-import { Layout, Menu, Icon } from 'antd';
+import { withRouter } from 'dva/router'
+import { Layout, Menu, Icon } from 'antd'
 
 const { Header } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -13,6 +14,14 @@ const SubMenu = Menu.SubMenu;
  * 
  */
 class Headers extends React.Component {
+
+    logout = () => {
+        const { history } = this.props
+
+        localStorage.removeItem('userName')
+        history.push('/login')
+    }
+
     render() {
         const { dispatch, collapsed } = this.props
 
@@ -35,12 +44,12 @@ class Headers extends React.Component {
                             }}
                             title={<span>
                                 <Icon type="user" />
-                                guest
-                        </span>}
+                                {localStorage.getItem('userName')}
+                            </span>}
                         >
-                            <Menu.Item key="logout">
+                            <Menu.Item key="logout" onClick={this.logout}>
                                 Sign out
-                        </Menu.Item>
+                            </Menu.Item>
                         </SubMenu>
                     </Menu>
                 </div>
@@ -53,4 +62,4 @@ function mapStateToProps(state) {
     return state.layout
 }
 
-export default connect(mapStateToProps)(Headers)
+export default withRouter(connect(mapStateToProps)(Headers))
