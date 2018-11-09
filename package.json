@@ -13,6 +13,7 @@
     "react-dom": "^16.2.0"
   },
   "devDependencies": {
+    "@babel/polyfill": "^7.0.0",
     "babel-plugin-dva-hmr": "^0.3.2",
     "babel-plugin-import": "^1.10.0",
     "dva-loading": "^2.0.5",
