@@ -1,5 +1,5 @@
 import { Modal } from 'antd'
-import { timestampToDate } from '../../../utils/utils'
+import { getFormatDateByLong } from '../../../utils/utils'
 
 
 
@@ -27,7 +27,7 @@ const TagModal=({dispatch,description,showTagModel,tagItem})=>{
       onOk={submit}>
         <div className="user_portrait_content">
           <div>
-            修改时间： {(tagItem.updtDate!==undefined)?timestampToDate(tagItem.updtDate):'无'}
+            修改时间： {(tagItem.updtDate!==undefined)?getFormatDateByLong(tagItem.updtDate):'无'}
           </div>
 
           <div>

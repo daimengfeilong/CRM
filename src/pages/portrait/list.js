@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Table, Divider, Modal, Message, Spin,Tag } from 'antd';
 import Head from './Head'
 import ClassModal from './Modal'
-import { timestampToDate } from '../../utils/utils'
+import { getFormatDateByLong } from '../../utils/utils'
 import ModalTree from '../../components/modalTree/modal'
 const confirm = Modal.confirm;
 
@@ -163,7 +163,7 @@ class List extends React.PureComponent {
             dataIndex: 'instDate',
             key: 'instDate',
             width:'110px',
-            render: text => { return timestampToDate(text) },
+            render: text => { return getFormatDateByLong(text) },
         },
         {
             title: '操作',

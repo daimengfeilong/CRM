@@ -1,7 +1,7 @@
 import { Carousel, Card, Row, Col, Button,Tag  } from 'antd'
 import './port.less'
 import React from 'react'
-import { timestampToDate } from '../../../utils/utils'
+import { getFormatDateByLong } from '../../../utils/utils'
 
 const ShowTags=({data})=> {
   return data.map((item) => {
@@ -96,7 +96,7 @@ class PortraitPanel extends React.Component{
         <Card title="画像说明" style={{marginTop:'16px'}}>
           <div className="user_portrait_content">
             <div>
-              修改时间： {(portraitItem.instDate!==undefined)?timestampToDate(portraitItem.instDate):'无'}
+              修改时间： {(portraitItem.instDate!==undefined)?getFormatDateByLong(portraitItem.instDate):'无'}
             </div>
 
             <div>
