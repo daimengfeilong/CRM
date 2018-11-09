@@ -43,6 +43,7 @@ class Login extends React.Component {
                         localStorage.setItem('userName',data.result.user.userName)
                         history.push('/userManage')
                     }else{
+                        Message.error(data.msg)
                         dispatch({
                             type:'login/save',
                             payload:{
@@ -59,37 +60,23 @@ class Login extends React.Component {
         const { dispatch,form } = this.props
         const { getFieldsValue } = form
 
-        const values = getFieldsValue()
+        form.validateFields((err) => {
+            const values = getFieldsValue()
 
-        dispatch({
-            type:'login/getPhone',
-            payload:{
-                params: {
-                    ...values
-                }
+            console.log(err);
+            if (!err) {
+                dispatch({
+                    type:'login/getPhone',
+                    payload:{
+                        params: {
+                            ...values
+                        }
+                    }
+                })
             }
         })
     }
 
-    onBlurName = () => {
-        const { dispatch,form } = this.props
-
-        form.validateFields((err, values) => {
-            if (!err) {
-                this.getPhoneNo()
-            }
-        })            
-    }
-
-    onBlurPwd = () => {
-        const { dispatch,form } = this.props
-
-        form.validateFields(['loginName'],(err, values) => {
-            if (!err) {
-                this.getPhoneNo()
-            }
-        })
-    }
 
     sendSmsCode = () => {
         const { dispatch,form,phoneNo } = this.props
@@ -169,7 +156,7 @@ class Login extends React.Component {
                                     { pattern: /^\w{6,16}$/, message: '请输入6-16位账号' }
                                 ],
                             })(
-                                <Input prefix={<Icon type="user" />} onBlur={this.onBlurName} placeholder="账号" />
+                                <Input prefix={<Icon type="user" />} onBlur={this.getPhoneNo} placeholder="账号" />
                             )}
                         </FormItem>
                         <FormItem>
@@ -179,7 +166,7 @@ class Login extends React.Component {
                                     { pattern: /^\w{6,16}$/, message: '请输入6-16位密码' }
                                 ],
                             })(
-                                <Input prefix={<Icon type="lock" />} onBlur={this.onBlurPwd} type="password" placeholder="密码" />
+                                <Input prefix={<Icon type="lock" />} onBlur={this.getPhoneNo} type="password" placeholder="密码" />
                             )}
                         </FormItem>
                         {

@@ -25,8 +25,8 @@ const selectedAttrList = ({ dispatch, attrList,checkedAttrList }) => {
             <label>已设置的属性范围:</label>
             <div className="body">
                 {
-                    attrList.map(item => (
-                        <Tag key={item.alid || item.attrId} closable onClose={() => onClose(item)}>{item.attrName}</Tag>
+                    attrList.map((item,index) => (
+                        <Tag key={`${item.alid || item.attrId}-${index}`} closable onClose={() => onClose(item)}>{item.attrName}</Tag>
                     ))
                 }
             </div>

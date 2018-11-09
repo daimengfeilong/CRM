@@ -24,7 +24,8 @@ class Index extends React.PureComponent {
         dispatch({
             type: 'tagsEdit/save', payload: {
                 selectedTree3: [],
-                fourAttr: {}
+                fourAttr: {},
+                attrItem:{}
             }
         })
 
@@ -108,7 +109,7 @@ class Index extends React.PureComponent {
         } = this.props
 
         const { getFieldDecorator } = form
-        const { attrList } = attrItem
+        const { attrList = [] } = attrItem
 
         const checkedKeys = selectedTree3.map(item => item.id)
 
@@ -159,7 +160,7 @@ class Index extends React.PureComponent {
                     <Form style={{ marginTop: 30 }}>
                         <Row className="first-row">
                             <Col span={5}>
-                                <FormItem label="标签名称" {...this.formItemLayout}>
+                                <FormItem label="标签名称" {...formItemLayout}>
                                     {getFieldDecorator('tagName', {
                                         initialValue: attrItem.tagName,
                                         rules: [
@@ -172,7 +173,7 @@ class Index extends React.PureComponent {
                                 </FormItem>
                             </Col>
                             <Col span={5}>
-                                <FormItem label="类别" {...this.formItemLayout}>
+                                <FormItem label="类别" {...formItemLayout}>
                                     {getFieldDecorator('classId', {
                                         initialValue: attrItem.classId,
                                         rules: [

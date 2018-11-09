@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'dva';
 import { Link } from 'react-router-dom'
 import { Table, Divider, Tag, Modal, Spin } from 'antd';
+import { getFormatDateByLong } from '../../../utils/utils'
 import Head from './Head'
 
 const confirm = Modal.confirm;
@@ -24,6 +25,8 @@ class List extends React.Component {
                 dispatch({
                     type: 'tags/del',
                     payload: { tagId: id }
+                }).then(data => {
+                    dispatch({ type: 'tags/query'})
                 })
             },
         });
@@ -86,7 +89,10 @@ class List extends React.Component {
         }, {
             title: '创建时间',
             dataIndex: 'instDate',
-            key: 'instDate'
+            key: 'instDate',
+            render:(row,record) => {
+                return row ? getFormatDateByLong(row) : row
+            }
         }, {
             title: '操作',
             key: 'action',
