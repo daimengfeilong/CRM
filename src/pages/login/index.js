@@ -59,22 +59,18 @@ class Login extends React.Component {
     getPhoneNo = () =>{
         const { dispatch,form } = this.props
         const { getFieldsValue } = form
+        const values = getFieldsValue()
 
-        form.validateFields((err) => {
-            const values = getFieldsValue()
-
-            console.log(err);
-            if (!err) {
-                dispatch({
-                    type:'login/getPhone',
-                    payload:{
-                        params: {
-                            ...values
-                        }
+        if(values.loginName && values.password){
+            dispatch({
+                type:'login/getPhone',
+                payload:{
+                    params: {
+                        ...values
                     }
-                })
-            }
-        })
+                }
+            })
+        }
     }
 
 
