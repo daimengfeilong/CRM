@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'dva';
 import { Table, Spin } from 'antd';
 import Modal from './Modal'
+import Head from './Head'
 
 class List extends React.Component {
 
@@ -53,6 +54,10 @@ class List extends React.Component {
             attrItem
         }
 
+        const headProps = {
+            dispatch
+        }
+
         const paginationProps = {
             showQuickJumper: true,
             showSizeChanger: true,
@@ -101,6 +106,7 @@ class List extends React.Component {
         return (
             <Spin spinning={loading}>
                 {showModel && <Modal {...modalProps}></Modal>}
+                <Head {...headProps}></Head>
                 <Table columns={columns} dataSource={list} pagination={paginationProps} rowKey="thirdAttrId" />
             </Spin>
         );
