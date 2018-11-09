@@ -14,77 +14,6 @@ export default{
                 ...state,
                 ...payload
             }
-        },
-        addSubClass(state, {payload}){
-            let { subClassList } = state.classItem
-
-            if(!subClassList){
-                subClassList = []
-            }
-
-            //合并新添加的对象值
-            return {
-                ...state,
-                classItem:{
-                    ...state.classItem,
-                    subClassList:[...subClassList,payload]
-                }
-            } 
-        },
-        onEditSubClass(state, { payload }){
-            const { subClassList } = state.classItem
-
-            //保存子类编辑
-            subClassList.map(item => {
-                if(item.cid === payload.cid){
-                    item.className = payload.className
-                    item.isEdit = false
-                }
-            })
-
-            return {
-                ...state,
-                classItem:{
-                    ...state.classItem,
-                    subClassList:subClassList
-                }
-            }
-        },
-        showEditSubClass(state, { payload }){
-            const { subClassList } = state.classItem
-
-            //显示编辑的状态
-            subClassList.map(item => {
-                if(item.cid === payload.cid){
-                    item.isEdit = true
-                }
-            })
-
-            return {
-                ...state,
-                classItem:{
-                    ...state.classItem,
-                    subClassList:subClassList
-                }
-            }
-        },
-        onSelectedSubClass(state, { payload }){
-            const { subClassList } = state.classItem
-
-            //选择子分类
-            subClassList.map(item => {
-                if(item.cid === payload.cid){
-                    item.isSelected = !item.isSelected
-                }
-            })
-
-            return {
-                ...state,
-                classItem:{
-                    ...state.classItem,
-                    subClassList:subClassList
-                }
-            }
         }
     },
     effects: {
@@ -125,20 +54,20 @@ export default{
             return res
         },
         *delClass({ payload }, { call, put, select }){
-            const state = yield select(state => state.classify.list)
+            const { list } = yield select(state => state.classify)
             
             const res = yield call(delClass,payload)
 
             if(res.code === '0000'){
-                const list = state.filter(item => item.classId !== payload.classId)
+                const newList = list.filter(item => item.classId !== payload.classId)
 
-                yield put({type:'save',payload:{list}})
+                yield put({type:'save',payload:{list:newList}})
             }
 
             return res
         },
         *handlerDel({ payload },{ call,put,select }){
-            const classItem = yield select(state => state.classify.classItem)
+            const { classItem } = yield select(state => state.classify)
             const {subClassList = []} = classItem
             
             yield put({type:'save',payload:{
@@ -149,7 +78,7 @@ export default{
             }})
         },
         *delSubClass({ payload }, { call, put, select }){
-            const classItem = yield select(state => state.classify.classItem)
+            const {classItem} = yield select(state => state.classify)
             const {subClassList = []} = classItem
 
             const params = subClassList.filter(item => item.isSelected)

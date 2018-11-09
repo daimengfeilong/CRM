@@ -105,11 +105,17 @@ const modal = ({ showModel, dispatch, form, classItem }) => {
     const addSubClass = (val) => {
         form.validateFields(['subClassName'], (err, values) => {
             if (!err) {
+                const item = {
+                    cid: `C${subClassList.length + 1}`,
+                    className: val
+                }
                 dispatch({
-                    type: 'classify/addSubClass',
+                    type: 'classify/save',
                     payload: {
-                        cid: `C${subClassList.length + 1}`,
-                        className: val
+                        classItem:{
+                            ...classItem,
+                            subClassList:[...subClassList,item]
+                        }
                     }
                 })
                 
@@ -129,7 +135,7 @@ const modal = ({ showModel, dispatch, form, classItem }) => {
             onCancel={handleCancel}
             onOk={submit}
         >
-            <Form>
+            <Form hideRequiredMark={true}>
                 <FormItem label="分类名称" >
                     {getFieldDecorator('className', {
                         initialValue: classItem.className,

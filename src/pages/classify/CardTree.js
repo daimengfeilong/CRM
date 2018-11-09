@@ -22,11 +22,21 @@ const CardTree = ({ dispatch, classItem }) => {
             return false;
         }
 
+        //保存子类编辑
+        subClassList.map(item => {
+            if(item.cid === id){
+                item.className = val
+                item.isEdit = false
+            }
+        })
+        
         dispatch({
-            type: 'classify/onEditSubClass',
+            type: 'classify/save',
             payload: {
-                cid: id,
-                className: val
+                classItem:{
+                    ...classItem,
+                    subClassList:subClassList
+                }
             }
         })
     }
@@ -35,20 +45,39 @@ const CardTree = ({ dispatch, classItem }) => {
     const showEditSubClass = (e, id) => {
         e.stopPropagation()
 
+        subClassList.map(item => {
+            if(item.cid === id){
+                item.isEdit = true
+            }
+        })
+
         dispatch({
-            type: 'classify/showEditSubClass',
+            type: 'classify/save',
             payload: {
-                cid: id
+                classItem:{
+                    ...classItem,
+                    subClassList:subClassList
+                }
             }
         })
     }
 
     //选择子分类
     const onSelectedSubClass = (id) => {
+        
+        subClassList.map(item => {
+            if(item.cid === id){
+                item.isSelected = !item.isSelected
+            }
+        })
+
         dispatch({
-            type: 'classify/onSelectedSubClass',
+            type: 'classify/save',
             payload: {
-                cid: id
+                classItem:{
+                    ...classItem,
+                    subClassList:subClassList
+                }
             }
         })
     }

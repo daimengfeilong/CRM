@@ -55,7 +55,7 @@ export default {
             }
         },
         *saveAttrList({ payload }, { call, put, select }) {
-            const attrItem = yield select(state => state.tagsEdit.attrItem)
+            const {attrItem} = yield select(state => state.tagsEdit)
 
             yield put({ type: 'save', payload: { attrItem: {...attrItem,attrList:payload.list } } })
         },
@@ -71,13 +71,13 @@ export default {
             yield put({ type: 'save', payload: { fourAttr: res.result } })
         },
         *removeThreeItem({ payload }, { call, put, select }) {
-            const state = yield select(state => state.tagsEdit.selectedTree3)
-            const selectedTree3 = state.filter(item => item.id != payload.id)
+            const {selectedTree3} = yield select(state => state.tagsEdit)
+            const newSelectedTree3 = selectedTree3.filter(item => item.id != payload.id)
 
-            yield put({ type: 'save', payload: { selectedTree3 } })
+            yield put({ type: 'save', payload: { selectedTree3:newSelectedTree3 } })
         },
         *addAttrListItem({ payload }, { call, put, select }) {
-            const attrItem = yield select(state => state.tagsEdit.attrItem)
+            const {attrItem} = yield select(state => state.tagsEdit)
             const { attrList } = attrItem
             
             yield put({ type: 'save', payload: { attrItem:{...attrItem,attrList:[...attrList,payload]} } })

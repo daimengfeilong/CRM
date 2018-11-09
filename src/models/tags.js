@@ -35,13 +35,13 @@ export default{
             yield put({type:'save',payload:{data:res.data.data[0]}})
         },
         *del({ payload }, { call, put, select }){
-            const state = yield select(state => state.tags.list)
+            const {list} = yield select(state => state.tags)
             const res = yield call(del,payload)
 
             if(res.code === '0000'){
-                const list = state.filter(item => item.tagId !== payload.tagId)
+                const newList = list.filter(item => item.tagId !== payload.tagId)
 
-                yield put({type:'save',payload:{list}})
+                yield put({type:'save',payload:{list:newList}})
             }
         }
     }

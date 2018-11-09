@@ -16,8 +16,7 @@ function checkStatus(response) {
     }
     Message.error(`${response.status} (${response.statusText})`);
     
-    const error = new Error(response.statusText);
-    throw error;
+    return Promise.reject()
 
 }
 
