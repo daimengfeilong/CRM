@@ -90,7 +90,7 @@ const UserBasePanl = ({ dispatch,userBaseInfo})=>{
           <Col span={6}>&nbsp;</Col>
         </Row>
         <Row type="flex"  justify="space-around">
-          <Col span={6}>邮编：{filterData(userBaseInfo.yearSalary)}</Col>
+          <Col span={6}>邮编：{filterData(userBaseInfo.postcode)}</Col>
           <Col span={6}>是否有其他贷款：{filterData(userBaseInfo.isOtherLoan)}</Col>
           <Col span={6}>&nbsp;</Col>
         </Row>

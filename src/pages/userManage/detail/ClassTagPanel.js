@@ -8,27 +8,27 @@ const showClassOptions=(data)=>{
         return item.className
     })
 }
-const getMaxFloor=(treeData)=> {
-  let floor = 0
-  let max = 0
-  function each (data, floor) {
-    data.forEach(e => {
-      e.floor = floor
-      if (floor > max) {
-        max = floor
-      }
-      if (e.children!=undefined&&e.children.length > 0) {
-        each(e.children, floor + 1)
-      }
-    })
-  }
-  each(treeData,1)
-  return max
-}
+// const getMaxFloor=(treeData)=> {
+//   let floor = 0
+//   let max = 0
+//   function each (data, floor) {
+//     data.forEach(e => {
+//       e.floor = floor
+//       if (floor > max) {
+//         max = floor
+//       }
+//       if (e.children!=undefined&&e.children.length > 0) {
+//         each(e.children, floor + 1)
+//       }
+//     })
+//   }
+//   each(treeData,1)
+//   return max
+// }
 const getData = (data) => {
   return data.map((item) => {
       let temp = {}
-      if (item.classId != undefined) {
+      if (item.classId !== undefined) {
         temp.id = item.classId
         temp.name = item.className
       }else {
@@ -61,8 +61,6 @@ const ShowTags =({checkedValues,allData,dispatch})=>{
 }
 
 
-
-
 const difference = (a,b) => {
   //找出两个数组之间的差集
   const difference = a.concat(b).filter(v => !a.includes(v) || !b.includes(v))
@@ -90,16 +88,15 @@ const ClassTagPanel =({dispatch,userTagList,allData,checkedValues,showTagModel,t
       if (nowValues.length>checkedValues.length) {
         const className= difference(nowValues,checkedValues)
           userTagList.map((item)=>{
-           if (item.className==className) {
+           if (item.className===className) {
              classId= item.classId
            }
          })
         dispatch({ type: 'userDetail/queryTagsByClassId',payload:classId});
       }else {
         const className= difference(nowValues,checkedValues)
-        console.log(className)
          userTagList.map((item)=>{
-          if (item.className==className) {
+          if (item.className===className) {
             classId= item.classId
           }
         })

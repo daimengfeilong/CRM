@@ -45,19 +45,17 @@ export default {
       }
     },
     saveAll (state, {payload}) {
-      let temp=state.allData
-      let add=[]
-      if (temp.length==0){
+
+      let add=state.allData
+      if (add.length===0){
         add=payload
       } else {
         add=[...add,...payload]
-        add = add.filter(function (item, index, self) {
-          return self.indexOf(item) == index;
-        });
+        add = add.filter((item, index, self) => self.findIndex((selfItem)=>selfItem.tagId===item.tagId) === index);
       }
       return {
         ...state,
-        allData:[...state.allData,...add]
+        allData:[...add]
       }
     },
     saveFilter (state, {payload}) {
