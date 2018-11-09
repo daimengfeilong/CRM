@@ -65,8 +65,6 @@ class List extends React.PureComponent {
           payload: portraitId
         }).then(data => {
           if (data.code === '0000') {
-          } else {
-            Message.error(data.msg)
           }
         })
       },

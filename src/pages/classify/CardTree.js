@@ -92,8 +92,6 @@ const CardTree = ({ dispatch, classItem }) => {
             }).then(data => {
                 if (data.code === '0000') {
                     dispatch({ type: 'classify/handlerDel' })
-                } else {
-                    Message.error(data.msg)
                 }
             })
         } else {

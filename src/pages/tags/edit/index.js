@@ -45,8 +45,6 @@ class Index extends React.PureComponent {
 
         if (data.code === '0000') {
             history.push('/tags')
-        } else {
-            Message.error(data.msg)
         }
     }
 

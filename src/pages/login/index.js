@@ -111,7 +111,6 @@ class Login extends React.Component {
                         this.Interval()
                     }else{
                         dispatch({type:'login/getCaptchaSrc'})
-                        Message.error(data.msg)
                     }
                 })
             }

@@ -77,8 +77,6 @@ const modal = ({ showModel, dispatch, form, classItem }) => {
                     }).then(data => {
                         if (data.code == '0000') {
                             saveList()
-                        } else {
-                            Message.error(data.msg)
                         }
                     })
                 }else{
@@ -91,8 +89,6 @@ const modal = ({ showModel, dispatch, form, classItem }) => {
                     }).then(data => {
                         if (data.code == '0000') {
                             saveList()
-                        } else {
-                            Message.error(data.msg)
                         }
                     })
                 }

@@ -49,8 +49,6 @@ class List extends React.Component {
                 }).then(data => {
                     if (data.code === '0000') {
 
-                    } else {
-                        Message.error(data.msg)
                     }
                 })
             },
