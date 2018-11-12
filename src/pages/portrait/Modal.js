@@ -1,4 +1,4 @@
-import { Row, Col, Input, Button, Modal, Form,Tag,Select   } from 'antd';
+import { Row, Col, Input, Button, Modal, Form,Tag,Select,Message   } from 'antd';
 
 
 const FormItem = Form.Item;
@@ -59,6 +59,7 @@ const modal = ({ showModel, dispatch, form,subClass,portraitItem,classList }) =>
             if (!err) {
               console.log(values)
               if (portraitItem.tagList===undefined||portraitItem.tagList.length===0){
+                Message.error('请选择包含标签');
                 return
               }
               if (portraitItem.portraitId) {
