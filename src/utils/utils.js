@@ -1,5 +1,23 @@
+/**
+ * 获取query参数
+ * @param {*} name 
+ */
 export function getQueryString(name) {
     return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(window.location.href) || [, ""])[1].replace(/\+/g, '%20')) || null;
+}
+
+/**
+ * 数组对象通过唯一key去重
+ * @param [*] arr 
+ * @param string tag 
+ */
+export function unique(arr,tag) {
+    var hash = {};
+
+    return arr.reduce(function(item, next) {
+        hash[next[tag]] ? '' : hash[next[tag]] = true && item.push(next);
+        return item
+    }, [])
 }
 
 Date.prototype.format = function (format) {

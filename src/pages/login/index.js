@@ -126,8 +126,8 @@ class Login extends React.Component {
     }
 
     render() {
-        const { form, dispatch, phoneNo, timeNumSms, history, captchaSrc, loading } = this.props
-        const { getFieldDecorator, getFieldsValue } = form
+        const { form, dispatch, phoneNo, timeNumSms, captchaSrc, loading } = this.props
+        const { getFieldDecorator } = form
 
         const captchaProps = {
             captchaSrc,

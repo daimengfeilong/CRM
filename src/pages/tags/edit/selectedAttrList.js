@@ -1,7 +1,6 @@
 import { Tag } from 'antd'
 
 const selectedAttrList = ({ dispatch, attrList,checkedAttrList }) => {
-
     const onClose = (row) => {
         const id = row.alid ? row.alid : row.attrId
 
@@ -26,7 +25,7 @@ const selectedAttrList = ({ dispatch, attrList,checkedAttrList }) => {
             <div className="body">
                 {
                     attrList.map((item,index) => (
-                        <Tag key={`${item.alid || item.attrId}-${index}`} closable onClose={() => onClose(item)}>{item.attrName}</Tag>
+                        <Tag key={`${item.alid || item.attrId}-${index}`} closable onClose={() => onClose(item)}>{item.nickName}</Tag>
                     ))
                 }
             </div>

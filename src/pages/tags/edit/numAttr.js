@@ -11,30 +11,100 @@ class num extends React.Component {
     addAttrListItem(min, max) {
         const { dispatch, selectedTree3Item, selectedRange } = this.props
         const { name, id } = selectedTree3Item
-        let attrName = ''
-        let newName = ''
+        let attrVal = ''
+        let nickName = ''
 
         if (max) {
-            attrName = `${selectedRange.value}|${min},${max}`
-            newName = `${name} | (${selectedRange.name}) ${min}~${max}`
+            attrVal = `${selectedRange.value}|${min},${max}`
+            nickName = `${name} | (${selectedRange.name}) ${min}-${max}`
         } else {
-            attrName = `${selectedRange.value}|${min}`
-            newName = `${name} | (${selectedRange.name}) ${min}`
+            attrVal = `${selectedRange.value}|${min}`
+            nickName = `${name} | (${selectedRange.name}) ${min}`
         }
 
         dispatch({
             type: 'tagsEdit/addAttrListItem',
             payload: {
-                name: newName,
+                nickName,
+                attrVal,
+                attrName:selectedTree3Item.name,
+                attrId: id,
                 alid: `AL${Date.now()}`,
-                attrName,
-                attrId: id
             }
         })
     }
 
+    rangeChange = (value) => {
+        const { dispatch, attrRange } = this.props
+
+        dispatch({
+            type: 'tagsEdit/save',
+            payload: {
+                selectedRange: {
+                    name: attrRange.find(item => item.value == value).name,
+                    value
+                }
+            }
+        })
+    }
+
+    blurMin = (e) => {
+        const min = Number(e.target.value)
+        const max = Number(this.refs.max.input.value)
+
+        //格式检测
+        if (reg.test(min)) {
+            //min/max比较
+            if (max) {
+                if (min < max) {
+                    this.addAttrListItem(min, max)
+                } else {
+                    Message.error('不能大于最大值')
+                }
+            }
+        } else {
+            Message.error('请输入数字类型')
+        }
+
+    }
+
+    blurMax = (e) => {
+        const max = Number(e.target.value)
+        const min = Number(this.refs.min.input.value)
+
+        //格式检测
+        if (reg.test(max)) {
+            //min/max比较
+            if (min) {
+                if (max > min) {
+                    this.addAttrListItem(min, max)
+                } else {
+                    Message.error('不能小于最小值')
+                }
+            }
+        } else {
+            Message.error('请输入数字类型')
+        }
+    }
+
+    blurEqual = (e) => {
+        const { selectedRange } = this.props
+        const value = e.target.value
+
+        if (selectedRange.value) {
+            //格式检测
+            if (reg.test(value)) {
+                this.addAttrListItem(value)
+            } else {
+                Message.error('请输入数字类型')
+            }
+        } else {
+            Message.error('请先选择条件')
+        }
+    }
+
     render() {
-        const { dispatch, fourAttr, attrRange, selectedRange } = this.props
+        const { fourAttr, attrRange, selectedRange } = this.props
         const { datas = [] } = fourAttr
             
         if(datas.length && datas[0]){
@@ -42,77 +112,10 @@ class num extends React.Component {
             var { max } = datas.find(item => item.max)
         }
 
-        const rangeChange = (value) => {
-            dispatch({
-                type: 'tagsEdit/save',
-                payload: {
-                    selectedRange: {
-                        name: attrRange.find(item => item.value == value).name,
-                        value
-                    }
-                }
-            })
-        }
-
-        const blurMin = (e) => {
-            const min = e.target.value || 0
-            const max = this.refs.max.input.value || 0
-
-            //格式检测
-            if (reg.test(min)) {
-                //min/max比较
-                if (max) {
-                    if (min >= max) {
-                        Message.error('不能大于最大值')
-                    } else {
-                        this.addAttrListItem(min, max)
-                    }
-                }
-            } else {
-                Message.error('请输入数字类型')
-            }
-
-        }
-
-        const blurMax = (e) => {
-            const max = e.target.value
-            const min = this.refs.min.input.value
-
-            //格式检测
-            if (reg.test(max)) {
-                //min/max比较
-                if (min) {
-                    if (max <= min) {
-                        Message.error('不能小于最小值')
-                    } else {
-                        this.addAttrListItem(min, max)
-                    }
-                }
-            } else {
-                Message.error('请输入数字类型')
-            }
-        }
-
-        const blurEqual = (e) => {
-            const value = e.target.value
-
-            if (selectedRange.value) {
-                //格式检测
-                if (reg.test(value)) {
-                    this.addAttrListItem(value)
-                } else {
-                    Message.error('请输入数字类型')
-                }
-            } else {
-                Message.error('请先选择条件')
-            }
-        }
-
-
         return (
             <>
                 <InputGroup compact>
-                    <Select style={{ width: 100 }} value={selectedRange.value} placeholder="请选择" onChange={rangeChange}>
+                    <Select style={{ width: 100 }} value={selectedRange.value} placeholder="请选择" onChange={this.rangeChange}>
                         {
                             attrRange.map(item => <Option key={item.value}>{item.name}</Option>)
                         }
@@ -120,12 +123,12 @@ class num extends React.Component {
                     {
                         selectedRange.value === '101' || selectedRange.value === '102' ?
                             <>
-                                <Input style={{ width: 100, textAlign: 'center' }} ref="min" placeholder="最小值" onBlur={blurMin} />
+                                <Input style={{ width: 100, textAlign: 'center' }} ref="min" placeholder="最小值" onBlur={this.blurMin} />
                                 <Input style={{ width: 40, borderLeft: 0, pointerEvents: 'none', backgroundColor: '#fff' }} placeholder="~" disabled />
-                                <Input style={{ width: 100, textAlign: 'center', borderLeft: 0 }} ref="max" placeholder="最大值" onBlur={blurMax} />
+                                <Input style={{ width: 100, textAlign: 'center', borderLeft: 0 }} ref="max" placeholder="最大值" onBlur={this.blurMax} />
                             </>
                             :
-                            <Input style={{ width: 240, textAlign: 'center' }} placeholder="请输入" onBlur={blurEqual} />
+                            <Input style={{ width: 240, textAlign: 'center' }} placeholder="请输入" onBlur={this.blurEqual} />
                     }
                 </InputGroup>
                 <p>

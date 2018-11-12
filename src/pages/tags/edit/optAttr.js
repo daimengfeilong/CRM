@@ -1,7 +1,7 @@
 import { Checkbox, Row, Col } from 'antd';
 
 
-const opt = ({ dispatch, fourAttr, attrList, checkedAttrList }) => {
+const opt = ({ dispatch, fourAttr, attrList, checkedAttrList, selectedTree3Item }) => {
     const { datas = [] } = fourAttr
 
     const saveAttrList = (list) => {
@@ -15,11 +15,12 @@ const opt = ({ dispatch, fourAttr, attrList, checkedAttrList }) => {
         dispatch({
             type: 'tagsEdit/addAttrListItem',
             payload: {
-                attrId: fourAttr.attrId,
-                alid: `AL${Date.now()}`,
-                name,
                 optName: name,
-                attrName: name
+                attrVal: name,
+                alid: `AL${Date.now()}`,
+                attrId: fourAttr.attrId,
+                attrName: selectedTree3Item.name,
+                nickName: `${selectedTree3Item.name} | ${name}`,
             }
         })
     }
@@ -48,9 +49,6 @@ const opt = ({ dispatch, fourAttr, attrList, checkedAttrList }) => {
                 checkedAttrList:values
             }
         })
-
-
-
     }
 
 
@@ -73,7 +71,6 @@ const opt = ({ dispatch, fourAttr, attrList, checkedAttrList }) => {
                     <p>暂无数据！</p>
             }
         </>
-
     )
 }
 

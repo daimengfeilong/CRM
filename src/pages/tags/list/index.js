@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'dva';
 import { Link } from 'react-router-dom'
 import { Table, Divider, Tag, Modal, Spin } from 'antd';
-import { getFormatDateByLong } from '../../../utils/utils'
+import { getFormatDateByLong, unique } from '../../../utils/utils'
 import Head from './Head'
 
 const confirm = Modal.confirm;
@@ -77,11 +77,15 @@ class List extends React.Component {
             title: '包含属性',
             dataIndex: 'attrList',
             key: 'attrList',
-            render:(list) => (
-                <span>
-                    {list.map(tag => <Tag color="blue" key={tag.attrId}>{tag.attrName}</Tag>)}
-                </span>
-            )
+            render:(attrList) => {
+                const list = unique(attrList,'attrId')
+
+                return (
+                    <>
+                        {list.map(tag => <Tag color="blue" key={tag.attrId}>{tag.attrName}</Tag>)}
+                    </>
+                )
+            }
         }, {
             title: '覆盖人数',
             dataIndex: 'personNum',

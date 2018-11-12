@@ -87,8 +87,12 @@ class Index extends React.PureComponent {
 
     modelSubmit = (selectedTree3) => {
         const { dispatch } = this.props
+        const item1 = selectedTree3[0]
 
         dispatch({ type: 'tagsEdit/save', payload: { selectedTree3 } })
+        
+        dispatch({type:'tagsEdit/save',payload:{selectedTree3Item:item1}})
+        dispatch({type:'tagsEdit/getAttributeListEnum',payload:{attrId:item1.id}})
     }
 
     render() {
@@ -97,7 +101,6 @@ class Index extends React.PureComponent {
             dispatch,
             attrTree,
             classList,
-            history,
             selectedTree3,
             selectedTree3Item,
             fourAttr,

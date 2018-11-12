@@ -23,7 +23,7 @@ function checkStatus(response) {
 function checkData(data) {
     if(data.code === '9999'){
         Message.error(data.msg);
-    }else if(data.code === '9997'){
+    }else if(data.code === '9997' || data.code === '9998'){
         const { origin,pathname } = window.location
 
         Message.error(data.msg,2,() => {
