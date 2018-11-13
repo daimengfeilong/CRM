@@ -11,7 +11,7 @@ export default {
             attrList: []
         },
         attrTree: [],
-        selectedTree3: [],
+        selectedTree3: [{id:'111113',name:'年龄',ranges: {value: "101",name:"介于", min: 1, max: 9}},{id:'28142L',name:'P2P',ranges: {value: "103",name:"等于", min: 77, max: undefined}}],
         selectedTree3Item: {},
         fourAttr: {},
         attrRange: [
@@ -48,32 +48,56 @@ export default {
             return res
         },
         *queryId({ payload }, { call, put, select }) {
+            const { attrRange } = yield select(item => item.tagsEdit)
             const res = yield call(queryId, payload)
             const selectedTree3 = []
             const checkedAttrList = []
+            let selectedRange = {}
             const { result } = res
             const { attrList } = result
 
             //编辑标签数据回显
             if (res.code === '0000') {
                 attrList.map(item => {
+                    item.optName = item.attrVal
+
                     //过滤重量三级属性
                     if(!selectedTree3.some(s => s.id === item.attrId)){
-                        selectedTree3.push({
+                        let obj = {
                             id:item.attrId,
-                            name:item.attrName
-                        })
+                            name:item.attrName,
+                            ranges:{}
+                        }
+                        if(item.attrVal.includes('|')){
+                            const val = item.attrVal.split('|')
+                            obj.ranges.value = val[0]
+                            obj.ranges.name = attrRange.find(item => item.value === val[0]).name 
+                            obj.ranges.min = val[1].split(',')[0]
+                            obj.ranges.max = val[1].split(',')[1]
+                        }
+                        selectedTree3.push(obj)
                     }
+                    
                     //选中四级属性
                     checkedAttrList.push(item.attrVal)
                 })
+
                 const selectedTree3Item = selectedTree3[0]
 
-                //查询第一条三级属性
                 if(attrList.length){
+                    const attrItem0 = attrList[0].attrVal
+
+                    //选中范围条件
+                    if(attrItem0.includes('|')){
+                        const fristAttrVal = attrItem0.split('|')[0]
+                        selectedRange = { value: fristAttrVal,name:attrRange.find(item => item.value === fristAttrVal).name }
+                    }
+                    
+                    //查询第一条三级属性
                     yield put({ type: 'getAttributeListEnum', payload: {attrId:selectedTree3Item.id} })
                 }
-                yield put({ type: 'save', payload: { attrItem: result, selectedTree3, selectedTree3Item, checkedAttrList } })
+
+                yield put({ type: 'save', payload: { attrItem: result, selectedTree3, selectedRange, selectedTree3Item, checkedAttrList } })
             }
         },
         *saveAttrList({ payload }, { call, put, select }) {
@@ -98,11 +122,34 @@ export default {
 
             yield put({ type: 'save', payload: { selectedTree3: newSelectedTree3 } })
         },
-        *addAttrListItem({ payload }, { call, put, select }) {
+        *saveAttrListItem({ payload }, { call, put, select }) {
             const { attrItem } = yield select(state => state.tagsEdit)
-            const { attrList = [] } = attrItem
+            let { attrList = [] } = attrItem
+            let list = []
 
-            yield put({ type: 'save', payload: { attrItem: { ...attrItem, attrList: [...attrList, payload] } } })
+            console.log(payload);
+            //过滤多选
+            if(!payload.optName){
+                //编辑
+                if(attrList.some(item => item.attrId === payload.attrId)){
+                    for(let item of attrList){
+                        if(item.attrId === payload.attrId){
+                            list.push(payload)
+                        }else{
+                            list.push(item)
+                        }
+                    }
+                }else{
+                    //新增
+                    list = [...attrList, payload]
+                }
+
+            }else{
+                list = [...attrList, payload]
+            }
+
+            //新增
+            yield put({ type: 'save', payload: { attrItem: { ...attrItem, attrList:list } } })
         },
     }
 }

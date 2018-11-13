@@ -13,7 +13,7 @@ const opt = ({ dispatch, fourAttr, attrList, checkedAttrList, selectedTree3Item 
 
     const addAttrListItem = (name) => {
         dispatch({
-            type: 'tagsEdit/addAttrListItem',
+            type: 'tagsEdit/saveAttrListItem',
             payload: {
                 optName: name,
                 attrVal: name,

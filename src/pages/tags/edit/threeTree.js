@@ -2,10 +2,19 @@ import { Icon } from 'antd'
 
 const threeTree = ({dispatch,selectedTree3,selectedTree3Item}) => {
 
-    
     const clickThreeItem = (item) => {
+        const { ranges = {} } = item
         if(selectedTree3Item.id == item.id) return false;
-
+        
+        dispatch({
+            type: 'tagsEdit/save',
+            payload: {
+                selectedRange: {
+                    name: ranges.name,
+                    value: ranges.value
+                }
+            }
+        })
         dispatch({type:'tagsEdit/save',payload:{selectedTree3Item:item}})
         dispatch({type:'tagsEdit/getAttributeListEnum',payload:{attrId:item.id}})
     }

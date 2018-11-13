@@ -1,8 +1,7 @@
-import { Input, Modal, Form, Message, Tree } from 'antd';
+import { Input, Modal, Form, } from 'antd';
 import CardTree from './CardTree'
 
 const FormItem = Form.Item;
-const TreeNode = Tree.TreeNode
 const Search = Input.Search
 
 /**
@@ -75,7 +74,7 @@ const modal = ({ showModel, dispatch, form, classItem }) => {
                             subClassList
                         }
                     }).then(data => {
-                        if (data.code == '0000') {
+                        if (data.code === '0000') {
                             saveList()
                         }
                     })
@@ -87,7 +86,7 @@ const modal = ({ showModel, dispatch, form, classItem }) => {
                             subClassList
                         }
                     }).then(data => {
-                        if (data.code == '0000') {
+                        if (data.code === '0000') {
                             saveList()
                         }
                     })

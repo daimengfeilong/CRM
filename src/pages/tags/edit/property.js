@@ -16,6 +16,7 @@ const Property = ({dispatch,selectedTree3,selectedTree3Item,fourAttr,attrRange,s
         fourAttr,
         attrRange,
         selectedRange,
+        selectedTree3,
         selectedTree3Item,
         attrList,
         checkedAttrList
