@@ -65,7 +65,7 @@ const opt = ({ dispatch, fourAttr, attrList, checkedAttrList, selectedTree3Item 
                             {
                                 datas.map((item, index) => (
                                     <Col span={12} style={{ marginTop: 10 }} key={index}>
-                                        <Checkbox onChange={onChange} value={item}>{item}</Checkbox>
+                                        <Checkbox value={item}>{item}</Checkbox>
                                     </Col>
                                 ))
                             }
