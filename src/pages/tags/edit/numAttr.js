@@ -13,14 +13,18 @@ class num extends React.Component {
         const { name, id } = selectedTree3Item
         let attrVal = ''
         let nickName = ''
+        let rangeItem = { id, min, max }
 
         if (max) {
             attrVal = `${selectedRange.value}|${min},${max}`
             nickName = `${name} | (${selectedRange.name}) ${min}-${max}`
         } else {
+            rangeItem.med = min
             attrVal = `${selectedRange.value}|${min}`
             nickName = `${name} | (${selectedRange.name}) ${min}`
         }
+
+        console.log(rangeItem);
 
         dispatch({
             type: 'tagsEdit/addAttrListItem',
@@ -89,7 +93,7 @@ class num extends React.Component {
 
     blurEqual = (e) => {
         const { selectedRange } = this.props
-        const value = e.target.value
+        const value = Number(e.target.value)
 
         if (selectedRange.value) {
             //格式检测
