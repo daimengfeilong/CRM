@@ -118,13 +118,13 @@ class Index extends React.PureComponent {
 
         const formItemLayout = {
             labelCol: {
-                span: 6,
+                span: 7,
                 style: {
                     textAlign: 'left'
                 }
             },
             wrapperCol: {
-                span: 17
+                span: 16
             },
         }
 

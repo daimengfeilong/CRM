@@ -77,12 +77,13 @@ class List extends React.Component {
             title: '包含属性',
             dataIndex: 'attrList',
             key: 'attrList',
+            width:'40%',
             render:(attrList) => {
                 const list = unique(attrList,'attrId')
 
                 return (
                     <>
-                        {list.map(tag => <Tag color="blue" key={tag.attrId}>{tag.attrName}</Tag>)}
+                        {list.map(tag => <Tag color="blue" style={{marginBottom:10}} key={tag.attrId}>{tag.attrName}</Tag>)}
                     </>
                 )
             }

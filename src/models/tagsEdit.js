@@ -70,7 +70,9 @@ export default {
                 const selectedTree3Item = selectedTree3[0]
 
                 //查询第一条三级属性
-                yield put({ type: 'getAttributeListEnum', payload: {attrId:selectedTree3Item.id} })
+                if(attrList.length){
+                    yield put({ type: 'getAttributeListEnum', payload: {attrId:selectedTree3Item.id} })
+                }
                 yield put({ type: 'save', payload: { attrItem: result, selectedTree3, selectedTree3Item, checkedAttrList } })
             }
         },

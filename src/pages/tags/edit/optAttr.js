@@ -27,11 +27,7 @@ const opt = ({ dispatch, fourAttr, attrList, checkedAttrList, selectedTree3Item 
 
     const difference = (a,b) => {
         //找出两个数组之间的差集
-        console.log(a);
-        console.log(b);
-        console.log(Array.prototype.includes);
         const difference = a.concat(b).filter(v => !a.includes(v) || !b.includes(v))
-        console.log(1111);
 
         return difference[0]
     }

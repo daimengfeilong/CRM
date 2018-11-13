@@ -21,7 +21,7 @@ const selectedAttrList = ({ dispatch, attrList,checkedAttrList }) => {
     
     return (
         <div className="selected-attr-list">
-            <label>已设置的属性范围:</label>
+            <label>已设置的属性范围 :</label>
             <div className="body">
                 {
                     attrList.map((item,index) => (

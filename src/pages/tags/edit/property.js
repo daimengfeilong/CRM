@@ -28,7 +28,7 @@ const Property = ({dispatch,selectedTree3,selectedTree3Item,fourAttr,attrRange,s
                 <Button type="primary" icon="plus" onClick={() => dispatch({type:'tagsEdit/save',payload:{showModel:true}})}>添加</Button>
             </div>
             <div className="body">
-                <Row>
+                <Row type="flex">
                     <Col span={6} className="three-row">
                         <ThreeTree {...threeTreeProps}></ThreeTree>
                     </Col>
