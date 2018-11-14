@@ -77,5 +77,18 @@ export default [
                 component: () => import('../pages/attribute/index'),
             }
         ]
+    },
+    {
+        title: '客群分析',
+        icon: require('../assets/layout/icon_kqfx.png'),
+        path: '/customer',
+        subRoutes: [
+            {
+                path: '/customer',
+                title: '自定义客群分析',
+                show: true,
+                component: () => import('../pages/customer/index'),
+            }
+        ]
     }
 ]

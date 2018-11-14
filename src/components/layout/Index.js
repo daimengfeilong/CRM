@@ -23,7 +23,7 @@ const layout = ({ children }) => {
                 <Headers />
                 <Content style={{ margin: '15px' }}>
                     <Breadcrumbs />
-                    <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+                    <div id="content">
                         {children}
                     </div>
                 </Content>

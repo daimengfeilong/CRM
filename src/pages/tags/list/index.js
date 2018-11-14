@@ -93,8 +93,8 @@ class List extends React.Component {
             key: 'personNum'
         }, {
             title: '创建时间',
-            dataIndex: 'instDate',
-            key: 'instDate',
+            dataIndex: 'updtDate',
+            key: 'updtDate',
             render:(row,record) => {
                 return row ? getFormatDateByLong(row) : row
             }

@@ -51,7 +51,7 @@ class Index extends React.PureComponent {
 
     submit = () => {
         const { dispatch,form,attrItem } = this.props
-        const { attrList } = attrItem
+        const { attrList = [] } = attrItem
         
         form.validateFields((err, values) => {
             if (!err) {
