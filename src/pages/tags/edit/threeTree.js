@@ -39,9 +39,7 @@ const threeTree = ({dispatch,selectedTree3,selectedTree3Item,attrItem}) => {
             dispatch({
                 type: 'tagsEdit/save',
                 payload: {
-                    fourAttr:{
-                        datas:[]
-                    }
+                    fourAttr:{}
                 }
             })
         }
