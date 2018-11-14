@@ -87,7 +87,7 @@ export default [
                 path: '/customer',
                 title: '自定义客群分析',
                 show: true,
-                component: () => import('../pages/customer/index'),
+                component: () => import('../pages/customer/analysis/index'),
             }
         ]
     }

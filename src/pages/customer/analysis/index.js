@@ -2,7 +2,9 @@ import React from 'react'
 import { Row, Col, Button } from 'antd'
 import Property from './Property'
 import Sex from './Sex'
-import './customer.less'
+import Maps from './Maps'
+import MapBar from './MapBar'
+import '../customer.less'
 
 class Index extends React.Component{
     componentDidMount(){
@@ -43,6 +45,14 @@ class Index extends React.Component{
                         <div className="cust-box" style={{marginLeft:15}}>
                             <Sex></Sex>
                         </div>
+                    </Col>
+                </Row>
+                <Row style={{marginTop:15}} className="cust-box">
+                    <Col span={12}>
+                        <Maps></Maps>
+                    </Col>
+                    <Col span={12}>
+                        <MapBar></MapBar>
                     </Col>
                 </Row>
             </div>
