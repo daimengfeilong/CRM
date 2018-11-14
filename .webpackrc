@@ -1,18 +1,20 @@
 {
-    "disableCSSModules":true,
-    "proxy": {
-         "/api": {
-                   "target": "http://gateway.hn1test.boyacx.com:8730/",
-                   "changeOrigin": true,
-                   "pathRewrite": {
-                       "^/api": ""
-                   }
-               }
-    },
+    "hash": true,
+    "disableCSSModules": true,
     "theme": {
         "@primary-color": "#7070ef"
     },
+    "html": { "template": "./src/index.ejs" },
     "extraBabelPlugins": [
         ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": true }]
-    ]
+    ],
+    "proxy": {
+        "/api": {
+            "target": "http://gateway.hn1test.boyacx.com:8730/",
+            "changeOrigin": true,
+            "pathRewrite": {
+                "^/api": ""
+            }
+        }
+    }
 }

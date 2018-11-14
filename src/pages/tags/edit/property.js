@@ -3,12 +3,13 @@ import ThreeTree from './threeTree'
 import FourAttr from './fourAttr'
 
 
-const Property = ({dispatch,selectedTree3,selectedTree3Item,fourAttr,attrRange,selectedRange,attrList,checkedAttrList}) => {
+const Property = ({dispatch,selectedTree3,selectedTree3Item,fourAttr,attrRange,selectedRange,attrItem,checkedAttrList}) => {
 
     const threeTreeProps = {
         selectedTree3Item,
         selectedTree3,
-        dispatch
+        dispatch,
+        attrItem
     }
 
     const fourProps = {
@@ -18,7 +19,7 @@ const Property = ({dispatch,selectedTree3,selectedTree3Item,fourAttr,attrRange,s
         selectedRange,
         selectedTree3,
         selectedTree3Item,
-        attrList,
+        attrItem,
         checkedAttrList
     }
 

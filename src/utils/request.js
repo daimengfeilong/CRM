@@ -21,9 +21,7 @@ function checkStatus(response) {
 }
 
 function checkData(data) {
-    if(data.code === '9999'){
-        Message.error(data.msg);
-    }if(data.code === '9996'){
+    if(data.code === '9999' || data.code === '9996'){
         Message.error(data.msg);
     }else if(data.code === '9997' || data.code === '9998'){
         const { origin,pathname } = window.location

@@ -7,7 +7,7 @@ export default {
     state: {
         phoneNo: 0,
         captchaSrc: '',
-        timeNumSms: 60,
+        timeNum: 60,
         loading: false,
     },
     reducers: {

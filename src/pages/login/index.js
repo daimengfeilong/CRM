@@ -9,6 +9,7 @@ import loginBg from '../../assets/login/login_bg.png'
 import loginIcon from '../../assets/login/login_icon.png'
 
 const FormItem = Form.Item;
+let timer = null
 
 class Login extends React.Component {
     componentDidMount(){
@@ -16,6 +17,7 @@ class Login extends React.Component {
     }
 
     componentWillUnmount(){
+        window.clearInterval(timer)
         document.querySelector('body').style.background = '#fff'
     }
 
@@ -102,22 +104,22 @@ class Login extends React.Component {
     }
     
     Interval = () => {
-        const { dispatch,timeNumSms } = this.props
+        const { dispatch,timeNum } = this.props
         //60秒倒计时... 
-        let i = timeNumSms
+        let i = timeNum
 
-        const timer = window.setInterval(() => {
+        timer = window.setInterval(() => {
             dispatch({
                 type: 'login/save',
                 payload: {
-                    timeNumSms: i--
+                    timeNum: i--
                 }
             })
             if(i < 0){
                 dispatch({
                     type: 'login/save',
                     payload: {
-                        timeNumSms: 60
+                        timeNum: 60
                     }
                 })
                 window.clearInterval(timer)
@@ -126,7 +128,7 @@ class Login extends React.Component {
     }
 
     render() {
-        const { form, dispatch, phoneNo, timeNumSms, captchaSrc, loading } = this.props
+        const { form, dispatch, phoneNo, timeNum, captchaSrc, loading } = this.props
         const { getFieldDecorator } = form
 
         const captchaProps = {
@@ -199,10 +201,10 @@ class Login extends React.Component {
                                         </Col>
                                         <Col span={9} offset={1}>
                                             {
-                                                timeNumSms === 60 || timeNumSms === 0 ?
+                                                timeNum === 60 || timeNum === 0 ?
                                                 <Button type="primary" onClick={this.sendSmsCode}>获取验证码</Button>
                                                 :
-                                                <Button disabled style={{width:'100%'}}>{timeNumSms}s 后重发</Button>
+                                                <Button disabled style={{width:'100%'}}>{timeNum}s 后重发</Button>
                                             }
                                         </Col>
                                     </Row>

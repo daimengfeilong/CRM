@@ -23,7 +23,6 @@ class num extends React.Component {
             nickName = `${name} | (${selectedRange.name}) ${min}`
         }
 
-        console.log(selectedTree3Item);
 
         //保存范围三级属性
         selectedTree3.map(item => {

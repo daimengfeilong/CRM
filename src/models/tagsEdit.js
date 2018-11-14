@@ -4,17 +4,17 @@ import toTreeData from '../utils/toTreeData'
 export default {
     namespace: 'tagsEdit',
     state: {
-        attrItem: {
+        attrItem: {//接口数据
             tagName: '',
             classId: '',
             description: '',
             attrList: []
         },
-        attrTree: [],
-        selectedTree3: [{id:'111113',name:'年龄',ranges: {value: "101",name:"介于", min: 1, max: 9}},{id:'28142L',name:'P2P',ranges: {value: "103",name:"等于", min: 77, max: undefined}}],
-        selectedTree3Item: {},
-        fourAttr: {},
-        attrRange: [
+        attrTree: [],//属性树
+        selectedTree3: [],//三级属性列表
+        selectedTree3Item: {},//选中的三级
+        fourAttr: {},//四级属性
+        attrRange: [//四级属性范围条件
             { value: "101", name: "介于" },
             { value: "102", name: "不介于" },
             { value: "103", name: "等于" },
@@ -24,9 +24,9 @@ export default {
             { value: "107", name: "大于等于" },
             { value: "108", name: "小于等于" }
         ],
-        selectedRange: {},
-        checkedAttrList: [],
-        showModel: false
+        selectedRange: {},//选择的范围条件
+        checkedAttrList: [],//选中的四级checkBox
+        showModel: false//属性树弹窗
     },
     reducers: {
         save(state, { payload }) {
@@ -127,7 +127,6 @@ export default {
             let { attrList = [] } = attrItem
             let list = []
 
-            console.log(payload);
             //过滤多选
             if(!payload.optName){
                 //编辑

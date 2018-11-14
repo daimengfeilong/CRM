@@ -1,6 +1,8 @@
 import { Tag } from 'antd'
 
-const selectedAttrList = ({ dispatch, attrList,checkedAttrList }) => {
+const selectedAttrList = ({ dispatch, attrItem,checkedAttrList }) => {
+    const { attrList = [] } = attrItem
+
     const onClose = (row) => {
         const id = row.alid ? row.alid : row.attrId
 

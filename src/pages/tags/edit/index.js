@@ -112,7 +112,6 @@ class Index extends React.PureComponent {
         } = this.props
 
         const { getFieldDecorator } = form
-        const { attrList = [] } = attrItem
 
         const checkedKeys = selectedTree3.map(item => item.id)
 
@@ -145,13 +144,13 @@ class Index extends React.PureComponent {
             selectedTree3,
             attrRange,
             selectedRange,
-            attrList,
+            attrItem,
             checkedAttrList
         }
 
         const selectedAttrProps = {
             dispatch,
-            attrList,
+            attrItem,
             checkedAttrList
         }
 

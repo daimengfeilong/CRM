@@ -1,7 +1,8 @@
 import Num from './numAttr'
 import Opt from './optAttr'
 
-const threeTree = ({ dispatch, fourAttr, attrRange, selectedRange, selectedTree3, selectedTree3Item, attrList, checkedAttrList }) => {
+const threeTree = ({ dispatch, fourAttr, attrRange, selectedRange, selectedTree3, selectedTree3Item, attrItem, checkedAttrList }) => {
+    const { attrList = [] } = attrItem
 
     const porps = {
         dispatch,

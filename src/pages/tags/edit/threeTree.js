@@ -1,6 +1,7 @@
 import { Icon } from 'antd'
 
-const threeTree = ({dispatch,selectedTree3,selectedTree3Item}) => {
+const threeTree = ({dispatch,selectedTree3,selectedTree3Item,attrItem}) => {
+    const { attrList = [] } = attrItem
 
     const clickThreeItem = (item) => {
         const { ranges = {} } = item
@@ -19,8 +20,31 @@ const threeTree = ({dispatch,selectedTree3,selectedTree3Item}) => {
         dispatch({type:'tagsEdit/getAttributeListEnum',payload:{attrId:item.id}})
     }
 
+
     const removeThreeItem = (item) => {
+        
         dispatch({type:'tagsEdit/removeThreeItem',payload:item})
+
+        dispatch({
+            type: 'tagsEdit/save',
+            payload: {
+                attrItem:{
+                    ...attrItem,
+                    attrList:attrList.filter(al => al.attrId !== item.id)
+                }
+            }
+        })
+
+        if(selectedTree3.length === 1){
+            dispatch({
+                type: 'tagsEdit/save',
+                payload: {
+                    fourAttr:{
+                        datas:[]
+                    }
+                }
+            })
+        }
     }
 
     return (
