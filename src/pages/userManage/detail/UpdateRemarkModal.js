@@ -28,7 +28,7 @@ const UpdateRemarkModal=({dispatch,form,description,showModel})=>{
           dispatch({type: 'userDetail/updateUserRemark',payload:values.description})
           .then(data=>{
             if (data.code === '0000'){
-              dispatch({type: 'userDetail/showModel',payload: {showModel:false}})
+              dispatch({type: 'userDetail/save',payload: {showModel:false}})
               dispatch({type: 'userDetail/queryUserRemark'})
             }
           })
