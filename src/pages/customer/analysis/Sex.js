@@ -33,17 +33,23 @@ class Sex extends React.Component{
                     type: 'pie',
                     radius : '55%',
                     center: ['50%', '60%'],
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'inside',
+                            formatter: '{b} ({d}%)',
+                            textStyle : {                   
+                                align : 'center',
+                                baseline : 'middle',
+                                fontFamily : '微软雅黑',
+                                fontSize : 12
+                            }
+                        },
+                    },
                     data:[
                         {value:335, name:'男'},
                         {value:200, name:'女'}
                     ],
-                    itemStyle: {
-                        emphasis: {
-                            shadowBlur: 10,
-                            shadowOffsetX: 0,
-                            shadowColor: 'rgba(0, 0, 0, 0.5)'
-                        }
-                    }
                 }
             ]
         });

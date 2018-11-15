@@ -87,6 +87,12 @@ export default [
                 path: '/customer',
                 title: '自定义客群分析',
                 show: true,
+                component: () => import('../pages/customer/setting/index'),
+            },
+            {
+                path: '/customer/analysis',
+                title: '画像详情',
+                show: true,
                 component: () => import('../pages/customer/analysis/index'),
             }
         ]
