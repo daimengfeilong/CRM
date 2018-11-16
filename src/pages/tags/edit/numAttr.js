@@ -1,4 +1,3 @@
-import React from 'react'
 import { Input, Select, Message } from 'antd'
 
 const InputGroup = Input.Group

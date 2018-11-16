@@ -1,7 +1,6 @@
 import { getPhoneNo, sendSms, userLogin } from '../services/login'
 import { Message } from 'antd'
 
-var timer = null
 export default {
     namespace: 'login',
     state: {
