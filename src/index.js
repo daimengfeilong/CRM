@@ -4,6 +4,8 @@ import createLoading from 'dva-loading'
 
 import './index.less'
 
+Object.setPrototypeOf = require('setprototypeof');
+
 // 1. Initialize
 const app = dva();
 

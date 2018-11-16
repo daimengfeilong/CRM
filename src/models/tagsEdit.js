@@ -70,10 +70,17 @@ export default {
                         }
                         if(item.attrVal.includes('|')){
                             const val = item.attrVal.split('|')
+                            const min = Number(val[1].split(',')[0])
+                            const max = Number(val[1].split(',')[1])
                             obj.ranges.value = val[0]
-                            obj.ranges.name = attrRange.find(item => item.value === val[0]).name 
-                            obj.ranges.min = val[1].split(',')[0]
-                            obj.ranges.max = val[1].split(',')[1]
+                            obj.ranges.name = attrRange.find(item => item.value === val[0]).name
+
+                            if(val[0] === '101' || val[0] === '102'){
+                                obj.ranges.min = min
+                                obj.ranges.max = max
+                            }else{
+                                obj.ranges.med = min
+                            }
                         }
                         selectedTree3.push(obj)
                     }

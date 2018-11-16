@@ -85,14 +85,60 @@ class Index extends React.PureComponent {
         })
     }
 
-    modelSubmit = (selectedTree3) => {
-        const { dispatch } = this.props
-        const item1 = selectedTree3[0]
+    difference = (a,b) => {
+        //找出两个数组之间的差集
+        const difference = a.concat(b).filter(v => !a.includes(v) || !b.includes(v))
 
-        dispatch({ type: 'tagsEdit/save', payload: { selectedTree3 } })
+        return difference
+    }
+
+    modelSubmit = (tree) => {
+        const { dispatch, selectedTree3, attrItem } = this.props
+        const { attrList = [] } = attrItem
+        const a = tree.map(item => item.id)
+        const b = selectedTree3.map(item => item.id)
+        let newAttrList = []
+        let item1 = {}
+
+        const delAttrIds = this.difference(a,b)
+
+        //保存之前设置的范围参数
+        if(selectedTree3.length){
+            for(let s of selectedTree3){
+                for(let t of tree){
+                    if(s.id === t.id){
+                        t.ranges = s.ranges
+                    }
+                }
+            }
+        }
+
+        //清除所选属性范围
+        if(delAttrIds.length && attrList.length){
+            attrList.map(item => {
+                if(!delAttrIds.includes(item.attrId)){
+                    newAttrList.push(item)
+                }
+            })
+        }
+
+        if(tree.length){
+            item1 = tree[0]
+            dispatch({type:'tagsEdit/getAttributeListEnum',payload:{attrId:item1.id}})
+        }else{
+            dispatch({ type: 'tagsEdit/save', payload: {fourAttr:{}}})
+        }
+
+        dispatch({ type: 'tagsEdit/save', payload: {
+                attrItem:{
+                    ...attrItem,
+                    attrList:newAttrList
+                },
+                selectedTree3:tree,
+                selectedTree3Item:item1
+            }
+        })
         
-        dispatch({type:'tagsEdit/save',payload:{selectedTree3Item:item1}})
-        dispatch({type:'tagsEdit/getAttributeListEnum',payload:{attrId:item1.id}})
     }
 
     render() {

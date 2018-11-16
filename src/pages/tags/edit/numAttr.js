@@ -6,31 +6,39 @@ const Option = Select.Option
 
 const reg = /^[0-9]+([.]{1}[0-9]+){0,1}$/
 
-class num extends React.Component {
+const num = ({ dispatch, selectedTree3, selectedTree3Item, selectedRange, attrRange, fourAttr }) => {
+    const { ranges = {} } = selectedTree3Item
+    const { min, max, med } = ranges
+    const { datas = [] } = fourAttr
+    let rangeDatas = {}
 
-    addAttrListItem(min, max) {
-        const { dispatch, selectedTree3, selectedTree3Item, selectedRange } = this.props
+    if (datas.length && datas[0]) {
+        let minf = datas.find(item => item.min)
+        let maxf = datas.find(item => item.max)
+
+        rangeDatas.min = minf ? minf.min : ''
+        rangeDatas.max = maxf ? maxf.max : ''
+    }
+
+    const saveAttrListItem = (range = selectedRange) => {
         const { name, id } = selectedTree3Item
         let attrVal = ''
         let nickName = ''
-        let ranges = { ...selectedRange, min, max }
 
-        if (max) {
-            attrVal = `${selectedRange.value}|${min},${max}`
-            nickName = `${name} | (${selectedRange.name}) ${min}-${max}`
+        if (range.value === '101' || range.value === '102') {
+            attrVal = `${range.value}|${min},${max}`
+            nickName = `${name} | (${range.name}) ${min}-${max}`
         } else {
-            attrVal = `${selectedRange.value}|${min}`
-            nickName = `${name} | (${selectedRange.name}) ${min}`
+            attrVal = `${range.value}|${med}`
+            nickName = `${name} | (${range.name}) ${med}`
         }
-
 
         //保存范围三级属性
         selectedTree3.map(item => {
-            if(item.id === id){
+            if (item.id === id) {
                 item.ranges = ranges
             }
         })
-
 
         dispatch({
             type: 'tagsEdit/save',
@@ -44,37 +52,64 @@ class num extends React.Component {
             payload: {
                 nickName,
                 attrVal,
-                attrName:selectedTree3Item.name,
+                attrName: selectedTree3Item.name,
                 attrId: id,
                 alid: `AL${Date.now()}`,
             }
         })
     }
 
-    rangeChange = (value) => {
-        const { dispatch, attrRange } = this.props
+    const saveRanges = (val) => {
+        const { name, value } = selectedRange
 
         dispatch({
             type: 'tagsEdit/save',
             payload: {
-                selectedRange: {
-                    name: attrRange.find(item => item.value === value).name,
-                    value
+                selectedTree3Item: {
+                    ...selectedTree3Item,
+                    ranges: {
+                        ...ranges,
+                        ...val,
+                        name,
+                        value
+                    }
                 }
             }
         })
     }
 
-    blurMin = (e) => {
-        const min = Number(e.target.value)
-        const max = Number(this.refs.max.input.value)
+    const rangeChange = (value) => {
+        const range = {
+            name: attrRange.find(item => item.value === value).name,
+            value            
+        }
 
+        if(range.value === '101' || range.value === '102'){
+            if(min && max){
+                saveAttrListItem(range)
+            }
+        }else{
+            if(med){
+                saveAttrListItem(range)
+            }
+        }
+
+        dispatch({
+            type: 'tagsEdit/save',
+            payload: {
+                selectedRange: range
+            }
+        })
+        
+    }
+
+    const blurMin = () => {
         //格式检测
         if (reg.test(min)) {
             //min/max比较
             if (max) {
                 if (min < max) {
-                    this.addAttrListItem(min, max)
+                    saveAttrListItem()
                 } else {
                     Message.error('不能大于最大值')
                 }
@@ -85,16 +120,13 @@ class num extends React.Component {
 
     }
 
-    blurMax = (e) => {
-        const max = Number(e.target.value)
-        const min = Number(this.refs.min.input.value)
-
+    const blurMax = () => {
         //格式检测
         if (reg.test(max)) {
             //min/max比较
             if (min) {
                 if (max > min) {
-                    this.addAttrListItem(min, max)
+                    saveAttrListItem()
                 } else {
                     Message.error('不能小于最小值')
                 }
@@ -104,14 +136,11 @@ class num extends React.Component {
         }
     }
 
-    blurEqual = (e) => {
-        const { selectedRange } = this.props
-        const value = Number(e.target.value)
-
+    const blurMed = () => {
         if (selectedRange.value) {
             //格式检测
-            if (reg.test(value)) {
-                this.addAttrListItem(value)
+            if (reg.test(med)) {
+                saveAttrListItem()
             } else {
                 Message.error('请输入数字类型')
             }
@@ -120,42 +149,50 @@ class num extends React.Component {
         }
     }
 
-    render() {
-        const { fourAttr, attrRange, selectedRange, selectedTree3Item } = this.props
-        const { ranges = {} } = selectedTree3Item
-        const { datas = [] } = fourAttr
-        
-        if(datas.length && datas[0]){
-            var { min } = datas.find(item => item.min)
-            var { max } = datas.find(item => item.max)
-        }
+    const minChange = (e) => {
+        const val = Number(e.target.value)
 
-        return (
-            <>
-                <InputGroup compact>
-                    <Select style={{ width: 100 }} value={selectedRange.value} placeholder="请选择" onChange={this.rangeChange}>
-                        {
-                            attrRange.map(item => <Option key={item.value}>{item.name}</Option>)
-                        }
-                    </Select>
-                    {
-                        selectedRange.value === '101' || selectedRange.value === '102' ?
-                            <>
-                                <Input style={{ width: 100, textAlign: 'center' }} defaultValue={ranges.min} ref="min" placeholder="最小值" onBlur={this.blurMin} />
-                                <Input style={{ width: 40, borderLeft: 0, pointerEvents: 'none', backgroundColor: '#fff' }} placeholder="~" disabled />
-                                <Input style={{ width: 100, textAlign: 'center', borderLeft: 0 }} defaultValue={ranges.max} ref="max" placeholder="最大值" onBlur={this.blurMax} />
-                            </>
-                            :
-                            <Input style={{ width: 240, textAlign: 'center' }} defaultValue={ranges.min} ref="med" placeholder="请输入" onBlur={this.blurEqual} />
-                    }
-                </InputGroup>
-                <p>
-                    参考范围：{min ? `${min} - ${max}` : '无'}
-                </p>
-                <p style={{ color: '#999' }}>*所有数字均不带单位</p>
-            </>
-        )
+        saveRanges({ min: val, max, med })
     }
+
+    const medChange = (e) => {
+        const val = Number(e.target.value)
+
+        saveRanges({ med: val, min, max })
+    }
+
+    const maxChange = (e) => {
+        const val = Number(e.target.value)
+
+        saveRanges({ max: val, med, min })
+    }
+
+    return (
+        <>
+            <InputGroup compact>
+                <Select style={{ width: 100 }} value={selectedRange.value} placeholder="请选择" onChange={rangeChange}>
+                    {
+                        attrRange.map(item => <Option key={item.value}>{item.name}</Option>)
+                    }
+                </Select>
+                {
+                    selectedRange.value === '101' || selectedRange.value === '102' ?
+                        <>
+                            <Input style={{ width: 100, textAlign: 'center' }} value={ranges.min} onChange={minChange} placeholder="最小值" onBlur={blurMin} />
+                            <Input style={{ width: 40, borderLeft: 0, pointerEvents: 'none', backgroundColor: '#fff' }} placeholder="~" disabled />
+                            <Input style={{ width: 100, textAlign: 'center', borderLeft: 0 }} onChange={maxChange} value={ranges.max} placeholder="最大值" onBlur={blurMax} />
+                        </>
+                        :
+                        <Input style={{ width: 240, textAlign: 'center' }} value={ranges.med} onChange={medChange} placeholder="请输入" onBlur={blurMed} />
+                }
+            </InputGroup>
+            <p>
+                参考范围：{rangeDatas.min ? `${rangeDatas.min} - ${rangeDatas.max}` : '无'}
+            </p>
+            <p style={{ color: '#999' }}>*所有数字均不带单位</p>
+        </>
+    )
+
 }
 
 export default num

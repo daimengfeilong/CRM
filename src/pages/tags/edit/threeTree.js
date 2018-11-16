@@ -6,7 +6,7 @@ const threeTree = ({dispatch,selectedTree3,selectedTree3Item,attrItem}) => {
     const clickThreeItem = (item) => {
         const { ranges = {} } = item
         if(selectedTree3Item.id == item.id) return false;
-        console.log(item);
+        
         dispatch({
             type: 'tagsEdit/save',
             payload: {
