@@ -13,6 +13,18 @@ let timer = null
 
 class Login extends React.Component {
     componentDidMount(){
+        const { dispatch } = this.props
+
+        dispatch({
+            type:'login/save',
+            payload:{
+                phoneNo: 0,
+                captchaSrc: '',
+                timeNum: 60,
+                loading: false,
+            }
+        })
+
         document.querySelector('body').style.background = '#93defe'
     }
 
