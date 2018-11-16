@@ -9,6 +9,7 @@ export default {
         captchaSrc: '',
         timeNum: 60,
         loading: false,
+        smsLoading: false,
     },
     reducers: {
         save(state, { payload }) {

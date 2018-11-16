@@ -22,6 +22,7 @@ class Login extends React.Component {
                 captchaSrc: '',
                 timeNum: 60,
                 loading: false,
+                smsLoading: false,
             }
         })
 
@@ -93,7 +94,12 @@ class Login extends React.Component {
 
         form.validateFields(['verificationCode'],(err, values) => {
             if (!err) {
-
+                dispatch({
+                    type:'login/save',
+                    payload:{
+                        smsLoading:true
+                    }
+                })
                 dispatch({
                     type:'login/sendSms',
                     payload:{
@@ -107,6 +113,12 @@ class Login extends React.Component {
                     if(data.code === '0000'){
                         this.Interval()
                     }else{
+                        dispatch({
+                            type:'login/save',
+                            payload:{
+                                smsLoading:false
+                            }
+                        })
                         dispatch({type:'login/getCaptchaSrc'})
                         Message.error(data.msg)
                     }
@@ -131,7 +143,8 @@ class Login extends React.Component {
                 dispatch({
                     type: 'login/save',
                     payload: {
-                        timeNum: 60
+                        timeNum: 60,
+                        smsLoading:false
                     }
                 })
                 window.clearInterval(timer)
@@ -140,7 +153,7 @@ class Login extends React.Component {
     }
 
     render() {
-        const { form, dispatch, phoneNo, timeNum, captchaSrc, loading } = this.props
+        const { form, dispatch, phoneNo, timeNum, captchaSrc, loading, smsLoading } = this.props
         const { getFieldDecorator } = form
 
         const captchaProps = {
@@ -214,7 +227,7 @@ class Login extends React.Component {
                                         <Col span={9} offset={1}>
                                             {
                                                 timeNum === 60 || timeNum === 0 ?
-                                                <Button type="primary" onClick={this.sendSmsCode}>获取验证码</Button>
+                                                <Button type="primary" onClick={this.sendSmsCode} loading={smsLoading}>获取验证码</Button>
                                                 :
                                                 <Button disabled style={{width:'100%'}}>{timeNum}s 后重发</Button>
                                             }
