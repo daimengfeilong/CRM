@@ -2,7 +2,7 @@
     "disableCSSModules":true,
     "proxy": {
         "/api": {
-            "target": "http://10.10.27.93:3000/",
+            "target": "",
             "changeOrigin": true,
             "pathRewrite": {
                 "^/api": "/api"
